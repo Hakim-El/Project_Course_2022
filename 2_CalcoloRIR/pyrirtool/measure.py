@@ -1,8 +1,3 @@
-# ================================================================
-# Room impulse response measurement with an exponential sine sweep
-# ----------------------------------------------------------------
-# Author:                    Maja Taseska, ESAT-STADIUS, KU LEUVEN
-# ================================================================
 import os
 import sounddevice as sd
 import numpy as np
