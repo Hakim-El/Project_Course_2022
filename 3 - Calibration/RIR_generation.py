@@ -5,9 +5,10 @@ from scipy.signal import fftconvolve
 import IPython
 import pyroomacoustics as pra
 
-def createRir():
+def createRir(RIRlen):
 
-    corners = np.array([[0,0], [0,3], [5,3], [5,1], [3,1], [3,0]]).T  # [x,y]
+    #corners = np.array([[0,0], [0,3], [5,3], [5,1], [3,1], [3,0]]).T  # [x,y]
+    corners = np.array([[0,0], [0,10], [10,10], [10,0]]).T  # [x,y]
 
     #fig, ax = room.plot()
     #ax.set_xlim([-1, 6])
@@ -26,10 +27,14 @@ def createRir():
     room.set_ray_tracing(receiver_radius=0.5, n_rays=10000, energy_thres=1e-5)
 
     # add source and set the signal to WAV file content
-    room.add_source([1., 1.], signal=signal)
+    room.add_source([4., 4.], signal=signal)
+    room.add_source([5., 8.], signal=signal)
+    room.add_source([8., 6.], signal=signal)
+
+
 
     # add two-microphone array
-    R = np.array([[3.5, 3.6], [2., 2.]])  # [[x], [y], [z]]
+    R = np.array([5., 5.])  # [[x], [y], [z]]
     room.add_microphone(R)
 
     # compute image sources
@@ -42,5 +47,10 @@ def createRir():
     # compute RIR
     room.compute_rir()
 
-    return room.rir[0][0] #returns the Impulse response from the first mic
+    data = np.zeros((RIRlen,3))
+
+    for i in np.arange(0,3):
+        data[:,i] = room.rir[0][i][:RIRlen]
+
+    return data #returns the Impulse response from the first mic
 
