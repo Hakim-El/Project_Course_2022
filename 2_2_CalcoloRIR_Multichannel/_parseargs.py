@@ -1,12 +1,8 @@
-# ================================================================
 # Parsing command line arguments
-# ----------------------------------------------------------------
-# Author:                    Maja Taseska, ESAT-STADIUS, KU LEUVEN
-# ================================================================
+
 import argparse
 import numpy as np
 import os
-
 
 # === FUNCTION: Parsing command line arguments
 def _parse():
@@ -101,7 +97,7 @@ def _checkdefaults():
             "fs" : 44100,
             "inputChannelMap" : [1],
             "outputChannelMap": [1],
-            "inputdevice": 2,
+            "inputdevice": 0,
             "outputdevice": 1,
             "sweeprange": [0 , 0]
         }
