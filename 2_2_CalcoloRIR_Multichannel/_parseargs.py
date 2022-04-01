@@ -101,7 +101,7 @@ def _checkdefaults():
             "fs" : 44100,
             "inputChannelMap" : [1],
             "outputChannelMap": [1],
-            "inputdevice": 0,
+            "inputdevice": 2,
             "outputdevice": 1,
             "sweeprange": [0 , 0]
         }
