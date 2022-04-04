@@ -3,14 +3,18 @@ from scipy.io.wavfile import write as wavwrite
 import numpy as np
 import sounddevice as sd
 
-
 #--------------------------
-def record(testsignal,fs,inputChannels,outputChannels):
+def record(testsignal,fs,inputChannels, outputChannels):
 
+# ATTENZIONE: Imposta dispositivo di input e di output qui:
+    sd.default.device = [1,2] #[input, output]
+    print(sd.query_devices())
+   
+   
     sd.default.samplerate = fs
     sd.default.dtype = 'float32'
-    print("Input channels:",  inputChannels)
-    print("Output channels:", outputChannels)
+   # print("Input channels:",  inputChannels)
+   # print("Output channels:", outputChannels)
 
     # Start the recording
     recorded = sd.playrec(testsignal, samplerate=fs, input_mapping = inputChannels,output_mapping = outputChannels)
@@ -18,17 +22,16 @@ def record(testsignal,fs,inputChannels,outputChannels):
 
     return recorded
 
-
 #--------------------------
 def saverecording(RIR, RIRtoSave, testsignal, recorded, fs):
 
         dirflag = False
         counter = 1
-        dirname = 'recorded/newrir1'
+        dirname = 'recorded/Measure_1'
         while dirflag == False:
             if os.path.exists(dirname):
                 counter = counter + 1
-                dirname = 'recorded/newrir' + str(counter)
+                dirname = 'recorded/Measure_' + str(counter)
             else:
                 os.mkdir(dirname)
                 dirflag = True

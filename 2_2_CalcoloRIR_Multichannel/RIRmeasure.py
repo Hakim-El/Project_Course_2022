@@ -8,6 +8,8 @@ import stimulus as stim
 import _parseargs as parse
 import utils as utils
 
+# ATTENZIONE: Imposta il corretto input e output nel file utils!
+
 # --- Parse command line arguments and check defaults
 flag_defaultsInitialized = parse._checkdefaults()
 args = parse._parse()
@@ -31,7 +33,7 @@ if flag_defaultsInitialized == True:
     elif args.setdev == True:
 
         sd.default.device[0] = args.inputdevice
-        sd.default.device[1] = args.outputdevice
+        sd.default.device[2] = args.outputdevice
         sd.check_input_settings()
         sd.check_output_settings()
         print(sd.query_devices())
