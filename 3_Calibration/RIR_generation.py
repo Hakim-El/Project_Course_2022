@@ -20,21 +20,21 @@ def createRir(RIRlen):
     #fs, signal = wavfile.read("arctic_a0010.wav")
 
     # set max_order to a low value for a quick (but less accurate) RIR
-    room = pra.Room.from_corners(corners, fs=fs, max_order=10, materials=pra.Material(0.2, 0.15), ray_tracing=True, air_absorption=True)
-    #room.extrude(2., materials=pra.Material(0.2, 0.15))
+    room = pra.Room.from_corners(corners, fs=fs, max_order=3, materials=pra.Material(0.2, 0.15), ray_tracing=False, air_absorption=True)
+    room.extrude(4.)
 
     # Set the ray tracing parameters
-    room.set_ray_tracing(receiver_radius=0.5, n_rays=10000, energy_thres=1e-5)
+    #room.set_ray_tracing(receiver_radius=0.5, n_rays=10000, energy_thres=1e-5)
 
     # add source and set the signal to WAV file content
-    room.add_source([4., 4.], signal=signal)
-    room.add_source([5., 8.], signal=signal)
-    room.add_source([8., 6.], signal=signal)
+    room.add_source([4., 4., 1.5], signal=signal, delay=0.001)
+    room.add_source([5., 8., 1.5], signal=signal, delay=0.001)
+    room.add_source([8., 6., 1.5], signal=signal, delay=0.001)
 
 
 
     # add two-microphone array
-    R = np.array([5., 5.])  # [[x], [y], [z]]
+    R = np.array([5., 5., 1.5])  # [[x], [y], [z]]
     room.add_microphone(R)
 
     # compute image sources
