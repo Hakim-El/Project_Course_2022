@@ -15,7 +15,7 @@ import _parseargs_SineSweep as parse
 import utils_SineSweep as utils
 
 # modules from Calibration
-import Calibration as cal
+#import Calibration as cal
 
 ######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
 
@@ -53,7 +53,8 @@ elif fs_selection != 1 and fs_selection!= 2 and fs_selection != 3 :
     elif fs_selection == 3 :
         fs = 96000
 
-print("\nPRIMA DI PROCEDERE: \n - Collega i n microfoni ai primi n canali di input del device audio selezionato \n - Collega le m sorgenti/altoparlanti ai primi m canali di output del device audio selezionato\n \nDopo aver collegato tutto, premi un tasto qualsiasi e digita invio per andare avanti...")
+print("\nPRIMA DI PROCEDERE: \n - Collega i n microfoni ai primi n canali di input del device audio selezionato \n - Collega le m sorgenti/altoparlanti ai primi m canali di output del device audio selezionato")
+print("\nDopo aver collegato tutto, premi un tasto qualsiasi e digita invio per andare avanti...")
 input()
 
 print("\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n")
