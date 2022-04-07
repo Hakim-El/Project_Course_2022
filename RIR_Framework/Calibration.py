@@ -4,7 +4,7 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.optimize import minimize
 from scipy import interpolate
-from RIR_generation import createRir
+from RIRsimulation import createRir
 
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
 nMics = 1       # Mics are our unknown position devices
@@ -210,3 +210,5 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
             counter = counter + 3
     print('Delta :',resM.x[nUnknown *3], '[s]')
     return resM.x
+
+#RIR = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
