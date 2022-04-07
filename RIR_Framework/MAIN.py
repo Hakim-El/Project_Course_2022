@@ -4,7 +4,7 @@ import matplotlib
 import scipy
 import os
 from RIRmeasure_SineSweep import RIRmeasure_function
-from Calibration import calculate_Calibration
+#from Calibration import calculate_Calibration
 
 ######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
 

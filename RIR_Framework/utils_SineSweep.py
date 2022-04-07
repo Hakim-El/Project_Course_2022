@@ -10,7 +10,7 @@ def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevic
     sd.default.device = [inputDevice,outputDevice] #[input, output]
 # Selezione canali da utilizzare in input e in output
     sd.default.channels = [inputChannels,outputChannels] #[input, output]
-    print(sd.query_devices())
+    #print(sd.query_devices())
    
     sd.default.samplerate = fs
     sd.default.dtype = 'float32'
