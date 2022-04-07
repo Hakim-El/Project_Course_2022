@@ -4,6 +4,7 @@ import matplotlib
 import scipy
 import os
 from RIRmeasure_SineSweep import RIRmeasure_function
+from Calibration import calculate_Calibration
 
 ######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
 
@@ -55,6 +56,7 @@ if cal_type == 1 :
     x_axis = float(input())
     print("\nValore asse Y (Larghezza) della stanza [m]:")
     y_axis = float(input())
+    z_axis = 0
 elif cal_type == 2 :
     print("\nValore asse X (Lunghezza) della stanza [m]:")
     x_axis = float(input())
@@ -112,5 +114,9 @@ if measureMethod == 1 :
 elif measureMethod == 2 :
     # Misura MLS
     print("La MLS ancora non l'abbiamo fatta...\n")
+
+######### CALIBRAZIONE
+
+#calculate_Calibration(inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
 
 ######### RAPPRESENTAZIONE DEI DATI E DEI PLOT

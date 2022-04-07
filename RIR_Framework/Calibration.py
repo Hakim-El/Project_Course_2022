@@ -1,4 +1,4 @@
-from curses.ascii import NL
+#from curses.ascii import NL
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -233,7 +233,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate (nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
