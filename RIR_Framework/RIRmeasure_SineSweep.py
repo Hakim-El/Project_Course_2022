@@ -16,6 +16,7 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     flag_defaultsInitialized = parse._checkdefaults()
     args = parse._parse()
     parse._defaults(args)
+    
     # -------------------------------
 
     if flag_defaultsInitialized == True:

@@ -28,7 +28,7 @@ RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
 
 def createDataMatrix(nMics, nLS):
     data = np.zeros((nMics*RIRlen,nLS))
-    lastRecording = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
+    lastRecording = np.load('Sine_Sweep_Measures/lastMeasure/RIR.npy')
 
     for l in np.arange(0,nLS):
         for i in np.arange(0,nMics):
@@ -93,7 +93,6 @@ def compute_distance(audio,fs=44100,c=343,interp_factor = 2, do_interpolation = 
             distance[m] = dp*(1/fs) * c     # removed 1/interp_factor when not doing interpolation
     return distance
 
-
     #Function to estimate the position of the unkown devices in 2D and without delay estimation (Calibration function)
 def calibration2D_nodel(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
     #Initialization of the vector of initial values for the minimization search
@@ -125,7 +124,6 @@ def calibration2D_nodel(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
             print('Source ',n ,': \n','X: ', resM.x[counter], '[m]', 'Y: ', resM.x[counter + 1], '[m]\n')
             counter = counter + 2
     return resM.x
-
 
 #Function to estimate the position of the unkown devices in 2D and with delay estimation (Calibration function)
 def calibration2D_del(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
@@ -161,8 +159,6 @@ def calibration2D_del(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
             counter = counter + 2
     print('Delta :',resM.x[nUnknown *2], '[s]')
     return resM.x
-
-
     
 #Function to estimate the position of the unkown devices in 3D and without delay estimation (Calibration function)
 def calibration3D_nodel(audio, fs, PosKnown, c, bnds,nUnknown):

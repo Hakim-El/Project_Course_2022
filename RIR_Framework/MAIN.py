@@ -6,7 +6,7 @@ import os
 from RIRmeasure_SineSweep import RIRmeasure_function
 #from Calibration import calculate_Calibration
 
-######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
+################################  1 - INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE ################################
 
 print("Questi sono i tuoi devices audio:\n")
 print(sd.query_devices())
@@ -106,19 +106,19 @@ elif cal_type == 2 :
 print("\nPremi invio per iniziare la misura.")
 input()
 
-######### MISURA
+################################  2 - MISURA (SineSweep/MLS) ################################ 
 
 if measureMethod == 1 :
     # Misura SineSweep
     for i in np.arange(1, outputChannels+1) :
         RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-        #riempi matrice con RIR.npy e poi vai avanti
+        # DA FARE: riempi matrice con RIR.npy e poi vai avanti con il ciclo for...
 elif measureMethod == 2 :
     # Misura MLS
     print("La MLS ancora non l'abbiamo fatta...\n")
 
-######### CALIBRAZIONE
+################################ 3 - CALIBRAZIONE ################################ 
 
 #calculate_Calibration(inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
 
-######### RAPPRESENTAZIONE DEI DATI E DEI PLOT
+################################  4 - RAPPRESENTAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 

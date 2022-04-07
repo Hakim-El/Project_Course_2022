@@ -32,7 +32,6 @@ def createRir(RIRlen):
     room.add_source([8., 6., 1.5], signal=signal, delay=0.001)
     room.add_source([2., 2., 1.5], signal=signal, delay=0.001)
 
-
     # add two-microphone array
     R = np.array([5., 5., 1.5])  # [[x], [y], [z]]
     room.add_microphone(R)
@@ -53,4 +52,3 @@ def createRir(RIRlen):
         data[:,i] = room.rir[0][i][:RIRlen]
 
     return data #returns the Impulse response from the first mic
-
