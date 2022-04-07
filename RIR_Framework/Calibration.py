@@ -1,3 +1,4 @@
+from curses.ascii import NL
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,17 +6,23 @@ from scipy.signal import find_peaks
 from scipy.optimize import minimize
 from scipy import interpolate
 from RIRsimulation import createRir
+from mpl_toolkits.mplot3d import Axes3D
+import MAIN as M
 
 #import RIRmeasure_SineSweep
-
+c = 343
+calType = M.cal_type
+delayType = M.delayType
+fs = M.fs
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
-nMics = 2       # Mics are our unknown position devices
-nLS = 1         # Loudspeakers are our known position devices
-x_bound = 10    # room bound on the x axis
-y_bound = 10    # room bound on the y axis
-z_bound = 4
+nMics = M.inputChannels       # Mics are our unknown position devices
+nLS = M.outputChannels        # Loudspeakers are our known position devices
+x_bound = M.x_axis    # room bound on the x axis
+y_bound = M.y_axis    # room bound on the y axis
+if calType == 2:
+    z_bound = M.z_axis
 
-knownPos = [[4,4,1.5],[5,8,1.5],[8,6,1.5],[2., 2., 1.5]] # know positions of the Loudspeakers used in the pyroomacoustics simulation
+knownPos = M.knownPos # know positions of the Loudspeakers used in the pyroomacoustics simulation
 
 # data contains the RIRs of the simulation it's shape is (nMics*RIRlen , nLS) 
 # data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
@@ -220,4 +227,129 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     print('Delta :',resM.x[nUnknown *3], '[s]')
     return resM.x
 
-#RIR = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
+#Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
+def calculate ():
+    #Number of unknown positions
+    upd = int(nMics)
+    #Arrays of zeroes for the plots
+    x = np.zeros(shape=(upd))
+    y = np.zeros(shape=(upd))
+    z = np.zeros(shape=(upd))
+    
+    #If we are in a 3D case with estimation delay:
+    if (calType == 2 and delayType == 1):
+        #Postion estimation
+        pos_3Ddel = calibration3D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nLS)
+        
+        #Setting the text labels that show the estimated positions and the estimated delay
+        #counter = 0
+        #for m in range(0, upd):
+        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_3Ddel[counter],3))+'     Y: '+str(round(pos_3Ddel[counter + 1],3))+'    Z: '+ str(round(pos_3Ddel[counter + 2],3)))
+        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
+        #    counter = counter + 3
+        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: " + str(round(pos_3Ddel[upd*3],3)))
+        #lbl_delta_cal.place(x = 500, y = 475)
+        
+        #Filling the plot vectors with their correspondent coordinates and plotting the result
+        counter1 = 0
+        for n in range(0,upd):
+            x[n] = pos_3Ddel[counter1]
+            y[n] = pos_3Ddel[counter1 + 1]
+            z[n] = pos_3Ddel[counter1 + 2]
+            counter1 = counter1 + 3
+            
+        fig = plt.figure(figsize=(4,4))
+        ax = Axes3D(fig)
+        ax.scatter(x,y,z, marker = 'o')
+        ax.grid()
+        ax.legend(['No delay']);
+    
+    #If we are in a 3D case without estimation delay:
+    if (calType == 2 and delayType == 2):
+        #Postion estimation
+        pos_3Dnodel = calibration3D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nLS)
+        
+        #Setting the text labels that show the estimated positions
+        #counter = 0;
+        #for m in range(0, upd):
+        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_3Dnodel[counter],3))+'     Y: '+str(round(pos_3Dnodel[counter + 1],3))+'    Z: '+ str(round(pos_3Dnodel[counter + 2],3)))
+        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
+        #    counter = counter + 3
+        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: None")
+        #lbl_delta_cal.place(x = 500, y = 475)
+        
+        #Filling the plot vectors with their correspondent coordinates and plotting the result
+        counter1 = 0
+        for n in range(0,upd):
+            x[n] = pos_3Dnodel[counter1]
+            y[n] = pos_3Dnodel[counter1 + 1]
+            z[n] = pos_3Dnodel[counter1 + 2]
+            counter1 = counter1 + 3
+            
+        fig = plt.figure(figsize=(4,4))
+        ax = Axes3D(fig)
+        ax.scatter(x,y,z, marker = 'o')
+        ax.grid()
+        ax.legend(['No delay']);
+    
+    #If we are in a 2D case with estimation delay:
+    if (calType == 1 and delayType == 1):
+        #Postion estimation
+        pos_2Ddel = calibration2D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nLS)
+        
+        #Setting the text labels that show the estimated positions and the estimated delay
+        #counter = 0
+        #for m in range(0,upd):
+        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_2Ddel[counter],3))+'     Y: '+str(round(pos_2Ddel[counter + 1],3)))
+        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
+        #    counter = counter + 2
+        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: " + str(round(pos_2Ddel[upd*2],3)))
+        #lbl_delta_cal.place(x = 500, y = 475)
+        
+        #Filling the plot vectors with their correspondent coordinates and plotting the result
+        counter1 = 0
+        for n in range(0,upd):
+            x[n] = pos_2Ddel[counter1]
+            y[n] = pos_2Ddel[counter1 + 1]
+            counter1 = counter1 + 2
+            
+        fig = plt.figure(figsize=(4,4))
+        plt.scatter(x, y, marker = 'o')
+        plt.title("Estimated position plane xy")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('y[m]')
+        
+    #If we are in a 2D case without estimation delay:   
+    if (calType == 1 and delayType == 2):
+        #Postion estimation
+        pos_2Dnodel = calibration2D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nLS)
+        
+        #Setting the text labels that show the estimated positions
+        #counter = 0
+        #for m in range(0,upd):
+        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_2Dnodel[counter],3))+'     Y: '+str(round(pos_2Dnodel[counter + 1],3)))
+        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
+        #    counter = counter + 2
+        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: None")
+        #lbl_delta_cal.place(x = 500, y = 475)
+        
+        #Filling the plot vectors with their correspondent coordinates and plotting the result
+        counter1 = 0
+        for n in range(0,upd):
+            x[n] = pos_2Dnodel[counter1]
+            y[n] = pos_2Dnodel[counter1 + 1]
+            counter1 = counter1 + 2
+            
+        fig = plt.figure(figsize=(4,4))
+        plt.scatter(x, y, marker = 'o')
+        plt.title("Estimated position plane xy")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('y[m]')
+        
+    #Placing the plot
+    #canvas_fig = FigureCanvasTkAgg(fig, master=window)
+    #canvas_fig.get_tk_widget().place_forget()
+    #canvas_fig.draw()
+    #canvas_fig.get_tk_widget().place(x=500, y=70)   
