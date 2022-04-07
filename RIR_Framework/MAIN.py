@@ -100,6 +100,10 @@ elif cal_type == 2 :
         print("\nPosizione Z sorgente/altoparlante %d [m]:" %(i+1))
         knownPos[i,2] = float(input())
 
+print("\nPremi invio per iniziare la misura.")
+input()
+
 ######### INIZIO CODICE
 
-#import RIRmeasure_SineSweep
+import RIRmeasure_SineSweep
+exit()
