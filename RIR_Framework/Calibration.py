@@ -23,6 +23,9 @@ knownPos = [[4,4,1.5],[5,8,1.5],[8,6,1.5],[2., 2., 1.5]] # know positions of the
 data = np.zeros((nMics*RIRlen,nLS))
 lastRecording = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
 
+for l in np.arange(0,nLS):
+    for i in np.arange(0,nMics):
+        data[i*RIRlen:RIRlen*(i+1),l] = lastRecording[0:RIRlen,i]
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
 bounds2D_nodel = np.zeros((nMics*2, 2))
