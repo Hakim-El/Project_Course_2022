@@ -6,9 +6,11 @@ from scipy.optimize import minimize
 from scipy import interpolate
 from RIRsimulation import createRir
 
+#import RIRmeasure_SineSweep
+
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
-nMics = 1       # Mics are our unknown position devices
-nLS = 3         # Loudspeakers are our known position devices
+nMics = 2       # Mics are our unknown position devices
+nLS = 1         # Loudspeakers are our known position devices
 x_bound = 10    # room bound on the x axis
 y_bound = 10    # room bound on the y axis
 z_bound = 4
@@ -16,7 +18,11 @@ z_bound = 4
 knownPos = [[4,4,1.5],[5,8,1.5],[8,6,1.5],[2., 2., 1.5]] # know positions of the Loudspeakers used in the pyroomacoustics simulation
 
 # data contains the RIRs of the simulation it's shape is (nMics*RIRlen , nLS) 
-data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
+# data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
+
+data = np.zeros((nMics*RIRlen,nLS))
+lastRecording = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
+
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
 bounds2D_nodel = np.zeros((nMics*2, 2))
