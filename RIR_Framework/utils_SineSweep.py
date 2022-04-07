@@ -7,11 +7,11 @@ import MAIN as m
 #--------------------------
 def record(testsignal,fs,inputChannels, outputChannels):
 
-# ATTENZIONE: Imposta dispositivo di input e di output qui:
+# Selezione device audio di input e output
     sd.default.device = [m.inputDevice,m.outputDevice] #[input, output]
+# Selezione canali da utilizzare in input e in output
     sd.default.channels = [m.inputChannels,m.outputChannels] #[input, output]
     print(sd.query_devices())
-   
    
     sd.default.samplerate = m.fs
     sd.default.dtype = 'float32'
