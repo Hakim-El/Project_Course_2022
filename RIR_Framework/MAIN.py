@@ -110,7 +110,9 @@ input()
 
 if measureMethod == 1 :
     # Misura SineSweep
-    RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice)
+    for i in np.arange(1, outputChannels+1) :
+        RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+        #riempi matrice con RIR.npy e poi vai avanti
 elif measureMethod == 2 :
     # Misura MLS
     print("La MLS ancora non l'abbiamo fatta...\n")

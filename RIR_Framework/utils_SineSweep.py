@@ -18,7 +18,7 @@ def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevic
    # print("Output channels:", outputChannels)
 
     # Start the recording
-    recorded = sd.playrec(testsignal, samplerate=fs)
+    recorded = sd.playrec(testsignal, samplerate=fs, output_mapping=[outputChannels])
     sd.wait()
 
     return recorded
@@ -28,11 +28,11 @@ def saverecording(RIR, RIRtoSave, testsignal, recorded, fs):
 
         dirflag = False
         counter = 1
-        dirname = 'Sine_Sweep_Recordings/Measure_1'
+        dirname = 'Sine_Sweep_Recordings/Measure_Loudspeaker1'
         while dirflag == False:
             if os.path.exists(dirname):
                 counter = counter + 1
-                dirname = 'Sine_Sweep_Recordings/Measure_' + str(counter)
+                dirname = 'Sine_Sweep_Recordings/Measure_Loudspeaker' + str(counter)
             else:
                 os.mkdir(dirname)
                 dirflag = True
