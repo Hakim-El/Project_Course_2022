@@ -7,7 +7,7 @@ import sounddevice as sd
 def record(testsignal,fs,inputChannels, outputChannels):
 
 # ATTENZIONE: Imposta dispositivo di input e di output qui:
-    sd.default.device = [1,2] #[input, output]
+    sd.default.device = [0,2] #[input, output]
     print(sd.query_devices())
    
    
