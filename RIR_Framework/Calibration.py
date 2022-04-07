@@ -7,58 +7,63 @@ from scipy.optimize import minimize
 from scipy import interpolate
 from RIRsimulation import createRir
 from mpl_toolkits.mplot3d import Axes3D
-import MAIN as M
 
 #import RIRmeasure_SineSweep
 c = 343
-calType = M.cal_type
-delayType = M.delayType
-fs = M.fs
+#calType = M.cal_type
+#delayType = M.delayType
+#fs = M.fs
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
-nMics = M.inputChannels       # Mics are our unknown position devices
-nLS = M.outputChannels        # Loudspeakers are our known position devices
-x_bound = M.x_axis    # room bound on the x axis
-y_bound = M.y_axis    # room bound on the y axis
-if calType == 2:
-    z_bound = M.z_axis
+#nMics = M.inputChannels       # Mics are our unknown position devices
+#nLS = M.outputChannels        # Loudspeakers are our known position devices
+#x_bound = M.x_axis    # room bound on the x axis
+#y_bound = M.y_axis    # room bound on the y axis
+#if calType == 2:
+#    z_bound = M.z_axis
 
-knownPos = M.knownPos # know positions of the Loudspeakers used in the pyroomacoustics simulation
+#knownPos = M.knownPos # know positions of the Loudspeakers used in the pyroomacoustics simulation
 
 # data contains the RIRs of the simulation it's shape is (nMics*RIRlen , nLS) 
 # data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
 
-data = np.zeros((nMics*RIRlen,nLS))
-lastRecording = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
+def createDataMatrix(nMics, nLS):
+    data = np.zeros((nMics*RIRlen,nLS))
+    lastRecording = np.load('Sine_Sweep_Recordings/lastRecording/RIR.npy')
 
-for l in np.arange(0,nLS):
-    for i in np.arange(0,nMics):
-        data[i*RIRlen:RIRlen*(i+1),l] = lastRecording[0:RIRlen,i]
+    for l in np.arange(0,nLS):
+        for i in np.arange(0,nMics):
+            data[i*RIRlen:RIRlen*(i+1),l] = lastRecording[0:RIRlen,i]
+    return data
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
-bounds2D_nodel = np.zeros((nMics*2, 2))
-bounds2D_del = np.zeros((nMics*2 + 1,2))
-bounds3D_nodel = np.zeros((nMics*3,2))
-bounds3D_del = np.zeros((nMics*3 + 1,2))
 
-for i in range(0,bounds2D_nodel.shape[0]):
-    if i%2==0:
-        bounds2D_nodel[i,1] = x_bound
-        bounds2D_del[i,1] = x_bound
-    else:
-        bounds2D_nodel[i,1] = y_bound
-        bounds2D_del[i,1] = y_bound
-bounds2D_del[-1,1] = 0.5 #Delay bounds in 2D case
+def createBounds(nMics, x_bound, y_bound, z_bound):
+    bounds2D_nodel = np.zeros((nMics*2, 2))
+    bounds2D_del = np.zeros((nMics*2 + 1,2))
+    bounds3D_nodel = np.zeros((nMics*3,2))
+    bounds3D_del = np.zeros((nMics*3 + 1,2))
 
-for i in range(0,bounds3D_nodel.shape[0],2):
-    bounds3D_nodel[i,1] = x_bound
-    bounds3D_del[i,1] = x_bound
-for i in range(1,bounds3D_nodel.shape[0],2):
-    bounds3D_nodel[i,1] = y_bound
-    bounds3D_del[i,1] = y_bound
-for i in range(2,bounds3D_nodel.shape[0],3):
-    bounds3D_nodel[i,1] = z_bound
-    bounds3D_del[i,1] = z_bound
-bounds3D_del[-1,1] = 0.5   #Delay bounds in 3D case
+    for i in range(0,bounds2D_nodel.shape[0]):
+        if i%2==0:
+            bounds2D_nodel[i,1] = x_bound
+            bounds2D_del[i,1] = x_bound
+        else:
+            bounds2D_nodel[i,1] = y_bound
+            bounds2D_del[i,1] = y_bound
+    bounds2D_del[-1,1] = 0.5 #Delay bounds in 2D case
+
+    for i in range(0,bounds3D_nodel.shape[0],2):
+        bounds3D_nodel[i,1] = x_bound
+        bounds3D_del[i,1] = x_bound
+    for i in range(1,bounds3D_nodel.shape[0],2):
+        bounds3D_nodel[i,1] = y_bound
+        bounds3D_del[i,1] = y_bound
+    for i in range(2,bounds3D_nodel.shape[0],3):
+        bounds3D_nodel[i,1] = z_bound
+        bounds3D_del[i,1] = z_bound
+    bounds3D_del[-1,1] = 0.5   #Delay bounds in 3D case
+
+    return bounds2D_nodel, bounds2D_del, bounds3D_nodel, bounds3D_del
 
 
 #Function for finding the direct path of the RIR's (Calibration function)
@@ -228,7 +233,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate ():
+def calculate (nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
@@ -236,19 +241,13 @@ def calculate ():
     y = np.zeros(shape=(upd))
     z = np.zeros(shape=(upd))
     
+    bounds2D_nodel, bounds2D_del, bounds3D_nodel, bounds3D_del = createBounds(nMics, x_bound, y_bound, z_bound)
+    data = createDataMatrix(nMics, nLS)
+
     #If we are in a 3D case with estimation delay:
     if (calType == 2 and delayType == 1):
         #Postion estimation
         pos_3Ddel = calibration3D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nLS)
-        
-        #Setting the text labels that show the estimated positions and the estimated delay
-        #counter = 0
-        #for m in range(0, upd):
-        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_3Ddel[counter],3))+'     Y: '+str(round(pos_3Ddel[counter + 1],3))+'    Z: '+ str(round(pos_3Ddel[counter + 2],3)))
-        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
-        #    counter = counter + 3
-        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: " + str(round(pos_3Ddel[upd*3],3)))
-        #lbl_delta_cal.place(x = 500, y = 475)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -269,15 +268,6 @@ def calculate ():
         #Postion estimation
         pos_3Dnodel = calibration3D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nLS)
         
-        #Setting the text labels that show the estimated positions
-        #counter = 0;
-        #for m in range(0, upd):
-        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_3Dnodel[counter],3))+'     Y: '+str(round(pos_3Dnodel[counter + 1],3))+'    Z: '+ str(round(pos_3Dnodel[counter + 2],3)))
-        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
-        #    counter = counter + 3
-        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: None")
-        #lbl_delta_cal.place(x = 500, y = 475)
-        
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
         for n in range(0,upd):
@@ -296,15 +286,6 @@ def calculate ():
     if (calType == 1 and delayType == 1):
         #Postion estimation
         pos_2Ddel = calibration2D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nLS)
-        
-        #Setting the text labels that show the estimated positions and the estimated delay
-        #counter = 0
-        #for m in range(0,upd):
-        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_2Ddel[counter],3))+'     Y: '+str(round(pos_2Ddel[counter + 1],3)))
-        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
-        #    counter = counter + 2
-        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: " + str(round(pos_2Ddel[upd*2],3)))
-        #lbl_delta_cal.place(x = 500, y = 475)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -325,15 +306,6 @@ def calculate ():
         #Postion estimation
         pos_2Dnodel = calibration2D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nLS)
         
-        #Setting the text labels that show the estimated positions
-        #counter = 0
-        #for m in range(0,upd):
-        #    lbl_rir_loc[m] = tk.Label(window, text = "#"+str(m)+" Device Location: "+"     X: "+ str(round(pos_2Dnodel[counter],3))+'     Y: '+str(round(pos_2Dnodel[counter + 1],3)))
-        #    lbl_rir_loc[m].place(x=195, y=115+(m*25))
-        #    counter = counter + 2
-        #lbl_delta_cal = tk.Label(window, text="Estimated Delta: None")
-        #lbl_delta_cal.place(x = 500, y = 475)
-        
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
         for n in range(0,upd):
@@ -348,8 +320,3 @@ def calculate ():
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
         
-    #Placing the plot
-    #canvas_fig = FigureCanvasTkAgg(fig, master=window)
-    #canvas_fig.get_tk_widget().place_forget()
-    #canvas_fig.draw()
-    #canvas_fig.get_tk_widget().place(x=500, y=70)   
