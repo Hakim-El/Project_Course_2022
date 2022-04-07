@@ -14,6 +14,9 @@ import stimulus_SineSweep as stim
 import _parseargs_SineSweep as parse
 import utils_SineSweep as utils
 
+# modules from Calibration
+import Calibration as cal
+
 ######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
 
 print("Questi sono i tuoi devices audio:\n")
@@ -60,4 +63,4 @@ if recMethod != 1 and recMethod != 2 :
    print("\nERRORE!\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n")
    recMethod = int(input())
 
-######### INIZIO 
+######### INIZIO CODICE
