@@ -2,18 +2,17 @@ import os
 from scipy.io.wavfile import write as wavwrite
 import numpy as np
 import sounddevice as sd
-import MAIN as m
 
 #--------------------------
-def record(testsignal,fs,inputChannels, outputChannels):
+def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevice):
 
 # Selezione device audio di input e output
-    sd.default.device = [m.inputDevice,m.outputDevice] #[input, output]
+    sd.default.device = [inputDevice,outputDevice] #[input, output]
 # Selezione canali da utilizzare in input e in output
-    sd.default.channels = [m.inputChannels,m.outputChannels] #[input, output]
+    sd.default.channels = [inputChannels,outputChannels] #[input, output]
     print(sd.query_devices())
    
-    sd.default.samplerate = m.fs
+    sd.default.samplerate = fs
     sd.default.dtype = 'float32'
    # print("Input channels:",  inputChannels)
    # print("Output channels:", outputChannels)

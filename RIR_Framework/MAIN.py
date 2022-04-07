@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 import scipy
 import os
+from RIRmeasure_SineSweep import RIRmeasure_function
 
 ######### INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE
 
@@ -72,7 +73,7 @@ if delayType != 1 and delayType != 2 :
     delayType = int(input()) # = 1 delay, = 2 NO delay
 
 print("\nPRIMA DI PROCEDERE: \n - Collega i %d microfoni ai primi %d canali di input del device audio selezionato \n - Collega le %d sorgenti/altoparlanti ai primi %d canali di output del device audio selezionato" %(inputChannels, inputChannels, outputChannels, outputChannels))
-print("\nDopo aver collegato tutto, premi un tasto qualsiasi e digita invio per andare avanti...")
+print("\nDopo aver collegato tutto, premi invio per andare avanti...")
 input()
 
 print("\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n")
@@ -103,7 +104,13 @@ elif cal_type == 2 :
 print("\nPremi invio per iniziare la misura.")
 input()
 
-######### INIZIO CODICE
+######### MISURA
 
-import RIRmeasure_SineSweep
-exit()
+if measureMethod == 1 :
+    # Misura SineSweep
+    RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice)
+elif measureMethod == 2 :
+    # Misura MLS
+    print("La MLS ancora non l'abbiamo fatta...\n")
+
+######### RAPPRESENTAZIONE DEI DATI E DEI PLOT
