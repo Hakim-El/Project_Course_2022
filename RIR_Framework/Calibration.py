@@ -16,7 +16,7 @@ z_bound = 4
 knownPos = [[4,4,1.5],[5,8,1.5],[8,6,1.5],[2., 2., 1.5]] # know positions of the Loudspeakers used in the pyroomacoustics simulation
 
 # data contains the RIRs of the simulation it's shape is (nMics*RIRlen , nLS) 
-data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIR_Generation file)
+data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
 bounds2D_nodel = np.zeros((nMics*2, 2))
