@@ -10,9 +10,9 @@ from scipy.io.wavfile import write as wavwrite
 import sounddevice as sd
 
 # modules from Sine Sweep measure
-import stimulus_SineSweep as stim
-import _parseargs_SineSweep as parse
-import utils_SineSweep as utils
+# import stimulus_SineSweep as stim
+# import _parseargs_SineSweep as parse
+# import utils_SineSweep as utils
 
 # modules from Calibration
 #import Calibration as cal
@@ -53,7 +53,15 @@ elif fs_selection != 1 and fs_selection!= 2 and fs_selection != 3 :
     elif fs_selection == 3 :
         fs = 96000
 
-print("\nPRIMA DI PROCEDERE: \n - Collega i n microfoni ai primi n canali di input del device audio selezionato \n - Collega le m sorgenti/altoparlanti ai primi m canali di output del device audio selezionato")
+print("\nVuoi fare una calibrazione in 2D o in 3D?\n \n- Digita 1 per 2D\n- Digita 2 per 3D\n")
+cal_type = int(input())
+
+if cal_type != 1 and cal_type != 2 :
+    print("\nERRORE!")
+    print("\nVuoi fare una calibrazione in 2D o in 3D?\n \n- Digita 1 per 2D\n- Digita 2 per 3D\n")
+    cal_type = int(input())
+
+print("\nPRIMA DI PROCEDERE: \n - Collega i %d microfoni ai primi %d canali di input del device audio selezionato \n - Collega le %d sorgenti/altoparlanti ai primi %d canali di output del device audio selezionato" %(inputChannels, inputChannels, outputChannels, outputChannels))
 print("\nDopo aver collegato tutto, premi un tasto qualsiasi e digita invio per andare avanti...")
 input()
 
