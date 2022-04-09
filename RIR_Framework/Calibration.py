@@ -1,5 +1,4 @@
 #from curses.ascii import NL
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import find_peaks
@@ -28,11 +27,12 @@ RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
 
 def createDataMatrix(nMics, nLS):
     data = np.zeros((nMics*RIRlen,nLS))
-    lastRecording = np.load('Sine_Sweep_Measures/lastMeasure/RIR.npy')
+    return data
 
-    for l in np.arange(0,nLS):
-        for i in np.arange(0,nMics):
-            data[i*RIRlen:RIRlen*(i+1),l] = lastRecording[0:RIRlen,i]
+def fillDataMatrix(data, nMics, nLS):
+    lastRecording = np.load('Sine_Sweep_Measures/lastMeasure/RIR.npy')
+    for i in np.arange(0,nMics):
+        data[i*RIRlen:RIRlen*(i+1),nLS] = lastRecording[0:RIRlen,i]
     return data
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
@@ -229,7 +229,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(data, nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
@@ -238,12 +238,12 @@ def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound,
     z = np.zeros(shape=(upd))
     
     bounds2D_nodel, bounds2D_del, bounds3D_nodel, bounds3D_del = createBounds(nMics, x_bound, y_bound, z_bound)
-    data = createDataMatrix(nMics, nLS)
+    #data = createDataMatrix(nMics, nLS)
 
     #If we are in a 3D case with estimation delay:
     if (calType == 2 and delayType == 1):
         #Postion estimation
-        pos_3Ddel = calibration3D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nLS)
+        pos_3Ddel = calibration3D_del(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nLS)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -257,12 +257,13 @@ def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound,
         ax = Axes3D(fig)
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
-        ax.legend(['No delay']);
+        ax.legend(['No delay'])
+        plt.show()
     
     #If we are in a 3D case without estimation delay:
     if (calType == 2 and delayType == 2):
         #Postion estimation
-        pos_3Dnodel = calibration3D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nLS)
+        pos_3Dnodel = calibration3D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nLS)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -276,12 +277,13 @@ def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound,
         ax = Axes3D(fig)
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
-        ax.legend(['No delay']);
-    
+        ax.legend(['No delay'])
+        plt.show()
+
     #If we are in a 2D case with estimation delay:
     if (calType == 1 and delayType == 1):
         #Postion estimation
-        pos_2Ddel = calibration2D_del(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nLS)
+        pos_2Ddel = calibration2D_del(data ,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nLS)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -296,11 +298,14 @@ def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound,
         plt.grid()
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
+        plt.show()
+        #plt.xlim((0,x_bound))
+        #plt.ylim((0,y_bound))
         
     #If we are in a 2D case without estimation delay:   
     if (calType == 1 and delayType == 2):
         #Postion estimation
-        pos_2Dnodel = calibration2D_nodel(audio = data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nLS)
+        pos_2Dnodel = calibration2D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nLS)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -315,4 +320,5 @@ def calculate_Calibration(nMics, nLS, calType, delayType, fs, knownPos, x_bound,
         plt.grid()
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
+        plt.show()
         

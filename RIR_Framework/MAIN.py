@@ -4,7 +4,7 @@ import matplotlib
 import scipy
 import os
 from RIRmeasure_SineSweep import RIRmeasure_function
-#from Calibration import calculate_Calibration
+from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
 
 ################################  1 - INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE ################################
 
@@ -110,15 +110,17 @@ input()
 
 if measureMethod == 1 :
     # Misura SineSweep
+    data = createDataMatrix(inputChannels,outputChannels)
     for i in np.arange(1, outputChannels+1) :
         RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-        # DA FARE: riempi matrice con RIR.npy e poi vai avanti con il ciclo for...
+        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
 elif measureMethod == 2 :
     # Misura MLS
     print("La MLS ancora non l'abbiamo fatta...\n")
 
 ################################ 3 - CALIBRAZIONE ################################ 
 
-#calculate_Calibration(inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
+# shows also the results and plot of the calibration
+calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
 
 ################################  4 - RAPPRESENTAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
