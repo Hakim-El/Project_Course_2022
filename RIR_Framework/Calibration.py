@@ -30,7 +30,7 @@ def createDataMatrix(nMics, nLS):
     return data
 
 def fillDataMatrix(data, nMics, nLS):
-    lastRecording = np.load('Sine_Sweep_Measures/lastMeasure/RIR.npy')
+    lastRecording = np.load('SineSweepMeasures/lastMeasure/RIR.npy')
     for i in np.arange(0,nMics):
         data[i*RIRlen:RIRlen*(i+1),nLS] = lastRecording[0:RIRlen,i]
     return data
