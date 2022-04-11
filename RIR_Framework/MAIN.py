@@ -105,6 +105,7 @@ elif cal_type == 2 :
 
 print("\nPremi invio per iniziare la misura.")
 input()
+print("...")
 
 ################################  2 - MISURA (SineSweep/MLS) ################################ 
 
@@ -116,11 +117,13 @@ if measureMethod == 1 :
         data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
 elif measureMethod == 2 :
     # Misura MLS
-    print("La MLS ancora non l'abbiamo fatta...\n")
+    print("\nLa MLS ancora non l'abbiamo fatta...\n")
+    exit()
 
 ################################ 3 - CALIBRAZIONE ################################ 
 
 # shows also the results and plot of the calibration
+## RISOLVERE PROBLEMI QUI
 calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
 
 ################################  4 - RAPPRESENTAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 

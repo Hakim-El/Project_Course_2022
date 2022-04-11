@@ -30,11 +30,11 @@ def saverecording(RIR, RIRtoSave, testsignal, recorded, fs):
 
         dirflag = False
         counter = 1
-        dirname = 'Sine_Sweep_Measures/Measure_Loudspeaker1'
+        dirname = 'Sine_Sweep_Measures/MeasureLoudspeaker1'
         while dirflag == False:
             if os.path.exists(dirname):
                 counter = counter + 1
-                dirname = 'Sine_Sweep_Measures/Measure_Loudspeaker' + str(counter)
+                dirname = 'Sine_Sweep_Measures/MeasureLoudspeaker' + str(counter)
             else:
                 os.mkdir(dirname)
                 dirflag = True
