@@ -94,6 +94,8 @@ elif x != 1 and x != 2:
     elif x == 2:
         c = 343 # m/s
 
+print ("\nIl valore della velocita' del suono e' di: %d [m/s]" %(c))
+
 # Scelta se tenere in considerazione il delay o no
 print("\nVuoi tenere in considerazione il delay di elaborazione dell'algoritmo nel calcolo della RIR e della calibrazione?")
 print("\n- 1 -> SI\n- 2 -> NO")
@@ -152,8 +154,10 @@ if measureMethod == 1 :
         data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
 elif measureMethod == 2 :
     # Misura MLS
+    data = createDataMatrix(inputChannels,outputChannels)
     for i in np.arange(1, outputChannels+1) :
         MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
     #print("\nLa MLS ancora non l'abbiamo fatta...\n")
     #exit()
 

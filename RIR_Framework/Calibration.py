@@ -333,5 +333,5 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
 
     if measureMethod == 1:
         fig.savefig('SineSweepMeasures/calibrationGraph.png', bbox_inches='tight')
-    #else:
-        #fig.savefig('MLSMeasures/calibrationGraph.png')
+    else:
+        fig.savefig('MLSMeasures/calibrationGraph.png')
