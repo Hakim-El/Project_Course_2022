@@ -275,7 +275,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
             y[n] = pos_3Dnodel[counter1 + 1]
             z[n] = pos_3Dnodel[counter1 + 2]
             counter1 = counter1 + 3
-            
+        
         fig = plt.figure(figsize=(4,4))
         ax = Axes3D(fig, auto_add_to_figure=False)
         ax.scatter(x,y,z, marker = 'o')

@@ -7,8 +7,8 @@ from numpy.fft import fft, ifft, fftshift, fftfreq
 
 
 # dispositivo INPUT e OUTPUT
-sd.default.device = [0,1]
-sd.default.channels = 2  #1 channel input
+sd.default.device = [1,3]
+#sd.default.channels = 2  #1 channel input
 
 
 # INPUT SIGNAL GENERATION
@@ -25,35 +25,35 @@ mls = max_len_seq(orderMLS)[0]    # 0 and 1 , binary convention
 #PLOTS
 
 #MLS signal 
-plt.plot(MLS)
-plt.show()
+#plt.plot(MLS)
+#plt.show()
 
 
-spec = fft(MLS)
-N = len(MLS)
-plt.plot(fftshift(fftfreq(N)), fftshift(np.abs(spec)), '.-')
-plt.margins(0.1, 0.1)
-plt.grid(True)
-plt.show()
+#spec = fft(MLS)
+#N = len(MLS)
+#plt.plot(fftshift(fftfreq(N)), fftshift(np.abs(spec)), '.-')
+#plt.margins(0.1, 0.1)
+#plt.grid(True)
+#plt.show()
 
 
 #circular aurocorrelation od an MLS is an impulse (Delta di Kronecker)
 
-acorrcirc = ifft(spec * np.conj(spec)).real
-plt.figure()
-plt.plot(np.arange(-N/2+1, N/2+1), fftshift(acorrcirc), '.-')
-plt.margins(0.1, 0.1)
-plt.grid(True)
-plt.show()
+#acorrcirc = ifft(spec * np.conj(spec)).real
+#plt.figure()
+#plt.plot(np.arange(-N/2+1, N/2+1), fftshift(acorrcirc), '.-')
+#plt.margins(0.1, 0.1)
+#plt.grid(True)
+#plt.show()
 
 #########################
 #Linear Autocorrelation
-acorr = np.correlate(MLS, MLS, 'full')
-plt.figure()
-plt.plot(np.arange(-N+1, N), acorr, '.-')
-plt.margins(0.1, 0.1)
-plt.grid(True)
-plt.show()
+#acorr = np.correlate(MLS, MLS, 'full')
+#plt.figure()
+#plt.plot(np.arange(-N+1, N), acorr, '.-')
+#plt.margins(0.1, 0.1)
+#plt.grid(True)
+#plt.show()
 
 
 
