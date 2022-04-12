@@ -8,7 +8,6 @@ from RIRsimulation import createRir
 from mpl_toolkits.mplot3d import Axes3D
 
 #import RIRmeasure_SineSweep
-c = 343
 #calType = M.cal_type
 #delayType = M.delayType
 #fs = M.fs
@@ -76,7 +75,7 @@ def find_directPath(this_rir, top_peaks=15):
 
 
 #Function to compute the distance between two devices through RIR's measurement (Calibration function)
-def compute_distance(audio,fs=44100,c=343,interp_factor = 2, do_interpolation = True):
+def compute_distance(audio, fs, c, interp_factor = 2, do_interpolation = True):
     distance = np.zeros(shape=(audio.shape[1]))
     for m in range(0,audio.shape[1]):  # audio.shape[1] should be the number of known devices (?)
         if do_interpolation:
@@ -94,7 +93,7 @@ def compute_distance(audio,fs=44100,c=343,interp_factor = 2, do_interpolation = 
     return distance
 
     #Function to estimate the position of the unkown devices in 2D and without delay estimation (Calibration function)
-def calibration2D_nodel(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
+def calibration2D_nodel(data, PosKnown, nUnknown, bnds, fs, c):
     #Initialization of the vector of initial values for the minimization search
     ini = np.zeros(shape=(nUnknown * 2))
     
@@ -126,7 +125,7 @@ def calibration2D_nodel(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
     return resM.x
 
 #Function to estimate the position of the unkown devices in 2D and with delay estimation (Calibration function)
-def calibration2D_del(data, PosKnown, nUnknown, bnds, fs=44100, c=343):
+def calibration2D_del(data, PosKnown, nUnknown, bnds, fs, c):
     #Initialization of the vector of initial values for the minimization search
     ini = np.zeros(shape=(nUnknown * 2 + 1))
     
@@ -229,7 +228,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
@@ -258,6 +257,9 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
         ax.legend(['With delay'])
+        ax.set_xlabel('$x[m]$', fontsize=18)
+        ax.set_ylabel('$y[m]$', fontsize=18)
+        ax.set_zlabel('$z[m]$', fontsize=18)
         fig.add_axes(ax)
         plt.show()
     
@@ -279,6 +281,9 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
         ax.legend(['No delay'])
+        ax.set_xlabel('$x[m]$', fontsize=18)
+        ax.set_ylabel('$y[m]$', fontsize=18)
+        ax.set_zlabel('$z[m]$', fontsize=18)
         fig.add_axes(ax)
         plt.show()
 
@@ -323,7 +328,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
         plt.grid()
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
-        ax.legend(['No delay'])
+        plt.legend(['No delay'])
         plt.show()
 
     if measureMethod == 1:
