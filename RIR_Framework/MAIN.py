@@ -124,6 +124,6 @@ elif measureMethod == 2 :
 
 # shows also the results and plot of the calibration
 ## RISOLVERE PROBLEMI QUI
-calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, fs, knownPos, x_axis, y_axis, z_axis)
+calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, measureMethod, fs, knownPos, x_axis, y_axis, z_axis)
 
 ################################  4 - RAPPRESENTAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 

@@ -72,7 +72,7 @@ def find_directPath(this_rir, top_peaks=15):
     peaks, _ = find_peaks(this_rir)
     nHighest = (this_rir[peaks]).argsort()[::-1][:top_peaks] # takes the arg of the 15 biggest peaks
     dp = np.sort((peaks[nHighest]))[:1]                      # takes the first (in time) of the 15 biggest peaks
-    return dp[0]                                                # dp is the sample the first biggest peak
+    return dp[0]                                             # dp is the sample the first biggest peak
 
 
 #Function to compute the distance between two devices through RIR's measurement (Calibration function)
@@ -177,10 +177,10 @@ def calibration3D_nodel(audio, fs, PosKnown, c, bnds,nUnknown):
             distance[j] = compute_distance(audio[j*RIRlen:j*RIRlen + RIRlen - 1,:], fs, c)
             for i in range(0, audio.shape[1]):
                 P[j,i] = (np.sqrt(abs(x1[counter] - PosKnown[i][0])**2 + abs(x1[counter + 1] - PosKnown[i][1])**2 + abs(x1[counter + 2] - PosKnown[i][2])**2))
-                D[j,i] = distance[j,i];
+                D[j,i] = distance[j,i]
             counter = counter + 3
 
-        return sum(sum((P - D) **2));
+        return sum(sum((P - D) **2))
     
     #Minimization algorithm
     resM = minimize(fun3D_nodel, ini, method='SLSQP', bounds=bnds)
@@ -202,7 +202,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
         #Initializing the matrix with zeroes
         P = np.zeros(shape=(nUnknown,audio.shape[1]))
         D = np.zeros(shape=(nUnknown,audio.shape[1]))
-        T = np.zeros(shape=(nUnknown,audio.shape[1]));
+        T = np.zeros(shape=(nUnknown,audio.shape[1]))
         distance = np.zeros(shape=(nUnknown,audio.shape[1]))
         
         #Computing the distance with the RIR's measurements and filling the matrices
@@ -211,11 +211,11 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
             distance[j] = compute_distance(audio[j*RIRlen:j*RIRlen + RIRlen - 1,:], fs, c)
             for i in range(0, audio.shape[1]):
                 P[j,i] = (np.sqrt(abs(x1[counter] - PosKnown[i][0])**2 + abs(x1[counter + 1] - PosKnown[i][1])**2 + abs(x1[counter + 2] - PosKnown[i][2])**2))
-                D[j,i] = distance[j,i];
+                D[j,i] = distance[j,i]
                 T[j,i] = x1[nUnknown*3]*c
             counter = counter + 3
             
-        return sum(sum((P - (D - T)) **2));
+        return sum(sum((P - (D - T)) **2))
     
     #Minimization algorithm
     resM = minimize(fun3D_del, ini, method='SLSQP', bounds=bnds)
@@ -229,7 +229,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate_Calibration(data, nMics, nLS, calType, delayType, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
@@ -257,7 +257,6 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, fs, knownPos, x_
         ax = Axes3D(fig)
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
-        ax.legend(['No delay'])
         plt.show()
     
     #If we are in a 3D case without estimation delay:
@@ -320,5 +319,10 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, fs, knownPos, x_
         plt.grid()
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
+        ax.legend(['No delay'])
         plt.show()
-        
+
+    if measureMethod == 1:
+        fig.savefig('SineSweepMeasures/calibrationGraph.png')
+    #else:
+        #fig.savefig('MLSMeasures/calibrationGraph.png')
