@@ -156,9 +156,9 @@ elif measureMethod == 2 :
     print("\nLa MLS ancora non l'abbiamo fatta...\n")
     exit()
 
-################################ 3 - CALIBRAZIONE ################################ 
+################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
-# shows also the results and plot of the calibration
+# Shows also the results and plot of the calibration
 calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
 
-################################  4 - RAPPRESENTAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
+# END
