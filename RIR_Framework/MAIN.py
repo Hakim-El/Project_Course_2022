@@ -152,13 +152,14 @@ if measureMethod == 1 :
         data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
 elif measureMethod == 2 :
     # Misura MLS
-    # MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-    print("\nLa MLS ancora non l'abbiamo fatta...\n")
-    exit()
+    for i in np.arange(1, outputChannels+1) :
+        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+    #print("\nLa MLS ancora non l'abbiamo fatta...\n")
+    #exit()
 
 ################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
 # Shows also the results and plot of the calibration
-calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
+#calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
 
 # END
