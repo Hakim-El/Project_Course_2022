@@ -140,7 +140,7 @@ elif cal_type == 2 :
 # START
 print("\nPremi invio per iniziare la misura.")
 input()
-print("...")
+print("...\n")
 
 ################################  2 - MISURA (SineSweep/MLS) ################################ 
 
