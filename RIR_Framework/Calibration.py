@@ -254,9 +254,11 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
             counter1 = counter1 + 3
             
         fig = plt.figure(figsize=(4,4))
-        ax = Axes3D(fig)
+        ax = Axes3D(fig, auto_add_to_figure=False)
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
+        ax.legend(['With delay'])
+        fig.add_axes(ax)
         plt.show()
     
     #If we are in a 3D case without estimation delay:
@@ -273,10 +275,11 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
             counter1 = counter1 + 3
             
         fig = plt.figure(figsize=(4,4))
-        ax = Axes3D(fig)
+        ax = Axes3D(fig, auto_add_to_figure=False)
         ax.scatter(x,y,z, marker = 'o')
         ax.grid()
         ax.legend(['No delay'])
+        fig.add_axes(ax)
         plt.show()
 
     #If we are in a 2D case with estimation delay:
@@ -297,6 +300,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
         plt.grid()
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
+        plt.legend(['With delay'])
         plt.show()
         #plt.xlim((0,x_bound))
         #plt.ylim((0,y_bound))
@@ -323,6 +327,6 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, f
         plt.show()
 
     if measureMethod == 1:
-        fig.savefig('SineSweepMeasures/calibrationGraph.png')
+        fig.savefig('SineSweepMeasures/calibrationGraph.png', bbox_inches='tight')
     #else:
         #fig.savefig('MLSMeasures/calibrationGraph.png')
