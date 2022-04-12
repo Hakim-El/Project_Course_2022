@@ -4,6 +4,7 @@ import matplotlib
 import scipy
 import os
 from RIRmeasure_SineSweep import RIRmeasure_function
+from RIRmeasure_MLS import MLSmeasure_function
 from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
 
 ################################  1 - INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE ################################
@@ -151,6 +152,7 @@ if measureMethod == 1 :
         data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
 elif measureMethod == 2 :
     # Misura MLS
+    # MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
     print("\nLa MLS ancora non l'abbiamo fatta...\n")
     exit()
 
