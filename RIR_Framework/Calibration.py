@@ -242,7 +242,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
     #If we are in a 3D case with estimation delay:
     if (calType == 2 and delayType == 1):
         #Postion estimation
-        pos_3Ddel = calibration3D_del(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nLS)
+        pos_3Ddel = calibration3D_del(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_del,nUnknown = nMics)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -266,7 +266,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
     #If we are in a 3D case without estimation delay:
     if (calType == 2 and delayType == 2):
         #Postion estimation
-        pos_3Dnodel = calibration3D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nLS)
+        pos_3Dnodel = calibration3D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds3D_nodel,nUnknown = nMics)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -290,7 +290,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
     #If we are in a 2D case with estimation delay:
     if (calType == 1 and delayType == 1):
         #Postion estimation
-        pos_2Ddel = calibration2D_del(data ,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nLS)
+        pos_2Ddel = calibration2D_del(data ,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_del,nUnknown = nMics)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0
@@ -313,7 +313,7 @@ def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c
     #If we are in a 2D case without estimation delay:   
     if (calType == 1 and delayType == 2):
         #Postion estimation
-        pos_2Dnodel = calibration2D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nLS)
+        pos_2Dnodel = calibration2D_nodel(data,fs = fs, PosKnown = knownPos ,c = c,bnds = bounds2D_nodel,nUnknown = nMics)
         
         #Filling the plot vectors with their correspondent coordinates and plotting the result
         counter1 = 0

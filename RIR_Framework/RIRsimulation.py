@@ -5,7 +5,11 @@ from scipy.signal import fftconvolve
 import IPython
 import pyroomacoustics as pra
 
-def createRir(knownPos, calType, delayType, xMic, yMic, xlim, ylim, zlim=0, zMic=0, fs=44100, RIRlen=1332):
+# Creates a simulation of a RIR with 4 Loudspeakers and 1 mic at determined positions
+# Used for testing the calibration algorithm
+# Predetermined room shape for testing: x = 5m , y = 6m for the 2D case, z = 3m for 3D
+
+def createRir(knownPos, calType, delayType, xlim=5, ylim=6, zlim=3, fs=44100, RIRlen=1332):
 
     corners = np.array([[0,0], [0,ylim], [xlim,ylim], [xlim,0]]).T  # [x,y]
 
@@ -18,7 +22,9 @@ def createRir(knownPos, calType, delayType, xMic, yMic, xlim, ylim, zlim=0, zMic
 
     # set max_order to a low value for a quick (but less accurate) RIR
     room = pra.Room.from_corners(corners, fs=fs, max_order=3, materials=pra.Material(0.2, 0.15), ray_tracing=False, air_absorption=True)
-    #room.extrude(4.)
+    
+    if calType == 2 :
+        room.extrude(zlim)
 
     # Set the ray tracing parameters
     #room.set_ray_tracing(receiver_radius=0.5, n_rays=10000, energy_thres=1e-5)
@@ -37,10 +43,10 @@ def createRir(knownPos, calType, delayType, xMic, yMic, xlim, ylim, zlim=0, zMic
 
     # add two-microphone array
     if calType==1:
-        R = np.array([xMic, yMic])  # [[x], [y], [z]]
+        R = np.array([1.2, 2.0])  # [[x], [y], [z]]
         room.add_microphone(R)
     else:
-        R = np.array([xMic, yMic, zMic])
+        R = np.array([1.2, 2.0, 1.5])
         room.add_microphone(R)
 
     # compute image sources
@@ -55,7 +61,7 @@ def createRir(knownPos, calType, delayType, xMic, yMic, xlim, ylim, zlim=0, zMic
 
     data = np.zeros((RIRlen,outputChannels))
 
-    for i in np.arange(0,outputChannels):
-        data[:,i] = room.rir[0][i][:RIRlen]
+    for i in np.arange(0,4):
+        data[:RIRlen,i] = room.rir[0][i][:RIRlen]
 
     return data #returns the Impulse response from the first mic

@@ -6,6 +6,7 @@ import os
 from RIRmeasure_SineSweep import RIRmeasure_function
 from RIRmeasure_MLS import MLSmeasure_function
 from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
+from RIRsimulation import createRir
 
 ################################  1 - INFORMAZIONI SULLA MISURA DA CHIEDERE ALL'UTENTE ################################
 
@@ -112,10 +113,10 @@ print("\nDopo aver collegato tutto, premi invio per andare avanti...")
 input()
 
 # Selezione metodo di misura (sinesweep o mls)
-print("\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n")
+print("\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n- 3 -> Simulazione con PyRoomAcoustics\n")
 measureMethod = int(input())
 
-if measureMethod != 1 and measureMethod != 2 :
+if measureMethod != 1 and measureMethod != 2 and measureMethod != 3 :
    print("\nERRORE!\nScegli il metodo di misura: \n- 1 -> SineSweep\n- 2 -> MLS\n")
    measureMethod = int(input())
 
@@ -160,6 +161,8 @@ elif measureMethod == 2 :
         data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
     #print("\nLa MLS ancora non l'abbiamo fatta...\n")
     #exit()
+elif measureMethod == 3 :
+    data = createRir(knownPos, cal_type, delayType)
 
 ################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
