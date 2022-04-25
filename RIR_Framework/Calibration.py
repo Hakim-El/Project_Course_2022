@@ -51,10 +51,10 @@ def createBounds(nMics, x_bound, y_bound, z_bound):
             bounds2D_del[i,1] = y_bound
     bounds2D_del[-1,1] = 0.5 #Delay bounds in 2D case
 
-    for i in range(0,bounds3D_nodel.shape[0],2):
+    for i in range(0,bounds3D_nodel.shape[0],3):
         bounds3D_nodel[i,1] = x_bound
         bounds3D_del[i,1] = x_bound
-    for i in range(1,bounds3D_nodel.shape[0],2):
+    for i in range(1,bounds3D_nodel.shape[0],3):
         bounds3D_nodel[i,1] = y_bound
         bounds3D_del[i,1] = y_bound
     for i in range(2,bounds3D_nodel.shape[0],3):
@@ -222,13 +222,13 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     #Printing the results in console log
     counter = 0
     for n in range(0,nUnknown):
-            print('Source ',n ,': \n','X: ', resM.x[counter], '[m]', 'Y: ', resM.x[counter + 1], '[m]', 'Z: ', resM.x[counter + 2], '[m]\n')
+            print('Mic ',n ,': \n','X: ', resM.x[counter], '[m]', 'Y: ', resM.x[counter + 1], '[m]', 'Z: ', resM.x[counter + 2], '[m]\n')
             counter = counter + 3
     print('Delta :',resM.x[nUnknown *3], '[s]')
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate_Calibration(data, nMics, nLS, calType, delayType, measureMethod, c, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs, knownPos, x_bound, y_bound, z_bound):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots

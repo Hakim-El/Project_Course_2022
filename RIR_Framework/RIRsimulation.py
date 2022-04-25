@@ -9,7 +9,23 @@ import pyroomacoustics as pra
 # Used for testing the calibration algorithm
 # Predetermined room shape for testing: x = 5m , y = 6m for the 2D case, z = 3m for 3D
 
+knownPos2D = np.array([[1.2, 4.6],
+                       [0.7, 1.2],
+                       [2.2, 5.3],
+                       [4.7, 3.7]])
+
+knownPos3D = np.array([[1.2, 4.6, 1.5],
+                       [0.7, 1.2, 1.5],
+                       [2.2, 5.3, 1.5],
+                       [4.7, 3.7, 1.5]])
+
 def createRir(knownPos, calType, delayType, xlim=5, ylim=6, zlim=3, fs=44100, RIRlen=1332):
+
+    # The desired reverberation time and dimensions of the room
+    rt60 = 0.5  # seconds
+
+    # We invert Sabine's formula to obtain the parameters for the ISM simulator
+    e_absorption, max_order = pra.inverse_sabine(rt60, [xlim,ylim,zlim])
 
     corners = np.array([[0,0], [0,ylim], [xlim,ylim], [xlim,0]]).T  # [x,y]
 
@@ -21,7 +37,7 @@ def createRir(knownPos, calType, delayType, xlim=5, ylim=6, zlim=3, fs=44100, RI
     signal = pra.experimental.signals.exponential_sweep(10, fs, f_lo=0.0, f_hi=None, fade=None, ascending=False)
 
     # set max_order to a low value for a quick (but less accurate) RIR
-    room = pra.Room.from_corners(corners, fs=fs, max_order=3, materials=pra.Material(0.2, 0.15), ray_tracing=False, air_absorption=True)
+    room = pra.Room.from_corners(corners, fs=fs, max_order=max_order, materials=pra.Material(e_absorption), ray_tracing=False, air_absorption=True)
     
     if calType == 2 :
         room.extrude(zlim)

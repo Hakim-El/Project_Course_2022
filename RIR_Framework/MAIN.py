@@ -167,6 +167,6 @@ elif measureMethod == 3 :
 ################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
 # Shows also the results and plot of the calibration
-calculate_Calibration(data, inputChannels, outputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
+calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
 
 # END
