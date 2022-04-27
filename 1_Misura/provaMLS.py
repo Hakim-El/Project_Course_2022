@@ -16,7 +16,7 @@ sd.default.device = [1,3]
 fs = 44100  
 
 # Maximum length sequence MLS (pseudo-random signal)
-orderMLS = 15; # order of the mls signal
+orderMLS = 18; # order of the mls signal
 #sizeMLS = 2^orderMLS-1; # samples
 
 MLS = max_len_seq(orderMLS)[0]*2-1     #just the first array, # +1 and -1

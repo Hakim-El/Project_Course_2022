@@ -1,6 +1,6 @@
 import sounddevice as sd
 import numpy as np
-import matplotlib
+import matplotlib.pyplot as plt
 import scipy
 import os
 from RIRmeasure_SineSweep import RIRmeasure_function
@@ -165,6 +165,7 @@ elif measureMethod == 2 :
     #exit()
 elif measureMethod == 3 :
     data = createRir(knownPos, cal_type, delayType)
+
 
 ################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
