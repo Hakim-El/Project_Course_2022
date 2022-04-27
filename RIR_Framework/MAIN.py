@@ -14,6 +14,8 @@ from RIRsimulation import createRir
 print("Questi sono i tuoi devices audio:\n")
 print(sd.query_devices())
 
+#exit()
+
 # Scelta device di input
 print ("\nDigita il numero della lista corrispondente al device audio che vuoi utilizzare in INPUT e premi invio:")
 inputDevice = int(input())
