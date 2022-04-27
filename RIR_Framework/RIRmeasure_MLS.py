@@ -10,7 +10,7 @@ import os
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
-    orderMLS = 15
+    orderMLS = 18
     #MLS = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
     mls = max_len_seq(orderMLS)[0]    # 0 and 1 , binary convention
 
@@ -25,7 +25,6 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     sd.wait()
 
     # Deconvoluzione
-    # DA FARE
     specRecorded = fft(recordedMLS)
     specMLS = fft(mls)
     RIR = ifft(specMLS * np.conj(specRecorded)).real # circular cross correlation
