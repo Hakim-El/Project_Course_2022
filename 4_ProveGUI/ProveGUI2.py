@@ -4,6 +4,7 @@ import sounddevice as sd
 def printDevices():
     #print (sd.query_devices())
     deviceWindow = tk.Tk()
+    deviceWindow.title("Audio Devices List") # titolo
     #deviceWindow.geometry("300x350")
     devices = sd.query_devices()
     counter = 0
@@ -17,14 +18,16 @@ def printDevices():
         frame.pack()
         counter += 1
    
-
 # Crea Finestra Principale
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
 mainWindow.geometry("700x550") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
-button = tk.Button(mainWindow, text="Show Audio Devices", command=printDevices)
-button.pack()
+buttonAudioDevices = tk.Button(mainWindow, text="Show Audio Devices", command=printDevices, fg='#36454f')
+buttonAudioDevices.place(x=10, y=10)
+
+buttonStart = tk.Button(mainWindow, text="START MEASURE", fg='#36454f') #inserisci command
+buttonStart.place(x=545, y=500)
 
 mainWindow.mainloop()
