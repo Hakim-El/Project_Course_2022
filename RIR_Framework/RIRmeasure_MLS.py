@@ -10,8 +10,8 @@ import os
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
-    orderMLS = 17
-    MLS = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
+    orderMLS = 15
+    #MLS = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
     mls = max_len_seq(orderMLS)[0]    # 0 and 1 , binary convention
 
     # Selezione device audio di input e output
@@ -21,12 +21,14 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     sd.default.samplerate = fs
     sd.default.dtype = 'float32'
 
-    recordedMLS = sd.playrec(MLS, samplerate=fs, output_mapping=[outputChannels])
+    recordedMLS = sd.playrec(mls, samplerate=fs, output_mapping=[outputChannels])
     sd.wait()
 
     # Deconvoluzione
     # DA FARE
-    RIR = recordedMLS # RIR TEMPORANEA
+    specRecorded = fft(recordedMLS)
+    specMLS = fft(mls)
+    RIR = ifft(specMLS * np.conj(specRecorded)).real # circular cross correlation
 
     # Salvataggio files RIR
     dirflag = False
@@ -43,7 +45,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     # Saving the RIRs and the captured signals
     np.save(dirname+ '/RIR.npy',RIR)
     #np.save(dirname+ '/RIRac.npy',RIRtoSave)
-    wavwrite(dirname+ '/sigtest.wav',fs,MLS)
+    wavwrite(dirname+ '/sigtest.wav',fs,mls)
 
     for idx in range(recordedMLS.shape[1]):
         wavwrite(dirname+ '/sigrec_Mic' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
@@ -52,7 +54,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     # Save in the MLSMeasures/lastMeasure for a quick check
     np.save('MLSMeasures/lastMeasure/RIR.npy',RIR)
     #np.save( 'MLSMeasures/lastMeasure/RIRac.npy',RIRtoSave)
-    wavwrite( 'MLSMeasures/lastMeasure/sigtest.wav',fs,MLS)
+    wavwrite( 'MLSMeasures/lastMeasure/sigtest.wav',fs,mls)
     # for idx in range(recordedMLS.shape[1]):
     #    wavwrite('sigrec' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
     #    wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])

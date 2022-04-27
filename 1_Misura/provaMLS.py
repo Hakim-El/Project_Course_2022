@@ -61,7 +61,7 @@ mls = max_len_seq(orderMLS)[0]    # 0 and 1 , binary convention
 #PLAY and RECORD SIMULTANEOUSLY 
 duration = 5 #[s]
 
-sd.play(MLS*0.7, samplerate = fs)  #OCCHIO A NON FARLO CLIPPARE 
+sd.play(mls*0.7, samplerate = fs)  #OCCHIO A NON FARLO CLIPPARE 
 sd.stop()
 
 
