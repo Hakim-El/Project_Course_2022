@@ -67,7 +67,7 @@ def createBounds(nMics, x_bound, y_bound, z_bound):
 
 #Function for finding the direct path of the RIR's (Calibration function)
 def find_directPath(this_rir, top_peaks=15):
-    this_rir = np.abs(this_rir)     #It computes the absolute value of the RIR to avoid that the first peak is negative
+    this_rir = np.abs(this_rir)                              #It computes the absolute value of the RIR to avoid that the first peak is negative
     peaks, _ = find_peaks(this_rir)
     nHighest = (this_rir[peaks]).argsort()[::-1][:top_peaks] # takes the arg of the 15 biggest peaks
     dp = np.sort((peaks[nHighest]))[:1]                      # takes the first (in time) of the 15 biggest peaks

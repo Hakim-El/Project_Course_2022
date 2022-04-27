@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+import sounddevice as sd
 
 # REFERENCE: https://www.pythontutorial.net/tkinter/
 
@@ -20,10 +21,21 @@ import tkinter.ttk as ttk
 # Finestra in cui visualizzare il plot
 
 root = tk.Tk()
+devices = sd.query_devices()
 
 # place a label on the root window
-message = tk.Label(root, text="Hello, World!")
-message.pack()
+
+counter = 0
+
+for i in devices:
+    frame = tk.Frame(master=root)
+    tk.Label(frame, text=counter).pack(side=tk.LEFT)
+    tk.Label(frame, text=devices[counter]['name']).pack(side=tk.LEFT)
+    tk.Label(frame, text=' - IN  :  {}'.format(devices[counter]['max_input_channels'])).pack(side=tk.LEFT)
+    tk.Label(frame, text=' - OUT  :  {}'.format(devices[counter]['max_output_channels'])).pack(side=tk.LEFT)
+    frame.pack()
+    counter += 1 
+
 
 # keep the window displaying
 root.mainloop()
