@@ -7,26 +7,26 @@ import pyroomacoustics as pra
 
 # Creates a simulation of a RIR with 4 Loudspeakers and 1 mic at determined positions
 # Used for testing the calibration algorithm
-# Predetermined room shape for testing: x = 5m , y = 6m for the 2D case, z = 3m for 3D
+# Predetermined room shape for testing: x = 5m , y = 5m for the 2D case, z = 3m for 3D
 
 knownPos2D = np.array([[1.2, 4.6],
                        [0.7, 1.2],
                        [2.2, 5.3],
                        [4.7, 3.7]])
 
-knownPos3D = np.array([[1.2, 4.6, 1.5],
-                       [0.7, 1.2, 1.5],
-                       [2.2, 5.3, 1.5],
-                       [4.7, 3.7, 1.5]])
+knownPos3D = np.array([[1.2, 4.6, 0.5],
+                       [0.7, 1.2, 1.2],
+                       [2.2, 2.5, 2.2],
+                       [4.7, 3.7, 1.6]])
 
-def createRir(knownPos, calType, delayType, xlim=5, ylim=6, zlim=3, fs=44100, RIRlen=1332):
+def createRir(knownPos, calType, delayType, xlim=5, ylim=5, zlim=3, fs=44100, RIRlen=1332):
 
     # The desired reverberation time and dimensions of the room
     rt60 = 0.5  # seconds
 
     # We invert Sabine's formula to obtain the parameters for the ISM simulator
-    e_absorption, max_order = pra.inverse_sabine(rt60, [xlim,ylim,zlim])
-
+    e_absorption, _ = pra.inverse_sabine(rt60, [xlim,ylim,zlim])
+    max_order = 10
     corners = np.array([[0,0], [0,ylim], [xlim,ylim], [xlim,0]]).T  # [x,y]
 
     #fig, ax = room.plot()
