@@ -13,7 +13,6 @@ from RIRsimulation import createRir
 # Lista devices audio
 print("Questi sono i tuoi devices audio:\n")
 print(sd.query_devices())
-
 #exit()
 
 # Scelta device di input
@@ -97,7 +96,7 @@ elif x != 1 and x != 2:
     elif x == 2:
         c = 343 # m/s
 
-print ("\nIl valore della velocita' del suono e' di: %d [m/s]" %(c))
+print ("\nIl valore della velocita' del suono e' di: %.2f [m/s]" %(c))
 
 # Scelta se tenere in considerazione il delay o no
 print("\nVuoi tenere in considerazione il delay di elaborazione dell'algoritmo nel calcolo della RIR e della calibrazione?")
@@ -147,7 +146,63 @@ print("\nPremi invio per iniziare la misura.")
 input()
 print("...\n")
 
-################################  2 - MISURA (SineSweep/MLS) ################################ 
+################################  2 - CREAZIONE FILE DI TESTO  ################################ 
+
+# SineSweep measure
+if measureMethod == 1:
+    with open('SineSweepMeasures/measureData.txt', 'w') as f:
+     f.write('RIR MEASUREMENT DATA:\n')
+     f.write('Type of measure: SineSweep \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+     if cal_type == 1 :
+         f.write('Calibration Type: 2D\n')
+     elif cal_type == 2 :
+         f.write('Calibration Type: 3D\n')
+     if delayType == 1 :
+         f.write('Delay compensation: YES\n')
+     elif delayType == 2 :
+         f.write('Delaycompensation: NO\n')
+     f.write('\nROOM DIMENSIONS:\n')
+     if cal_type == 1 :
+         f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+     if cal_type == 2 :
+         f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
+     f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+     if cal_type == 1 :
+         for i in range (0,outputChannels) : 
+          f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+     if cal_type == 2 :
+         for i in range (0,outputChannels) : 
+          f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))
+
+# MLS measure
+elif measureMethod == 2:
+    with open('MLSMeasures/measureData.txt', 'w') as f:
+     f.write('RIR MEASUREMENT DATA:\n')
+     f.write('Type of measure: MLS \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+     if cal_type == 1 :
+         f.write('Calibration Type: 2D\n')
+     elif cal_type == 2 :
+         f.write('Calibration Type: 3D\n')
+     if delayType == 1 :
+         f.write('Delay compensation: YES\n')
+     elif delayType == 2 :
+         f.write('Delaycompensation: NO\n')
+     f.write('\nROOM DIMENSIONS:\n')
+     if cal_type == 1 :
+         f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+     if cal_type == 2 :
+         f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
+     f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+     if cal_type == 1 :
+         for i in range (0,outputChannels) : 
+          f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+     if cal_type == 2 :
+         for i in range (0,outputChannels) : 
+          f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))
+
+#exit()
+
+################################  3 - MISURA (SineSweep/MLS) ################################ 
 
 if measureMethod == 1 :
     # Misura SineSweep
@@ -167,7 +222,7 @@ elif measureMethod == 3 :
     data = createRir(knownPos, cal_type, delayType)
 
 
-################################ 3 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
+################################ 4 - CALIBRAZIONE E SALVATAGGIO DEI DATI E DEI PLOT ################################ 
 
 # Shows also the results and plot of the calibration
 calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
