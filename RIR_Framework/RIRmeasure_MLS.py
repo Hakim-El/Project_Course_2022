@@ -24,10 +24,10 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     recordedMLS = sd.playrec(mls, samplerate=fs, output_mapping=[outputChannels])
     sd.wait()
 
-    recordedMLS = recordedMLS.reshape(mls.shape)
+    recordedMLSreshaped = recordedMLS.reshape(mls.shape)
 
     # Deconvoluzione
-    specRecorded = fft(recordedMLS)
+    specRecorded = fft(recordedMLSreshaped)
     specMLS = fft(mls)
     RIR = ifft(specMLS * np.conj(specRecorded)).real # circular cross correlation
 
