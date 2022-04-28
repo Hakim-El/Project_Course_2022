@@ -1,0 +1,25 @@
+RIR MEASUREMENT DATA:
+Type of measure: SineSweep 
+Sound speed: 358.57 [m/s] 
+Sampling Frequency: 44100 [Hz]
+Number of Microphones: 1 
+Number of Loudspeakers: 2
+Calibration Type: 3D
+Delay compensation: YES
+
+ROOM DIMENSIONS:
+Room X axis dimension: 23.40 [m]
+Room Y axis dimension: 1.23 [m]
+Room Z axis dimension: 23.54 [m]
+
+LOUDSPEAKER KNOWN POSITIONS:
+Loudspeaker 1:
+X position: 12.32 [m]
+Y position: 1.23 [m]
+Z position: 3.42 [m]
+
+Loudspeaker 2:
+X position: 2.54 [m]
+Y position: 3.45 [m]
+Z position: 1.12 [m]
+
