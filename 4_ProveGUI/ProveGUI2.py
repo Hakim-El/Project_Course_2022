@@ -29,50 +29,65 @@ mainWindow.title("Automatic RIR Measurement System") # titolo
 mainWindow.geometry("900x700") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
-# Selezione Audio Device di Input
+# 1 - Selezione Audio Device di Input
+inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
+inputDeviceLabel.place(x=10, y=400)
+
 soundDevicesList = sd.query_devices()
 variable = tk.StringVar(mainWindow)
-variable.set('Select Input Audio Device')
+variable.set('- input AudioDevice -')
 opt1 = tk.OptionMenu(mainWindow, variable, *soundDevicesList)
 opt1.place(x=10, y=40)
 
-# Selezione Audio Device di Output
+# 2 - Selezione Audio Device di Output
+outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device",fg='#36454f')
+outputDeviceLabel.place(x=10, y=450)
+
 soundDevicesList = sd.query_devices()
 variable = tk.StringVar(mainWindow)
-variable.set('Select Output Audio Device')
+variable.set('- output AudioDevice -')
 opt2 = tk.OptionMenu(mainWindow, variable, *soundDevicesList)
 opt2.place(x=10, y=10)
 
-# Selezione numero canali Input
-InputDevicesList = [1,2,3,4,5,6,7,8]
-variable = tk.StringVar(mainWindow)
-variable.set('Select the number of Inputs (Microphones)')
-opt2 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
-opt2.place(x=10, y=70)
+# 3 - Selezione numero canali Input
+inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channles (Microphones)",fg='#36454f')
+inputChannelLabel.place(x=10, y=480)
 
-# Selezione numero canali Output
-InputDevicesList = [1,2,3,4,5,6,7,8]
+InputDevicesList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 variable = tk.StringVar(mainWindow)
-variable.set('Select the number of Outputs (Loudspeakers)')
-opt2 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
-opt2.place(x=10, y=100)
+variable.set('- number of inputs -')
+opt3 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
+opt3.place(x=10, y=70)
 
-# Istruzioni 1
+# 4 - Selezione numero canali Output
+outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)",fg='#36454f')
+outputChannelLabel.place(x=10, y=510)
+
+InputDevicesList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+variable = tk.StringVar(mainWindow)
+variable.set('- number of outputs -')
+opt4 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
+opt4.place(x=10, y=100)
+
+## Istruzioni Collegamento 1
 istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be\ncoherent with the selected audio devices!",fg='#36454f')
 istructions1.place(x=10, y=140)
-
-# Istruzioni 2
+## Istruzioni Collegamento 2
 istructions2 = tk.Label(mainWindow, text="Connect the selected number n of microphones to\n the first n input channels of the selected input device.\n\nConnect the selected number m of loudspeakers to\n the first m output channels of the selected output device.", fg='#36454f')
 istructions2.place(x=10, y=200)
 
-# Selezione tipo di misura
+# 5 - Selezione tipo di misura
+measureTypelLabel = tk.Label(mainWindow, text="Select the type of measure",fg='#36454f')
+measureTypelLabel.place(x=250, y=400)
+
 InputDevicesList = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
 variable = tk.StringVar(mainWindow)
-variable.set('Select the type of measure')
-opt2 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
-opt2.place(x=250, y=10)
+variable.set('- select -')
+opt5 = tk.OptionMenu(mainWindow, variable, *InputDevicesList)
+opt5.place(x=250, y=10)
 
-# Selezione Sampling Frequency
+# 6 - Selezione Sampling Frequency
+
 InputDevicesList = [44100, 48000,96000]
 variable = tk.StringVar(mainWindow)
 variable.set('Select the Sampling Frequency [Hz]')
@@ -103,7 +118,7 @@ T = tk.Entry(mainWindow, width=5)
 T.place(x=550, y=100)
 
 # Start Measure Button
-buttonStart = tk.Button(mainWindow, height=5, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=600, y=600)
 
 mainWindow.mainloop()
