@@ -193,24 +193,47 @@ def printLoudspeakerPosition():
     dimension2DWindow.config(bg='#36454f') # colore
 
    # if variableCal.get() == '2D calibration' :
+   #     knownPos = np.zeros((variableOutputCh,2))
    #     for i in range (0, var_i):
             
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.place(x=300, y=260)       
 
-# 13 - Print Posizione Microfoni stimata -> TO DO
-micPositionPrintLabel = tk.Label(mainWindow, text="MICROPHONES POSITION ESTIMATION PLOT",fg='#36454f')
-micPositionPrintLabel.place(x=10, y=310)
+# 13 - START MEASURE -> TO DO
+# Lista di variabili con il nome dello script main
+inputChannels = variableInputCh.get()
+outputChannels = variableOutputCh.get()
+fs = variableFreq.get()
+c = speed
 
+if variableCal.get() == '2D calibration':
+    cal_type = 1
+elif variableCal.get() == '3D calibration':
+    cal_type = 2
 
-# 14 - START MEASURE
-# List of variables
+if variableDelay.get() == 'Delay estimation':
+    delayType = 1
+elif variableDelay.get() == 'NO Delay estimation':
+    delayType = 2
+
+if variableMeasure.get() == 'SineSweep':
+    measureMethod = 1
+elif variableMeasure.get() == 'MLS':
+    measureMethod = 2
+elif variableMeasure.get() == 'PyRoomAcoustics simulation':
+    measureMethod = 3
+
+# Creazione file di testo con i dati della misura
 
 # Funzioni da eseguire per fare la misura
 
 # pulsante START
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
+
+# 14 - Print Posizione Microfoni stimata -> TO DO
+micPositionPrintLabel = tk.Label(mainWindow, text="MICROPHONES POSITION ESTIMATION PLOT",fg='#36454f')
+micPositionPrintLabel.place(x=10, y=310)
 
 mainWindow.mainloop()
 
