@@ -5,7 +5,7 @@ import scipy
 import numpy as np
 import os
 
-## FUNZIONE CHE NON SERVE PIU'
+################################################## FUNZIONE CHE NON SERVE PIU'########################################################
 def printDevices():
     #print (sd.query_devices())
     deviceWindow = tk.Tk()
@@ -22,7 +22,8 @@ def printDevices():
         tk.Label(frame, text=' - OUT  :  {}'.format(devices[counter]['max_output_channels'])).pack(side=tk.LEFT)
         frame.pack()
         counter += 1
-########
+######################################################################################################################################
+
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
