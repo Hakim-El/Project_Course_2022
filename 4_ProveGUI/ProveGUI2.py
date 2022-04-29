@@ -27,12 +27,12 @@ def printDevices():
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("900x700") # dimensioni
+mainWindow.geometry("905x680") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
 # 1 - Selezione Audio Device di Input
 inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
-inputDeviceLabel.place(x=10, y=400)
+inputDeviceLabel.place(x=10, y=10)
 
 soundDevicesListInput = sd.query_devices()
 variableInputDev = tk.StringVar(mainWindow)
@@ -42,99 +42,104 @@ opt1.place(x=10, y=40)
 
 # 2 - Selezione Audio Device di Output
 outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device",fg='#36454f')
-outputDeviceLabel.place(x=10, y=450)
+outputDeviceLabel.place(x=10, y=90)
 
 soundDevicesListOutput = sd.query_devices()
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *soundDevicesListOutput)
-opt2.place(x=10, y=10)
+opt2.place(x=10, y=120)
 
 # 3 - Selezione numero canali Input
 inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channles (Microphones)",fg='#36454f')
-inputChannelLabel.place(x=10, y=480)
+inputChannelLabel.place(x=300, y=10)
 
 InputDevicesListInputCh = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 variableInputCh = tk.StringVar(mainWindow)
 variableInputCh.set('- number of inputs -')
 opt3 = tk.OptionMenu(mainWindow, variableInputCh, *InputDevicesListInputCh)
-opt3.place(x=10, y=70)
+opt3.place(x=300, y=40)
 
 # 4 - Selezione numero canali Output
 outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)",fg='#36454f')
-outputChannelLabel.place(x=10, y=510)
+outputChannelLabel.place(x=300, y=90)
 
 InputDevicesListOutputCh = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 variableOutputCh = tk.StringVar(mainWindow)
 variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, *InputDevicesListOutputCh)
-opt4.place(x=10, y=100)
+opt4.place(x=300, y=120)
 
 ## Istruzioni Collegamento 1
-istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be\ncoherent with the selected audio devices!",fg='#36454f')
-istructions1.place(x=10, y=140)
+istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices!",fg='#36454f')
+istructions1.place(x=300, y=170)
 ## Istruzioni Collegamento 2
 istructions2 = tk.Label(mainWindow, text="Connect the selected number n of microphones to\n the first n input channels of the selected input device.\n\nConnect the selected number m of loudspeakers to\n the first m output channels of the selected output device.", fg='#36454f')
-istructions2.place(x=10, y=200)
+istructions2.place(x=10, y=300)
 
 # 5 - Selezione tipo di misura
-measureTypelLabel = tk.Label(mainWindow, text="Select the type of measure",fg='#36454f')
-measureTypelLabel.place(x=250, y=400)
+measureTypelLabel = tk.Label(mainWindow, text="Type of measure",fg='#36454f')
+measureTypelLabel.place(x=660, y=10)
 
 InputDevicesListMeasure = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
 variableMeasure = tk.StringVar(mainWindow)
 variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
-opt5.place(x=250, y=10)
+opt5.place(x=660, y=40)
 
 # 6 - Selezione Sampling Frequency
-frequencyLabel = tk.Label(mainWindow, text="Select the Sampling Frequency [Hz]",fg='#36454f')
-frequencyLabel.place(x=250, y=450)
+frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]",fg='#36454f')
+frequencyLabel.place(x=660, y=90)
 
 InputDevicesListFreq = [44100, 48000,96000]
 variableFreq = tk.StringVar(mainWindow)
 variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
-opt6.place(x=250, y=40)
+opt6.place(x=660, y=120)
 
 # 7 - Selezione tipo di calibrazione
-calibrationLabel = tk.Label(mainWindow, text="Select the Calibration Type",fg='#36454f')
-calibrationLabel.place(x=550, y=250)
+calibrationLabel = tk.Label(mainWindow, text="Calibration Type",fg='#36454f')
+calibrationLabel.place(x=660, y=170)
 
 InputDevicesListCal = ['2D calibration', '3D calibration']
 variableCal = tk.StringVar(mainWindow)
 variableCal.set('- none -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
-opt7.place(x=550, y=10)
+opt7.place(x=660, y=200)
 
 # 8 - Delay o no Delay
-delayLabel = tk.Label(mainWindow, text="Select Delay estimation type",fg='#36454f')
-delayLabel.place(x=570, y=250)
+delayLabel = tk.Label(mainWindow, text="Delay estimation type",fg='#36454f')
+delayLabel.place(x=660, y=250)
 
 InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
 variableDelay = tk.StringVar(mainWindow)
 variableDelay.set('- select -')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
-opt8.place(x=550, y=40)
+opt8.place(x=660, y=280)
 
 # 9 - Sound Speed estimation
 soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation",fg='#36454f')
-soundSpeedLabel.place(x=550, y=300)
+soundSpeedLabel.place(x=660, y=320)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
 variableSoundSpeed = tk.StringVar(mainWindow)
 variableSoundSpeed.set('- select -')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
-opt9.place(x=550, y=70)
+opt9.place(x=660, y=350)
 T = tk.Entry(mainWindow, width=5)
-T.place(x=600, y=100)
+T.place(x=660, y=380)
+
+if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+    speed = 343
+elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+    speed = (331.3 + 0.606*T) # m/s
 
 # 10 - Nome della misura -> Serve per dopo
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
-measureNameLabel.place(x=600, y=350)
+measureNameLabel.place(x=660, y=450)
 
-measureName = tk.Entry(mainWindow, width=25)
-measureName.place(x=600, y=400)
+measureName = tk.Entry(mainWindow, width=22)
+measureName.place(x=660, y=500)
 
 # 11 - Dimensioni della stanza
 
@@ -178,13 +183,13 @@ def printRoomDimension():
         errDimLabel.place(x=10, y=10)
 
 roomDimensionButton = tk.Button(mainWindow, text="Click here to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
-roomDimensionButton.place(x=10, y=650)
+roomDimensionButton.place(x=10, y=600)
 
 # 12 - Posizione Loudspeakers -> TO DO
 
 
 # Start Measure Button
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.place(x=600, y=600)
+buttonStart.place(x=700, y=560)
 
 mainWindow.mainloop()
