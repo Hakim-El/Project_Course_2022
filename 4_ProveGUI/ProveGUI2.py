@@ -27,8 +27,8 @@ def printDevices():
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("905x680") # dimensioni
-mainWindow.config(bg='#36454f') # colore
+mainWindow.geometry("900x640") # dimensioni
+mainWindow.config(bg='#808080') # colore
 
 # 1 - Selezione Audio Device di Input
 inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
@@ -71,11 +71,11 @@ opt4 = tk.OptionMenu(mainWindow, variableOutputCh, *InputDevicesListOutputCh)
 opt4.place(x=300, y=120)
 
 ## Istruzioni Collegamento 1
-istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices!",fg='#36454f')
+istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices",fg='#36454f')
 istructions1.place(x=300, y=170)
 ## Istruzioni Collegamento 2
-istructions2 = tk.Label(mainWindow, text="Connect the selected number n of microphones to\n the first n input channels of the selected input device.\n\nConnect the selected number m of loudspeakers to\n the first m output channels of the selected output device.", fg='#36454f')
-istructions2.place(x=10, y=300)
+istructions2 = tk.Label(mainWindow, text="Connect the selected number n of\nmicrophones to the first n input channels\nof the selected input device\n\nConnect the selected number m of\nloudspeakers to the first m output channels\nof the selected output device", fg='#36454f')
+istructions2.place(x=10, y=170)
 
 # 5 - Selezione tipo di misura
 measureTypelLabel = tk.Label(mainWindow, text="Type of measure",fg='#36454f')
@@ -119,15 +119,15 @@ opt8.place(x=660, y=280)
 
 # 9 - Sound Speed estimation
 soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation",fg='#36454f')
-soundSpeedLabel.place(x=660, y=320)
+soundSpeedLabel.place(x=660, y=330)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
 variableSoundSpeed = tk.StringVar(mainWindow)
 variableSoundSpeed.set('- select -')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
-opt9.place(x=660, y=350)
+opt9.place(x=660, y=360)
 T = tk.Entry(mainWindow, width=5)
-T.place(x=660, y=380)
+T.place(x=660, y=390)
 
 if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
     speed = 343
@@ -136,13 +136,12 @@ elif variableSoundSpeed.get() == 'Insert temperature in °C below':
 
 # 10 - Nome della misura -> Serve per dopo
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
-measureNameLabel.place(x=660, y=450)
+measureNameLabel.place(x=660, y=440)
 
 measureName = tk.Entry(mainWindow, width=22)
-measureName.place(x=660, y=500)
+measureName.place(x=660, y=490)
 
 # 11 - Dimensioni della stanza
-
 def printRoomDimension():
     dimension2DWindow = tk.Tk()
     dimension2DWindow.title("Room Dimensions") # titolo
@@ -182,14 +181,37 @@ def printRoomDimension():
         errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before')
         errDimLabel.place(x=10, y=10)
 
-roomDimensionButton = tk.Button(mainWindow, text="Click here to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
-roomDimensionButton.place(x=10, y=600)
+roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
+roomDimensionButton.place(x=300, y=230)
 
 # 12 - Posizione Loudspeakers -> TO DO
+def printLoudspeakerPosition():
+    var_i = variableOutputCh.get()
+    dimension2DWindow = tk.Tk()
+    dimension2DWindow.title("Loudspeakers Known Positions") # titolo
+    dimension2DWindow.geometry("270x128") # dimensioni
+    dimension2DWindow.config(bg='#36454f') # colore
+
+   # if variableCal.get() == '2D calibration' :
+   #     for i in range (0, var_i):
+            
+loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton.place(x=300, y=260)       
+
+# 13 - Print Posizione Microfoni stimata -> TO DO
+micPositionPrintLabel = tk.Label(mainWindow, text="MICROPHONES POSITION ESTIMATION PLOT",fg='#36454f')
+micPositionPrintLabel.place(x=10, y=310)
 
 
-# Start Measure Button
+# 14 - START MEASURE
+# List of variables
+
+# Funzioni da eseguire per fare la misura
+
+# pulsante START
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.place(x=700, y=560)
+buttonStart.place(x=700, y=540)
 
 mainWindow.mainloop()
+
+# END
