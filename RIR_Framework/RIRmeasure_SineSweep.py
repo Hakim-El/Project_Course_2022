@@ -54,7 +54,7 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
 
             # Create a test signal object, and generate the excitation
             testStimulus = stim.stimulus('sinesweep',fs)
-            testStimulus.generate(args.fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange)
+            testStimulus.generate(fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange)
 
             # Record
             recorded = utils.record(testStimulus.signal,fs,inputChannels, outputChannels, inputDevice, outputDevice)
@@ -63,13 +63,15 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
             RIR = testStimulus.deconvolve(recorded)
 
             # Truncate
-            lenRIR = 1.2
-            startId = testStimulus.signal.shape[0] - args.endsilence*args.fs -1
-            endId = startId + int(lenRIR*args.fs)
-            # save some more samples before linear part to check for nonlinearities
-            startIdToSave = startId - int(args.fs/2)
-            RIRtoSave = RIR[startIdToSave:endId,:]
-            RIR = RIR[startId:endId,:]
+            # lenRIR = 1.2
+            # startId = testStimulus.signal.shape[0] - args.endsilence*fs -1
+            # endId = startId + int(lenRIR*fs)
+            # # save some more samples before linear part to check for nonlinearities
+            # startIdToSave = startId - int(fs/2)
+            # RIRtoSave = RIR[startIdToSave:endId,:]
+            # RIR = RIR[startId:endId,:]
+
+            RIRtoSave = RIR[RIR.shape[0]//2:,:]
 
             # Save recordings and RIRs
-            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, args.fs)
+            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs)

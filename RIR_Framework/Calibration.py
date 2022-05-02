@@ -29,7 +29,8 @@ def createDataMatrix(nMics, nLS):
     return data
 
 def fillDataMatrix(data, nMics, nLS):
-    lastRecording = np.load('SineSweepMeasures/lastMeasure/RIR.npy')
+    lastRecording = np.load('SineSweepMeasures/lastMeasure/RIRac.npy')
+    #lastRecording = lastRecording[lastRecording.shape[0]//2:,:]
     for i in np.arange(0,nMics):
         data[i*RIRlen:RIRlen*(i+1),nLS] = lastRecording[0:RIRlen,i]
     return data
@@ -49,7 +50,7 @@ def createBounds(nMics, x_bound, y_bound, z_bound):
         else:
             bounds2D_nodel[i,1] = y_bound
             bounds2D_del[i,1] = y_bound
-    bounds2D_del[-1,1] = 0.003 #Delay bounds in 2D case
+    bounds2D_del[-1,1] = 0.010 #Delay bounds in 2D case
 
     for i in range(0,bounds3D_nodel.shape[0],3):
         bounds3D_nodel[i,1] = x_bound
@@ -60,7 +61,7 @@ def createBounds(nMics, x_bound, y_bound, z_bound):
     for i in range(2,bounds3D_nodel.shape[0],3):
         bounds3D_nodel[i,1] = z_bound
         bounds3D_del[i,1] = z_bound
-    bounds3D_del[-1,1] = 0.003   #Delay bounds in 3D case
+    bounds3D_del[-1,1] = 0.010   #Delay bounds in 3D case
 
     return bounds2D_nodel, bounds2D_del, bounds3D_nodel, bounds3D_del
 
