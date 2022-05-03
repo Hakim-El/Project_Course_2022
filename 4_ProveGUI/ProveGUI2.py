@@ -186,11 +186,14 @@ roomDimensionButton.place(x=300, y=230)
 
 # 12 - Posizione Loudspeakers -> TO DO
 def printLoudspeakerPosition():
-    var_i = variableOutputCh.get()
+    var_i = int(variableOutputCh.get())
     dimension2DWindow = tk.Tk()
     dimension2DWindow.title("Loudspeakers Known Positions") # titolo
     dimension2DWindow.geometry("270x128") # dimensioni
     dimension2DWindow.config(bg='#36454f') # colore
+
+    for i in range(var_i):
+        tk.Button(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
 
    # if variableCal.get() == '2D calibration' :
    #     knownPos = np.zeros((variableOutputCh,2))
@@ -204,7 +207,7 @@ loudspeakerPositionButton.place(x=300, y=260)
 inputChannels = variableInputCh.get()
 outputChannels = variableOutputCh.get()
 fs = variableFreq.get()
-c = speed
+# c = speed
 
 if variableCal.get() == '2D calibration':
     cal_type = 1
