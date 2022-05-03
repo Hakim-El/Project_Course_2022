@@ -192,12 +192,15 @@ def printLoudspeakerPosition():
     dimension2DWindow.geometry("270x128") # dimensioni
     dimension2DWindow.config(bg='#36454f') # colore
 
-    for i in range(var_i):
-        tk.Button(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
-
-   # if variableCal.get() == '2D calibration' :
-   #     knownPos = np.zeros((variableOutputCh,2))
-   #     for i in range (0, var_i):
+    if variableCal.get() == '2D calibration' :
+        for i in range(var_i):
+            tk.Label(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
+    elif variableCal.get() == '3D calibration' :
+        for i in range(var_i):
+            tk.Label(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
+    else:
+        errDimLabel2 = tk.Label(dimension2DWindow, text='Select a Calibration Type before')
+        errDimLabel2.place(x=10, y=10)
             
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.place(x=300, y=260)       
