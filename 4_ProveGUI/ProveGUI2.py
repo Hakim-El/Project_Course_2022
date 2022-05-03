@@ -234,6 +234,7 @@ elif variableMeasure.get() == 'PyRoomAcoustics simulation':
 # Funzioni da eseguire per fare la misura
 
 # pulsante START
+
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
 
