@@ -16,7 +16,6 @@ silenceAtStart = 1
 silenceAtEnd = 1
 repetitions = 1
 
-
 numSamples = duration*fs
 sinsweep = np.zeros(shape = (numSamples,1))
 taxis = np.arange(0,numSamples,1)/(numSamples-1)
@@ -27,16 +26,16 @@ sinsweep = amplitude * np.sin(w1*(numSamples-1)/lw * (np.exp(taxis*lw)-1))
 
 # Find the last zero crossing to avoid the need for fadeout
 # Comment the whole block to remove this
-k = np.flipud(sinsweep)
-error = 1
-counter = 0
-while error > 0.001:
-    error = np.abs(k[counter])
-    counter = counter
-k = k[counter::]
-sinsweep_hat = np.flipud(k)
-sinsweep = np.zeros(shape = (numSamples,))
-sinsweep[0:sinsweep_hat.shape[0]] = sinsweep_hat
+#k = np.flipud(sinsweep)
+#error = 1
+#counter = 0
+#while error > 0.001:
+#    error = np.abs(k[counter])
+#    counter = counter
+#k = k[counter::]
+#sinsweep_hat = np.flipud(k)
+#sinsweep = np.zeros(shape = (numSamples,))
+#sinsweep[0:sinsweep_hat.shape[0]] = sinsweep_hat
 
 # the convolutional inverse
 envelope = (w2/w1)**(-taxis); # Holters2009, Eq.(9)
@@ -61,15 +60,16 @@ invfilter = invfilter/amplitude**2/scaling
 
 # recording
 
-inputdevice = 0
-outputdevice = 1
+inputdevice = 1
+outputdevice = 3
 inputChannels = 1
 outputChannels = 1
 
 sd.default.device = [inputdevice,outputdevice]
 sd.default.samplerate = fs
 sd.default.dtype = 'float32'
-recorded = sd.playrec(sinsweep, samplerate=fs, output_mapping=[outputChannels])
+recorded = sd.playrec(sinsweep, samplerate=fs,channels=1)
+sd.wait()
 
 # Deconvolution
 
