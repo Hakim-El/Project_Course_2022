@@ -28,7 +28,7 @@ def printDevices():
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
 mainWindow.geometry("900x640") # dimensioni
-mainWindow.config(bg='#808080') # colore
+mainWindow.config(bg='#36454f') # colore
 
 # 1 - Selezione Audio Device di Input
 inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
