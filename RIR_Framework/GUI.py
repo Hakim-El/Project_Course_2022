@@ -126,13 +126,22 @@ variableSoundSpeed = tk.StringVar(mainWindow)
 variableSoundSpeed.set('- select -')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
 opt9.place(x=660, y=360)
-T = tk.Entry(mainWindow, width=5)
-T.place(x=660, y=390)
+t = tk.Entry(mainWindow, width=5)
+t.place(x=660, y=390)
+T = t.get()
 
-if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-    speed = 343
-elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-    speed = (331.3 + 0.606*T) # m/s
+def soundSpeed ():
+    global speed
+    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+        speed = 343
+    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+        speed = (331.3 + 0.606*int(t.get())) # m/s
+    else:
+        speed = 343
+
+updateSpeed = tk.Button(mainWindow, text="Update SoundSpeed", command = soundSpeed, fg='#36454f')
+updateSpeed.place(x=710, y=390)
+
 
 # 10 - Nome della misura -> Serve per dopo
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
@@ -189,7 +198,7 @@ def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
     dimension2DWindow = tk.Tk()
     dimension2DWindow.title("Loudspeakers Known Positions") # titolo
-    dimension2DWindow.geometry("270x128") # dimensioni
+    #dimension2DWindow.geometry("270x128") # dimensioni
     dimension2DWindow.config(bg='#36454f') # colore
 
     if variableCal.get() == '2D calibration' :
@@ -210,7 +219,7 @@ loudspeakerPositionButton.place(x=300, y=260)
 inputChannels = variableInputCh.get()
 outputChannels = variableOutputCh.get()
 fs = variableFreq.get()
-# c = speed
+#c = speed
 
 if variableCal.get() == '2D calibration':
     cal_type = 1
@@ -234,8 +243,10 @@ elif variableMeasure.get() == 'PyRoomAcoustics simulation':
 # Funzioni da eseguire per fare la misura
 
 # pulsante START
+def printer():
+    print(speed)
 
-buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=printer, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
 
 # 14 - Print Posizione Microfoni stimata -> TO DO
