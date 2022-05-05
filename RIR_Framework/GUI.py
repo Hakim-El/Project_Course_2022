@@ -1,3 +1,4 @@
+from email.errors import InvalidMultipartContentTransferEncodingDefect
 from email.mime import audio
 import tkinter as tk
 import sounddevice as sd
@@ -22,6 +23,8 @@ def printDevices():
         tk.Label(frame, text=' - OUT  :  {}'.format(devices[counter]['max_output_channels'])).pack(side=tk.LEFT)
         frame.pack()
         counter += 1
+
+NInputs = 1
 ######################################################################################################################################
 
 # CREA MAIN WINDOW
@@ -34,30 +37,46 @@ mainWindow.config(bg='#36454f') # colore
 inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
 inputDeviceLabel.place(x=10, y=10)
 
-soundDevicesListInput = sd.query_devices()
+devicesDict = sd.query_devices()
+devicesList = []
+
+for i in np.arange(0,len(devicesDict)):
+    name = f"{i} - {devicesDict[i]['name']} - INPUTS: {devicesDict[i]['max_input_channels']} - OUTPUTS:  {devicesDict[i]['max_output_channels']}"
+    devicesList.append(name)
+
+def optionChanged(event, *args):
+    global NInputs
+    i = int(variableInputDev.get()[0])
+    NInputs = devicesDict[i]['max_input_channels']
+    menu = opt3['menu']
+    menu.delete(0,'end')
+    for idx in np.arange(1,NInputs+1):
+        menu.add_command(label=str(idx), command=lambda nation=idx: variableInputCh.set(nation))
+
 variableInputDev = tk.StringVar(mainWindow)
 variableInputDev.set('- input AudioDevice -')
-opt1 = tk.OptionMenu(mainWindow, variableInputDev, *soundDevicesListInput)
+variableInputDev.trace('w', optionChanged)
+opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
+#opt1.bind('<Deactivate>', optionChanged)
 opt1.place(x=10, y=40)
 
 # 2 - Selezione Audio Device di Output
 outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device",fg='#36454f')
 outputDeviceLabel.place(x=10, y=90)
 
-soundDevicesListOutput = sd.query_devices()
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
-opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *soundDevicesListOutput)
+opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
 opt2.place(x=10, y=120)
 
 # 3 - Selezione numero canali Input
-inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channles (Microphones)",fg='#36454f')
+inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channels (Microphones)",fg='#36454f')
 inputChannelLabel.place(x=300, y=10)
 
-InputDevicesListInputCh = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+#InputDevicesListInputCh = np.arange(1,NInputs+1)
 variableInputCh = tk.StringVar(mainWindow)
 variableInputCh.set('- number of inputs -')
-opt3 = tk.OptionMenu(mainWindow, variableInputCh, *InputDevicesListInputCh)
+opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
 opt3.place(x=300, y=40)
 
 # 4 - Selezione numero canali Output
