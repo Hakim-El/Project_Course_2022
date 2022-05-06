@@ -1,5 +1,6 @@
 from email.errors import InvalidMultipartContentTransferEncodingDefect
 from email.mime import audio
+from re import I
 import tkinter as tk
 import sounddevice as sd
 import scipy
@@ -89,10 +90,11 @@ variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, *InputDevicesListOutputCh)
 opt4.place(x=300, y=120)
 
-## Istruzioni Collegamento 1
+###################### Istruzioni Collegamento 1
 #istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices",fg='#36454f')
 #istructions1.place(x=300, y=170)
-## Istruzioni Collegamento 2
+
+###################### Istruzioni Collegamento 2
 istructions2 = tk.Label(mainWindow, text="Connect the selected number n of\nmicrophones to the first n input channels\nof the selected input device\n\nConnect the selected number m of\nloudspeakers to the first m output channels\nof the selected output device", fg='#36454f')
 istructions2.place(x=10, y=170)
 
@@ -258,59 +260,95 @@ def printRoomDimension():
     elif variableCal.get() == '3D calibration':
         getDimensions.place(x=10, y=130)
 
-roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
+roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to confirm Room Dimensions", command = printRoomDimension, fg='#36454f')
 roomDimensionButton.place(x=300, y=230)
 
 # 12 - Posizione Loudspeakers -> TO DO
 def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
-    dimension2DWindow = tk.Tk()
-    dimension2DWindow.title("Loudspeakers Known Positions") # titolo
-    #dimension2DWindow.geometry("270x128") # dimensioni
-    dimension2DWindow.config(bg='#36454f') # colore
+    LoudSpeakerWindow = tk.Tk()
+    LoudSpeakerWindow.title("Loudspeakers Known Positions") # titolo
+    LoudSpeakerWindow.geometry('%dx%d' %(710, (var_i*100)/2.5)) # dimensioni
+    LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal.get() == '2D calibration' :
         for i in range(var_i):
-            tk.Label(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y)").place(x=10, y=11*3.5*i)
+            x_pos = tk.Entry(LoudSpeakerWindow, width=5)
+            x_pos.place(x=220, y=11*3.5*i)
+            y_pos = tk.Entry(LoudSpeakerWindow, width=5)
+            y_pos.place(x=290, y=11*3.5*i)
+
+            z_pos = tk.StringVar(LoudSpeakerWindow) 
+            z_pos.set('0.0')
+
     elif variableCal.get() == '3D calibration' :
         for i in range(var_i):
-            tk.Label(dimension2DWindow, text= "Loudspeaker " +str(i+1) +" Position").pack()
-    else:
-        errDimLabel2 = tk.Label(dimension2DWindow, text='Select a Calibration Type before')
-        errDimLabel2.place(x=10, y=10)
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y ; Z)").place(x=10, y=11*3.5*i)
+            x_pos = tk.Entry(LoudSpeakerWindow, width=5)
+            x_pos.place(x=230, y=11*3.5*i)
+            y_pos = tk.Entry(LoudSpeakerWindow, width=5)
+            y_pos.place(x=300, y=11*3.5*i)
+            z_pos = tk.Entry(LoudSpeakerWindow, width=5)
+            z_pos.place(x=370, y=11*3.5*i)
             
+    else:
+        errDimLabel2 = tk.Label(LoudSpeakerWindow, text='Select a Calibration Type before')
+        errDimLabel2.place(x=10, y=10)
+
+    #def getLoudSpeakersPositions():
+    #    global knownPos
+    #    global x_pos
+    #    global y_pos
+    #    global z_pos
+    #
+    #    if cal_type == 1 :
+    #        knownPos = np.zeros((var_i,2))
+    #        for i in range(0,var_i) : 
+    #            knownPos[i,0] = float(x_pos.get())
+    #            knownPos[i,1] = float(y_pos.get())
+    #    elif cal_type == 2 :
+    #        knownPos = np.zeros((var_i,3))
+    #        for i in range(0,var_i) : 
+    #            knownPos[i,0] = float(x_pos.get())
+    #            knownPos[i,1] = float(y_pos.get())
+    #            knownPos[i,2] = float(z_pos.get())
+    
+    getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm Loudspeaker\nknown positions')
+    getPositions.place(x=440, y=10)
+
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.place(x=300, y=260)       
 
-# 13 - START MEASURE -> TO DO
+# 13 - START MEASURE BUTTON -> TO DO
 # Lista di variabili con il nome dello script main
-inputChannels = variableInputCh.get()
-outputChannels = variableOutputCh.get()
 
 # Creazione file di testo con i dati della misura
 
 # Funzioni da eseguire per fare la misura
 
-# pulsante START
-def printer():
-        print('\n\n')
-        print('Measure Name: %s' %measureName)
-        print('Measure Type: %d' %measureMethod)
-        print('Calibration Type: %d' %cal_type)
-        print('Delay Estimation Type: %d' %delayType)
-        print('Sampling Frequency [Hz]: %d' %fs)
-        print('Sound Speed [m/s]: %.2f' %c)
-        print('Room Dimensions X, Y, Z [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
-        print('\n\n')
-
 def multipleStartFunctions(): # to set all varaibles
+    inputChannels = variableInputCh.get()
+    outputChannels = variableOutputCh.get()
     nameOfMeasure()
     defineSoundSpeed()
     getDelayType()
     getCalibrationType()
     getMeasureType()
     getFrequency()
-    printer()
+    
+    # print all variables on Terminal
+    print('\n\n')
+    print('Measure Name: %s' %measureName)
+    print('Number of Input Channels: %d' %int(inputChannels))
+    print('Number of Output Channels: %d' %int(outputChannels))
+    print('Measure Type: %d' %measureMethod)
+    print('Calibration Type: %d' %cal_type)
+    print('Delay Estimation Type: %d' %delayType)
+    print('Sampling Frequency [Hz]: %d' %fs)
+    print('Sound Speed [m/s]: %.2f' %c)
+    print('Room Dimensions X, Y, Z [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
+    print('\n')
 
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
