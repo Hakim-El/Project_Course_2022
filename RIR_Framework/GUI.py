@@ -293,13 +293,15 @@ outputChannels = variableOutputCh.get()
 
 # pulsante START
 def printer():
+        print('\n\n')
         print('Measure Name: %s' %measureName)
         print('Measure Type: %d' %measureMethod)
         print('Calibration Type: %d' %cal_type)
         print('Delay Estimation Type: %d' %delayType)
         print('Sampling Frequency [Hz]: %d' %fs)
         print('Sound Speed [m/s]: %.2f' %c)
-        print('Room Dimensions [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
+        print('Room Dimensions X, Y, Z [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
+        print('\n\n')
 
 def multipleStartFunctions(): # to set all varaibles
     nameOfMeasure()
