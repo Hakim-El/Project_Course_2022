@@ -90,13 +90,13 @@ opt4 = tk.OptionMenu(mainWindow, variableOutputCh, *InputDevicesListOutputCh)
 opt4.place(x=300, y=120)
 
 ## Istruzioni Collegamento 1
-istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices",fg='#36454f')
-istructions1.place(x=300, y=170)
+#istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices",fg='#36454f')
+#istructions1.place(x=300, y=170)
 ## Istruzioni Collegamento 2
 istructions2 = tk.Label(mainWindow, text="Connect the selected number n of\nmicrophones to the first n input channels\nof the selected input device\n\nConnect the selected number m of\nloudspeakers to the first m output channels\nof the selected output device", fg='#36454f')
 istructions2.place(x=10, y=170)
 
-# 5 - Selezione tipo di misura
+###################### 5 - Selezione tipo di misura
 measureTypelLabel = tk.Label(mainWindow, text="Type of measure",fg='#36454f')
 measureTypelLabel.place(x=660, y=10)
 
@@ -106,7 +106,16 @@ variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
 opt5.place(x=660, y=40)
 
-# 6 - Selezione Sampling Frequency
+def getMeasureType():
+    global measureMethod
+    if variableMeasure.get() == 'SineSweep':
+        measureMethod = 1
+    elif variableMeasure.get() == 'MLS':
+        measureMethod = 2
+    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
+        measureMethod = 3
+
+###################### 6 - Selezione Sampling Frequency
 frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]",fg='#36454f')
 frequencyLabel.place(x=660, y=90)
 
@@ -116,7 +125,11 @@ variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
 opt6.place(x=660, y=120)
 
-# 7 - Selezione tipo di calibrazione
+def getFrequency():
+    global fs
+    fs = int(variableFreq.get())
+
+###################### 7 - Selezione tipo di calibrazione
 calibrationLabel = tk.Label(mainWindow, text="Calibration Type",fg='#36454f')
 calibrationLabel.place(x=660, y=170)
 
@@ -126,7 +139,14 @@ variableCal.set('- none -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
 opt7.place(x=660, y=200)
 
-# 8 - Delay o no Delay
+def getCalibrationType():
+    global cal_type
+    if variableCal.get() == '2D calibration':
+        cal_type = 1
+    elif variableCal.get() == '3D calibration':
+        cal_type = 2
+
+###################### 8 - Delay o no Delay
 delayLabel = tk.Label(mainWindow, text="Delay estimation type",fg='#36454f')
 delayLabel.place(x=660, y=250)
 
@@ -136,7 +156,14 @@ variableDelay.set('- select -')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
 opt8.place(x=660, y=280)
 
-# 9 - Sound Speed estimation
+def getDelayType():
+    global delayType
+    if variableDelay.get() == 'Delay estimation':
+        delayType = 1
+    elif variableDelay.get() == 'NO Delay estimation':
+        delayType = 2
+
+###################### 9 - Sound Speed estimation
 soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation",fg='#36454f')
 soundSpeedLabel.place(x=660, y=330)
 
@@ -149,65 +176,87 @@ t = tk.Entry(mainWindow, width=5)
 t.place(x=660, y=390)
 T = t.get()
 
-def soundSpeed ():
-    global speed
+def defineSoundSpeed():
+    global c
     if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-        speed = 343
+        c = 343
     elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-        speed = (331.3 + 0.606*int(t.get())) # m/s
+        c = (331.3 + 0.606*int(t.get())) # m/s
     else:
-        speed = 343
+        c = 343
 
-updateSpeed = tk.Button(mainWindow, text="Update SoundSpeed", command = soundSpeed, fg='#36454f')
-updateSpeed.place(x=710, y=390)
-
-
-# 10 - Nome della misura -> Serve per dopo
+###################### 10 - Nome della misura -> Serve per dare nome alla cartella con i dati della misura
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
 measureNameLabel.place(x=660, y=440)
 
-measureName = tk.Entry(mainWindow, width=22)
-measureName.place(x=660, y=490)
+Name = tk.Entry(mainWindow, width=22)
+Name.place(x=660, y=490)
 
-# 11 - Dimensioni della stanza
+def nameOfMeasure():
+    global measureName
+    measureName = Name.get()
+
+###################### 11 - Dimensioni della stanza
 def printRoomDimension():
     dimension2DWindow = tk.Tk()
     dimension2DWindow.title("Room Dimensions") # titolo
-    dimension2DWindow.geometry("270x128") # dimensioni
     dimension2DWindow.config(bg='#36454f') # colore
 
     if variableCal.get() == '2D calibration' :
+        dimension2DWindow.geometry("270x130") # dimensioni
+
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:')
         xAxisLabel.place(x=10, y=10)
-        x_axis = tk.Entry(dimension2DWindow, width=5)
-        x_axis.place(x=200, y=10)
+        x_dim = tk.Entry(dimension2DWindow, width=5)
+        x_dim.place(x=200, y=10)
 
         yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:')
         yAxisLabel.place(x=10, y=50)
-        y_axis = tk.Entry(dimension2DWindow, width=5)
-        y_axis.place(x=200, y=50)
+        y_dim = tk.Entry(dimension2DWindow, width=5)
+        y_dim.place(x=200, y=50)
 
-        z_axis = 0
+        z_dim = tk.StringVar(dimension2DWindow) 
+        z_dim.set('0.0')
 
     elif variableCal.get() == '3D calibration':
+        dimension2DWindow.geometry("270x170") # dimensioni
+
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:')
         xAxisLabel.place(x=10, y=10)
-        x_axis = tk.Entry(dimension2DWindow, width=5)
-        x_axis.place(x=200, y=10)
+        x_dim = tk.Entry(dimension2DWindow, width=5)
+        x_dim.place(x=200, y=10)
         
         yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:')
         yAxisLabel.place(x=10, y=50)
-        y_axis = tk.Entry(dimension2DWindow, width=5)
-        y_axis.place(x=200, y=50)
+        y_dim = tk.Entry(dimension2DWindow, width=5)
+        y_dim.place(x=200, y=50)
        
         zAxisLabel = tk.Label(dimension2DWindow, text='Insert room Z dimension [m]:')
         zAxisLabel.place(x=10, y=90)
-        z_axis = tk.Entry(dimension2DWindow, width=5)
-        z_axis.place(x=200, y=90)
+        z_dim = tk.Entry(dimension2DWindow, width=5)
+        z_dim.place(x=200, y=90)
 
     elif variableCal.get() == '- none -':
+        dimension2DWindow.geometry("270x60") # dimensioni
+
         errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before')
         errDimLabel.place(x=10, y=10)
+
+    def getRoomDimensions():
+        global x_axis
+        global y_axis
+        global z_axis
+
+        x_axis = float(x_dim.get())
+        y_axis = float(y_dim.get())
+        z_axis = float(z_dim.get())
+    
+    getDimensions = tk.Button(dimension2DWindow, text='Click here to confirm dimemsions', command=getRoomDimensions)
+
+    if variableCal.get() == '2D calibration' :
+        getDimensions.place(x=10, y=90)
+    elif variableCal.get() == '3D calibration':
+        getDimensions.place(x=10, y=130)
 
 roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
 roomDimensionButton.place(x=300, y=230)
@@ -237,25 +286,6 @@ loudspeakerPositionButton.place(x=300, y=260)
 # Lista di variabili con il nome dello script main
 inputChannels = variableInputCh.get()
 outputChannels = variableOutputCh.get()
-fs = variableFreq.get()
-#c = speed
-
-if variableCal.get() == '2D calibration':
-    cal_type = 1
-elif variableCal.get() == '3D calibration':
-    cal_type = 2
-
-if variableDelay.get() == 'Delay estimation':
-    delayType = 1
-elif variableDelay.get() == 'NO Delay estimation':
-    delayType = 2
-
-if variableMeasure.get() == 'SineSweep':
-    measureMethod = 1
-elif variableMeasure.get() == 'MLS':
-    measureMethod = 2
-elif variableMeasure.get() == 'PyRoomAcoustics simulation':
-    measureMethod = 3
 
 # Creazione file di testo con i dati della misura
 
@@ -263,9 +293,24 @@ elif variableMeasure.get() == 'PyRoomAcoustics simulation':
 
 # pulsante START
 def printer():
-    print(speed)
+        print('Measure Name: %s' %measureName)
+        print('Measure Type: %d' %measureMethod)
+        print('Calibration Type: %d' %cal_type)
+        print('Delay Estimation Type: %d' %delayType)
+        print('Sampling Frequency [Hz]: %d' %fs)
+        print('Sound Speed [m/s]: %.2f' %c)
+        print('Room Dimensions [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
 
-buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=printer, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+def multipleStartFunctions(): # to set all varaibles
+    nameOfMeasure()
+    defineSoundSpeed()
+    getDelayType()
+    getCalibrationType()
+    getMeasureType()
+    getFrequency()
+    printer()
+
+buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
 
 # 14 - Print Posizione Microfoni stimata -> TO DO
