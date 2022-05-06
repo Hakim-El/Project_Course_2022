@@ -328,8 +328,8 @@ loudspeakerPositionButton.place(x=300, y=260)
 # Funzioni da eseguire per fare la misura
 
 def multipleStartFunctions(): # to set all varaibles
-    inputChannels = variableInputCh.get()
-    outputChannels = variableOutputCh.get()
+    inputChannels = int(variableInputCh.get())
+    outputChannels = int(variableOutputCh.get())
     nameOfMeasure()
     defineSoundSpeed()
     getDelayType()
@@ -340,8 +340,8 @@ def multipleStartFunctions(): # to set all varaibles
     # print all variables on Terminal
     print('\n\n')
     print('Measure Name: %s' %measureName)
-    print('Number of Input Channels: %d' %int(inputChannels))
-    print('Number of Output Channels: %d' %int(outputChannels))
+    print('Number of Input Channels: %d' %inputChannels)
+    print('Number of Output Channels: %d' %outputChannels)
     print('Measure Type: %d' %measureMethod)
     print('Calibration Type: %d' %cal_type)
     print('Delay Estimation Type: %d' %delayType)
