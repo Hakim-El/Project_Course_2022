@@ -1,25 +1,17 @@
 RIR MEASUREMENT DATA:
+
+Measure Name: measure1provaa
 Type of measure: MLS 
-Sound speed: 351.90 [m/s] 
-Sampling Frequency: 44100 [Hz]
-Number of Microphones: 1 
-Number of Loudspeakers: 2
+Sound speed: 343.00 [m/s] 
+Sampling Frequency: 96000 [Hz]
+Number of Microphones: 2 
+Number of Loudspeakers: 5
 Calibration Type: 3D
 Delay compensation: YES
 
 ROOM DIMENSIONS:
-Room X axis dimension: 12.40 [m]
-Room Y axis dimension: 2.34 [m]
-Room Z axis dimension: 3.21 [m]
+Room X axis dimension: 12.20 [m]
+Room Y axis dimension: 1.20 [m]
+Room Z axis dimension: 1.23 [m]
 
 LOUDSPEAKER KNOWN POSITIONS:
-Loudspeaker 1:
-X position: 1.23 [m]
-Y position: 2.43 [m]
-Z position: 4.53 [m]
-
-Loudspeaker 2:
-X position: 2.32 [m]
-Y position: 2.45 [m]
-Z position: 5.64 [m]
-

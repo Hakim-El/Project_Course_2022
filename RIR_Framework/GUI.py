@@ -1,11 +1,16 @@
-from email.errors import InvalidMultipartContentTransferEncodingDefect
-from email.mime import audio
-from re import I
+
 import tkinter as tk
 import sounddevice as sd
+import pyroomacoustics
+import matplotlib.pyplot as plt
 import scipy
 import numpy as np
 import os
+
+from RIRmeasure_SineSweep import RIRmeasure_function
+from RIRmeasure_MLS import MLSmeasure_function
+from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
+from RIRsimulation import createRir
 
 ################################################## FUNZIONE CHE NON SERVE PIU'########################################################
 def printDevices():
@@ -108,15 +113,6 @@ variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
 opt5.place(x=660, y=40)
 
-def getMeasureType():
-    global measureMethod
-    if variableMeasure.get() == 'SineSweep':
-        measureMethod = 1
-    elif variableMeasure.get() == 'MLS':
-        measureMethod = 2
-    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
-        measureMethod = 3
-
 ###################### 6 - Selezione Sampling Frequency
 frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]",fg='#36454f')
 frequencyLabel.place(x=660, y=90)
@@ -126,10 +122,6 @@ variableFreq = tk.StringVar(mainWindow)
 variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
 opt6.place(x=660, y=120)
-
-def getFrequency():
-    global fs
-    fs = int(variableFreq.get())
 
 ###################### 7 - Selezione tipo di calibrazione
 calibrationLabel = tk.Label(mainWindow, text="Calibration Type",fg='#36454f')
@@ -141,13 +133,6 @@ variableCal.set('- none -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
 opt7.place(x=660, y=200)
 
-def getCalibrationType():
-    global cal_type
-    if variableCal.get() == '2D calibration':
-        cal_type = 1
-    elif variableCal.get() == '3D calibration':
-        cal_type = 2
-
 ###################### 8 - Delay o no Delay
 delayLabel = tk.Label(mainWindow, text="Delay estimation type",fg='#36454f')
 delayLabel.place(x=660, y=250)
@@ -157,13 +142,6 @@ variableDelay = tk.StringVar(mainWindow)
 variableDelay.set('- select -')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
 opt8.place(x=660, y=280)
-
-def getDelayType():
-    global delayType
-    if variableDelay.get() == 'Delay estimation':
-        delayType = 1
-    elif variableDelay.get() == 'NO Delay estimation':
-        delayType = 2
 
 ###################### 9 - Sound Speed estimation
 soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation",fg='#36454f')
@@ -176,16 +154,6 @@ opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed
 opt9.place(x=660, y=360)
 t = tk.Entry(mainWindow, width=5)
 t.place(x=660, y=390)
-T = t.get()
-
-def defineSoundSpeed():
-    global c
-    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-        c = 343
-    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-        c = (331.3 + 0.606*int(t.get())) # m/s
-    else:
-        c = 343
 
 ###################### 10 - Nome della misura -> Serve per dare nome alla cartella con i dati della misura
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
@@ -193,10 +161,6 @@ measureNameLabel.place(x=660, y=440)
 
 Name = tk.Entry(mainWindow, width=22)
 Name.place(x=660, y=490)
-
-def nameOfMeasure():
-    global measureName
-    measureName = Name.get()
 
 ###################### 11 - Dimensioni della stanza
 def printRoomDimension():
@@ -321,24 +285,54 @@ loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert kno
 loudspeakerPositionButton.place(x=300, y=260)       
 
 # 13 - START MEASURE BUTTON -> TO DO
-# Lista di variabili con il nome dello script main
-
-# Creazione file di testo con i dati della misura
-
-# Funzioni da eseguire per fare la misura
-
-def multipleStartFunctions(): # to set all varaibles
+def multipleStartFunctions(): # to get all the needed varaibles
+    ### DEFINIZIONE VARIABILI ###
+    #input/output device
+    inputDevice = variableInputDev.get()
+    outputDevice = variableOutputDev.get()
+    
+    #number of inputs/outputs
     inputChannels = int(variableInputCh.get())
     outputChannels = int(variableOutputCh.get())
-    nameOfMeasure()
-    defineSoundSpeed()
-    getDelayType()
-    getCalibrationType()
-    getMeasureType()
-    getFrequency()
     
+    #measure name
+    measureName = Name.get()
+    
+    #soundspeed
+    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+        c = 343
+    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+        c = (331.3 + 0.606*int(t.get())) # m/s
+    else:
+        c = 343
+    
+    #delay type
+    if variableDelay.get() == 'Delay estimation':
+        delayType = 1
+    elif variableDelay.get() == 'NO Delay estimation':
+        delayType = 2
+    
+    #calibration type
+    if variableCal.get() == '2D calibration':
+        cal_type = 1
+    elif variableCal.get() == '3D calibration':
+        cal_type = 2
+    
+    #sampling frequency
+    fs = int(variableFreq.get())
+    
+    #measure type
+    if variableMeasure.get() == 'SineSweep':
+        measureMethod = 1
+    elif variableMeasure.get() == 'MLS':
+        measureMethod = 2
+    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
+        measureMethod = 3
+
+    #loudspeakers known positions -> TO DO
+
     # print all variables on Terminal
-    print('\n\n')
+    print('\n')
     print('Measure Name: %s' %measureName)
     print('Number of Input Channels: %d' %inputChannels)
     print('Number of Output Channels: %d' %outputChannels)
@@ -350,6 +344,79 @@ def multipleStartFunctions(): # to set all varaibles
     print('Room Dimensions X, Y, Z [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
     print('\n')
 
+    ### CREAZIONE FILE DI TESTO ##
+    # SineSweep measure
+    if measureMethod == 1:
+        with open('SineSweepMeasures/measureData.txt', 'w') as f:
+         f.write('RIR MEASUREMENT DATA:\n\n')
+         f.write('Measure Name: %s\n' %measureName)
+         f.write('Type of measure: SineSweep \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+         if cal_type == 1 :
+             f.write('Calibration Type: 2D\n')
+         elif cal_type == 2 :
+             f.write('Calibration Type: 3D\n')
+         if delayType == 1 :
+             f.write('Delay compensation: YES\n')
+         elif delayType == 2 :
+             f.write('Delaycompensation: NO\n')
+         f.write('\nROOM DIMENSIONS:\n')
+         if cal_type == 1 :
+             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+         if cal_type == 2 :
+             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
+         f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+        # if cal_type == 1 :
+        #     for i in range (0,outputChannels) : 
+        #      f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+        # if cal_type == 2 :
+        #     for i in range (0,outputChannels) : 
+        #      f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))
+
+    # MLS measure
+    elif measureMethod == 2:
+        with open('MLSMeasures/measureData.txt', 'w') as f:
+         f.write('RIR MEASUREMENT DATA:\n\n')
+         f.write('Measure Name: %s\n' %measureName)
+         f.write('Type of measure: MLS \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+         if cal_type == 1 :
+             f.write('Calibration Type: 2D\n')
+         elif cal_type == 2 :
+             f.write('Calibration Type: 3D\n')
+         if delayType == 1 :
+             f.write('Delay compensation: YES\n')
+         elif delayType == 2 :
+             f.write('Delaycompensation: NO\n')
+         f.write('\nROOM DIMENSIONS:\n')
+         if cal_type == 1 :
+             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+         if cal_type == 2 :
+             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
+         f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+        # if cal_type == 1 :
+        #     for i in range (0,outputChannels) : 
+        #      f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+        # if cal_type == 2 :
+        #     for i in range (0,outputChannels) : 
+        #      f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))      
+
+    # MISURA
+    #if measureMethod == 1 :
+    #    # Misura SineSweep
+    #    data = createDataMatrix(inputChannels,outputChannels)
+    #    for i in np.arange(1, outputChannels+1) :
+    #        RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
+    #elif measureMethod == 2 :
+    #    # Misura MLS
+    #    data = createDataMatrix(inputChannels,outputChannels)
+    #    for i in np.arange(1, outputChannels+1) :
+    #        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
+    #    #print("\nLa MLS ancora non l'abbiamo fatta...\n")
+    #    #exit()
+    #elif measureMethod == 3 :
+    #    data = createRir(knownPos, cal_type, delayType)
+
 buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=700, y=540)
 
@@ -358,5 +425,4 @@ micPositionPrintLabel = tk.Label(mainWindow, text="MICROPHONES POSITION ESTIMATI
 micPositionPrintLabel.place(x=10, y=310)
 
 mainWindow.mainloop()
-
 # END

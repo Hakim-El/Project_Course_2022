@@ -1,25 +1,16 @@
 RIR MEASUREMENT DATA:
+
+Measure Name: measure1provaa
 Type of measure: SineSweep 
-Sound speed: 358.57 [m/s] 
-Sampling Frequency: 44100 [Hz]
-Number of Microphones: 1 
-Number of Loudspeakers: 2
-Calibration Type: 3D
+Sound speed: 343.00 [m/s] 
+Sampling Frequency: 48000 [Hz]
+Number of Microphones: 2 
+Number of Loudspeakers: 5
+Calibration Type: 2D
 Delay compensation: YES
 
 ROOM DIMENSIONS:
-Room X axis dimension: 23.40 [m]
-Room Y axis dimension: 1.23 [m]
-Room Z axis dimension: 23.54 [m]
+Room X axis dimension: 12.30 [m]
+Room Y axis dimension: 2.10 [m]
 
 LOUDSPEAKER KNOWN POSITIONS:
-Loudspeaker 1:
-X position: 12.32 [m]
-Y position: 1.23 [m]
-Z position: 3.42 [m]
-
-Loudspeaker 2:
-X position: 2.54 [m]
-Y position: 3.45 [m]
-Z position: 1.12 [m]
-
