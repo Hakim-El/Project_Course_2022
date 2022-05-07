@@ -1,5 +1,6 @@
 
 import tkinter as tk
+from typing import Literal
 import sounddevice as sd
 import pyroomacoustics
 import matplotlib.pyplot as plt
@@ -30,7 +31,6 @@ def printDevices():
         frame.pack()
         counter += 1
 
-NInputs = 1
 ######################################################################################################################################
 
 # CREA MAIN WINDOW
@@ -50,20 +50,30 @@ for i in np.arange(0,len(devicesDict)):
     name = f"{i} - {devicesDict[i]['name']} - INPUTS: {devicesDict[i]['max_input_channels']} - OUTPUTS:  {devicesDict[i]['max_output_channels']}"
     devicesList.append(name)
 
-def optionChanged(event, *args):
-    global NInputs
+def inputChanged(event, *args):
     i = int(variableInputDev.get()[0])
     NInputs = devicesDict[i]['max_input_channels']
     menu = opt3['menu']
     menu.delete(0,'end')
     for idx in np.arange(1,NInputs+1):
-        menu.add_command(label=str(idx), command=lambda nation=idx: variableInputCh.set(nation))
+        menu.add_command(label=str(idx), command=lambda ch=idx: variableInputCh.set(ch))
+    opt1.config(anchor='w')
+
+def outputChanged(event, *args):
+    i = int(variableOutputDev.get()[0])
+    NOutputs = devicesDict[i]['max_output_channels']
+    menu = opt4['menu']
+    menu.delete(0,'end')
+    for idx in np.arange(1,NOutputs+1):
+        menu.add_command(label=str(idx), command=lambda ch=idx: variableOutputCh.set(ch))
+    opt2.config(anchor='w')
+
 
 variableInputDev = tk.StringVar(mainWindow)
 variableInputDev.set('- input AudioDevice -')
-variableInputDev.trace('w', optionChanged)
+variableInputDev.trace('w', inputChanged)
 opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
-#opt1.bind('<Deactivate>', optionChanged)
+opt1.config(width=30)
 opt1.place(x=10, y=40)
 
 # 2 - Selezione Audio Device di Output
@@ -72,7 +82,9 @@ outputDeviceLabel.place(x=10, y=90)
 
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
+variableOutputDev.trace('w', outputChanged)
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
+opt2.config(width=30)
 opt2.place(x=10, y=120)
 
 # 3 - Selezione numero canali Input
@@ -89,10 +101,9 @@ opt3.place(x=300, y=40)
 outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)",fg='#36454f')
 outputChannelLabel.place(x=300, y=90)
 
-InputDevicesListOutputCh = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
 variableOutputCh = tk.StringVar(mainWindow)
 variableOutputCh.set('- number of outputs -')
-opt4 = tk.OptionMenu(mainWindow, variableOutputCh, *InputDevicesListOutputCh)
+opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
 opt4.place(x=300, y=120)
 
 ###################### Istruzioni Collegamento 1
