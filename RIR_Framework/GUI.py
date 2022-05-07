@@ -12,6 +12,8 @@ from RIRmeasure_MLS import MLSmeasure_function
 from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
 from RIRsimulation import createRir
 
+###################################################################################################
+
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
@@ -84,10 +86,6 @@ variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
 opt4.place(x=300, y=120)
 
-###################### Istruzioni Collegamento 1
-#istructions1 = tk.Label(mainWindow, text="ATTENTION!\nNumber of Inputs and outputs must be coherent\nwith the selected audio devices",fg='#36454f')
-#istructions1.place(x=300, y=170)
-
 ###################### Istruzioni Collegamento 2
 istructions2 = tk.Label(mainWindow, text="Connect the selected number n of\nmicrophones to the first n input channels\nof the selected input device\n\nConnect the selected number m of\nloudspeakers to the first m output channels\nof the selected output device", fg='#36454f')
 istructions2.place(x=10, y=170)
@@ -144,7 +142,7 @@ opt9.place(x=660, y=360)
 t = tk.Entry(mainWindow, width=5)
 t.place(x=660, y=390)
 
-###################### 10 - Nome della misura -> Serve per dare nome alla cartella con i dati della misura
+###################### 10 - Nome della misura
 measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
 measureNameLabel.place(x=660, y=440)
 
@@ -216,7 +214,7 @@ def printRoomDimension():
 roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to confirm Room Dimensions", command = printRoomDimension, fg='#36454f')
 roomDimensionButton.place(x=300, y=230)
 
-# 12 - Posizione Loudspeakers -> TO DO
+###################### 12 - Posizione Loudspeakers
 def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
     LoudSpeakerWindow = tk.Tk()
@@ -257,10 +255,6 @@ def printLoudspeakerPosition():
 
     def getLoudSpeakersPositions():
         global knownPos
-        #global x_pos
-        #global y_pos
-        #global z_pos
-        
         if variableCal.get() == '2D calibration' :
             knownPos = np.zeros((var_i,2))
             for i in range(0,var_i) : 
@@ -323,8 +317,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
         measureMethod = 2
     elif variableMeasure.get() == 'PyRoomAcoustics simulation':
         measureMethod = 3
-
-    #loudspeakers known positions -> TO DO
 
     # print all variables on Terminal
     print('\n')
