@@ -61,14 +61,15 @@ invfilter = invfilter/amplitude**2/scaling
 # recording
 
 inputdevice = 1
-outputdevice = 3
+outputdevice = 5
 inputChannels = 1
 outputChannels = 1
 
 sd.default.device = [inputdevice,outputdevice]
+sd.default.channels=1
 sd.default.samplerate = fs
 sd.default.dtype = 'float32'
-recorded = sd.playrec(sinsweep, samplerate=fs,channels=1)
+recorded = sd.playrec(sinsweep, samplerate=fs)
 sd.wait()
 
 # Deconvolution
