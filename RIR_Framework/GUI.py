@@ -278,7 +278,7 @@ def printLoudspeakerPosition():
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.place(x=325, y=300)       
 
-# 13 - START MEASURE BUTTON -> TO DO
+###################### 13 - START MEASURE BUTTON
 def multipleStartFunctions(): # to get all the needed varaibles
     ### DEFINIZIONE VARIABILI ###
     #input/output device
@@ -339,11 +339,35 @@ def multipleStartFunctions(): # to get all the needed varaibles
     print('\n')
 
     ## CREAZIONE CARTELLE ## -> TO DO
+    #creazione cartelle misura primcipali (SineSweep & MLS)
+    dirnameSineSweep = 'SineSweepMeasures/'
+    dirnameMLS = 'MLSMeasures/'
+    if os.path.exists(dirnameSineSweep):
+        dirSineSweepFlag = True
+    else :
+        dirSineSweepFlag = False
+    print(dirSineSweepFlag)
+    
+    if os.path.exists(dirnameMLS):
+        dirMLSFlag = True
+    else :
+        dirMLSFlag = False
+    print(dirMLSFlag)
 
+    #creazione cartella lastMeasure -> TO DO
+
+    #creazione sottocartelle misura
+    if dirSineSweepFlag == True and measureMethod == 1:
+        dirname1 = 'SineSweepMeasures/' + str(measureName)
+        os.mkdir(dirname1)
+    elif dirMLSFlag == True and measureMethod == 2:
+        dirname2 = 'MLSMeasures/' + str(measureName)
+        os.mkdir(dirname2)
+    
     ### CREAZIONE FILE DI TESTO ##
     # SineSweep measure
     if measureMethod == 1:
-        with open('SineSweepMeasures/measureData.txt', 'w') as f:
+        with open('SineSweepMeasures/' + str(measureName) + '/measureData.txt', 'w') as f:
          f.write('RIR MEASUREMENT DATA\n\n')
          f.write('Measure Name: %s\n' %measureName)
          f.write('Type of measure: SineSweep \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
@@ -370,7 +394,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
 
     # MLS measure
     elif measureMethod == 2:
-        with open('MLSMeasures/measureData.txt', 'w') as f:
+        with open('MLSMeasures/' + str(measureName) + '/measureData.txt', 'w') as f:
          f.write('RIR MEASUREMENT DATA\n\n')
          f.write('Measure Name: %s\n' %measureName)
          f.write('Type of measure: MLS \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))

@@ -1,6 +1,6 @@
 RIR MEASUREMENT DATA
 
-Measure Name: 
+Measure Name: provamisura111
 Type of measure: SineSweep 
 Sound speed: 343.00 [m/s] 
 Sampling Frequency: 44100 [Hz]
@@ -10,11 +10,11 @@ Calibration Type: 2D
 Delay compensation: YES
 
 ROOM DIMENSIONS:
-Room X axis dimension: 4.00 [m]
-Room Y axis dimension: 4.00 [m]
+Room X axis dimension: 1.00 [m]
+Room Y axis dimension: 2.00 [m]
 
 LOUDSPEAKER KNOWN POSITIONS:
 Loudspeaker 1:
-X position: 2.00 [m]
+X position: 1.00 [m]
 Y position: 2.00 [m]
 
