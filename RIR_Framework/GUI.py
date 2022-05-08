@@ -354,7 +354,20 @@ def multipleStartFunctions(): # to get all the needed varaibles
         dirMLSFlag = False
     print(dirMLSFlag)
 
-    #creazione cartella lastMeasure -> TO DO
+    #creazione cartella _lastMeasureData_ -> TO DO
+    dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
+    dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
+    if os.path.exists(dirnameLast1):
+        dirLast1Flag = True
+    else :
+        dirLast1Flag = False
+    print(dirLast1Flag)
+    
+    if os.path.exists(dirnameLast2):
+        dirLast2Flag = True
+    else :
+        dirLast2Flag = False
+    print(dirLast2Flag)
 
     #creazione sottocartelle misura
     if dirSineSweepFlag == True and measureMethod == 1:

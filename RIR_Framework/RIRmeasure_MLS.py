@@ -55,10 +55,10 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
         wavwrite(dirname+ '/sigrec_Mic' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
         wavwrite(dirname+ '/RIR_Mic' + str(idx+1) + '.wav',fs,RIR[:,idx])
 
-    # Save in the MLSMeasures/lastMeasure for a quick check
-    np.save('MLSMeasures/lastMeasure/RIR.npy',RIR)
-    #np.save( 'MLSMeasures/lastMeasure/RIRac.npy',RIRtoSave)
-    wavwrite( 'MLSMeasures/lastMeasure/sigtest.wav',fs,mls)
+    # Save in the MLSMeasures/_lastMeasureData_ for a quick check
+    np.save('MLSMeasures/_lastMeasureData_/RIR.npy',RIR)
+    #np.save( 'MLSMeasures/_lastMeasureData_/RIRac.npy',RIRtoSave)
+    wavwrite( 'MLSMeasures/_lastMeasureData_/sigtest.wav',fs,mls)
     # for idx in range(recordedMLS.shape[1]):
     #    wavwrite('sigrec' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
     #    wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])
