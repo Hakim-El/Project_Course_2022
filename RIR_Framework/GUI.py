@@ -17,18 +17,21 @@ from RIRsimulation import createRir
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("900x640") # dimensioni
+mainWindow.geometry("940x450") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
+credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 12 italic'), bg='#36454f', fg='#000000')
+credits.place(x=10, y=420)
+
 ###################### 1 - Selezione Audio Device di Input
-inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device",fg='#36454f')
+inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
 inputDeviceLabel.place(x=10, y=10)
 
 devicesDict = sd.query_devices()
 devicesList = []
 
 for i in np.arange(0,len(devicesDict)):
-    name = f"{i} - {devicesDict[i]['name']} - INPUTS: {devicesDict[i]['max_input_channels']} - OUTPUTS:  {devicesDict[i]['max_output_channels']}"
+    name = f"{i} - {devicesDict[i]['name']} - IN: {devicesDict[i]['max_input_channels']} | OUT:  {devicesDict[i]['max_output_channels']}"
     devicesList.append(name)
 
 def inputChanged(event, *args):
@@ -53,101 +56,103 @@ variableInputDev = tk.StringVar(mainWindow)
 variableInputDev.set('- input AudioDevice -')
 variableInputDev.trace('w', inputChanged)
 opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
-opt1.config(width=25)
+opt1.config(width=30)
 opt1.place(x=10, y=40)
 
 ###################### 2 - Selezione Audio Device di Output
-outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device",fg='#36454f')
+outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.place(x=10, y=90)
 
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
 variableOutputDev.trace('w', outputChanged)
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
-opt2.config(width=25)
+opt2.config(width=30)
 opt2.place(x=10, y=120)
 
-# 3 - Selezione numero canali Input
-inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channels (Microphones)",fg='#36454f')
-inputChannelLabel.place(x=300, y=10)
+###################### 3 - Selezione numero canali Input
+inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
+inputChannelLabel.place(x=350, y=10)
 
 #InputDevicesListInputCh = np.arange(1,NInputs+1)
 variableInputCh = tk.StringVar(mainWindow)
-variableInputCh.set('- number of inputs -')
+variableInputCh.set('- number of inputs -  ')
 opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
-opt3.place(x=300, y=40)
+opt3.place(x=415, y=40)
 
-# 4 - Selezione numero canali Output
-outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)",fg='#36454f')
-outputChannelLabel.place(x=300, y=90)
+###################### 4 - Selezione numero canali  
+outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
+outputChannelLabel.place(x=350, y=90)
 
 variableOutputCh = tk.StringVar(mainWindow)
 variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
-opt4.place(x=300, y=120)
+opt4.place(x=415, y=120)
 
 ###################### Istruzioni Collegamento 2
-istructions2 = tk.Label(mainWindow, text="Connect the selected number n of\nmicrophones to the first n input channels\nof the selected input device\n\nConnect the selected number m of\nloudspeakers to the first m output channels\nof the selected output device", fg='#36454f')
-istructions2.place(x=10, y=170)
+instructions1 = tk.Label(mainWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
+instructions1.place(x=55, y=160)
+instructions2 = tk.Label(mainWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n---\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device", bg='#36454f', fg='#f7f7f7')
+instructions2.place(x=10, y=190)
 
 ###################### 5 - Selezione tipo di misura
-measureTypelLabel = tk.Label(mainWindow, text="Type of measure",fg='#36454f')
-measureTypelLabel.place(x=660, y=10)
+measureTypelLabel = tk.Label(mainWindow, text="Type of measure", bg='#36454f', fg='#f7f7f7')
+measureTypelLabel.place(x=700, y=10)
 
 InputDevicesListMeasure = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
 variableMeasure = tk.StringVar(mainWindow)
 variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
-opt5.place(x=660, y=40)
+opt5.place(x=700, y=40)
 
 ###################### 6 - Selezione Sampling Frequency
-frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]",fg='#36454f')
-frequencyLabel.place(x=660, y=90)
+frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
+frequencyLabel.place(x=700, y=90)
 
 InputDevicesListFreq = [44100, 48000,96000]
 variableFreq = tk.StringVar(mainWindow)
 variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
-opt6.place(x=660, y=120)
+opt6.place(x=700, y=120)
 
 ###################### 7 - Selezione tipo di calibrazione
-calibrationLabel = tk.Label(mainWindow, text="Calibration Type",fg='#36454f')
-calibrationLabel.place(x=660, y=170)
+calibrationLabel = tk.Label(mainWindow, text="Calibration Type", bg='#36454f', fg='#f7f7f7')
+calibrationLabel.place(x=700, y=170)
 
 InputDevicesListCal = ['2D calibration', '3D calibration']
 variableCal = tk.StringVar(mainWindow)
-variableCal.set('- none -')
+variableCal.set('- select -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
-opt7.place(x=660, y=200)
+opt7.place(x=700, y=200)
 
 ###################### 8 - Delay o no Delay
-delayLabel = tk.Label(mainWindow, text="Delay estimation type",fg='#36454f')
-delayLabel.place(x=660, y=250)
+delayLabel = tk.Label(mainWindow, text="Delay estimation type", bg='#36454f', fg='#f7f7f7')
+delayLabel.place(x=700, y=250)
 
 InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
 variableDelay = tk.StringVar(mainWindow)
 variableDelay.set('- select -')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
-opt8.place(x=660, y=280)
+opt8.place(x=700, y=280)
 
 ###################### 9 - Sound Speed estimation
-soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation",fg='#36454f')
-soundSpeedLabel.place(x=660, y=330)
+soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation", bg='#36454f', fg='#f7f7f7')
+soundSpeedLabel.place(x=700, y=330)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
 variableSoundSpeed = tk.StringVar(mainWindow)
 variableSoundSpeed.set('- select -')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
-opt9.place(x=660, y=360)
+opt9.place(x=700, y=360)
 t = tk.Entry(mainWindow, width=5)
-t.place(x=660, y=390)
+t.place(x=700, y=390)
 
 ###################### 10 - Nome della misura
-measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below\nwithout spaces between words",fg='#36454f')
-measureNameLabel.place(x=660, y=440)
+measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below without spaces", bg='#36454f', fg='#f7f7f7')
+measureNameLabel.place(x=350, y=170)
 
-Name = tk.Entry(mainWindow, width=22)
-Name.place(x=660, y=490)
+Name = tk.Entry(mainWindow, width=18)
+Name.place(x=415, y=200)
 
 ###################### 11 - Dimensioni della stanza
 def printRoomDimension():
@@ -158,12 +163,12 @@ def printRoomDimension():
     if variableCal.get() == '2D calibration' :
         dimension2DWindow.geometry("270x130") # dimensioni
 
-        xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:')
+        xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
         xAxisLabel.place(x=10, y=10)
         x_dim = tk.Entry(dimension2DWindow, width=5)
         x_dim.place(x=200, y=10)
 
-        yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:')
+        yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:', bg='#36454f', fg='#f7f7f7')
         yAxisLabel.place(x=10, y=50)
         y_dim = tk.Entry(dimension2DWindow, width=5)
         y_dim.place(x=200, y=50)
@@ -174,25 +179,25 @@ def printRoomDimension():
     elif variableCal.get() == '3D calibration':
         dimension2DWindow.geometry("270x170") # dimensioni
 
-        xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:')
+        xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
         xAxisLabel.place(x=10, y=10)
         x_dim = tk.Entry(dimension2DWindow, width=5)
         x_dim.place(x=200, y=10)
         
-        yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:')
+        yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:', bg='#36454f', fg='#f7f7f7')
         yAxisLabel.place(x=10, y=50)
         y_dim = tk.Entry(dimension2DWindow, width=5)
         y_dim.place(x=200, y=50)
        
-        zAxisLabel = tk.Label(dimension2DWindow, text='Insert room Z dimension [m]:')
+        zAxisLabel = tk.Label(dimension2DWindow, text='Insert room Z dimension [m]:', bg='#36454f', fg='#f7f7f7')
         zAxisLabel.place(x=10, y=90)
         z_dim = tk.Entry(dimension2DWindow, width=5)
         z_dim.place(x=200, y=90)
 
-    elif variableCal.get() == '- none -':
+    elif variableCal.get() == '- select -':
         dimension2DWindow.geometry("270x60") # dimensioni
 
-        errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before')
+        errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before', bg='#36454f', fg='#f7f7f7')
         errDimLabel.place(x=10, y=10)
 
     def getRoomDimensions():
@@ -204,22 +209,22 @@ def printRoomDimension():
         y_axis = float(y_dim.get())
         z_axis = float(z_dim.get())
     
-    getDimensions = tk.Button(dimension2DWindow, text='Click here to confirm dimemsions', command=getRoomDimensions)
+    getDimensions = tk.Button(dimension2DWindow, text='CLICK HERE to confirm dimemsions', command=getRoomDimensions, fg='#36454f')
 
     if variableCal.get() == '2D calibration' :
         getDimensions.place(x=10, y=90)
     elif variableCal.get() == '3D calibration':
         getDimensions.place(x=10, y=130)
 
-roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to confirm Room Dimensions", command = printRoomDimension, fg='#36454f')
-roomDimensionButton.place(x=300, y=230)
+roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions                    ", command = printRoomDimension, fg='#36454f')
+roomDimensionButton.place(x=325, y=250)
 
 ###################### 12 - Posizione Loudspeakers
 def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
     LoudSpeakerWindow = tk.Tk()
     LoudSpeakerWindow.title("Loudspeakers Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(710, (var_i*100)/2.5)) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(810, (8+(var_i*100)/2.5))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal.get() == '2D calibration' :
@@ -230,7 +235,7 @@ def printLoudspeakerPosition():
         y_pos = []
         z_pos = 0
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y)").place(x=10, y=11*3.5*i)
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y)",  bg='#36454f', fg='#f7f7f7').place(x=10, y=11*3.5*i)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             x_pos[i].place(x=220, y=11*3.5*i)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
@@ -241,7 +246,7 @@ def printLoudspeakerPosition():
         y_pos = []
         z_pos = []
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y ; Z)").place(x=10, y=11*3.5*i)
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y ; Z)",  bg='#36454f', fg='#f7f7f7').place(x=10, y=11*3.5*i)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             x_pos[i].place(x=230, y=11*3.5*i)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
@@ -249,8 +254,8 @@ def printLoudspeakerPosition():
             z_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             z_pos[i].place(x=370, y=11*3.5*i)
             
-    else:
-        errDimLabel2 = tk.Label(LoudSpeakerWindow, text='Select a Calibration Type before')
+    elif variableCal.get() == '- select -':
+        errDimLabel2 = tk.Label(LoudSpeakerWindow, text='Select a Calibration Type before', bg='#36454f', fg='#f7f7f7')
         errDimLabel2.place(x=10, y=10)
 
     def getLoudSpeakersPositions():
@@ -267,11 +272,11 @@ def printLoudspeakerPosition():
                 knownPos[i,1] = float(y_pos[i].get())
                 knownPos[i,2] = float(z_pos[i].get())
     
-    getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm Loudspeaker\nknown positions', command=getLoudSpeakersPositions)
+    getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known Loudspeaker positions', command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.place(x=440, y=10)
 
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
-loudspeakerPositionButton.place(x=300, y=260)       
+loudspeakerPositionButton.place(x=325, y=300)       
 
 # 13 - START MEASURE BUTTON -> TO DO
 def multipleStartFunctions(): # to get all the needed varaibles
@@ -333,6 +338,8 @@ def multipleStartFunctions(): # to get all the needed varaibles
     print(knownPos)
     print('\n')
 
+    ## CREAZIONE CARTELLE ## -> TO DO
+
     ### CREAZIONE FILE DI TESTO ##
     # SineSweep measure
     if measureMethod == 1:
@@ -389,29 +396,29 @@ def multipleStartFunctions(): # to get all the needed varaibles
               f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))      
 
     # MISURA
-    if measureMethod == 1 :
-        # Misura SineSweep
-        data = createDataMatrix(inputChannels,outputChannels)
-        for i in np.arange(1, outputChannels+1) :
-            RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-            data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
-    elif measureMethod == 2 :
-        # Misura MLS
-        data = createDataMatrix(inputChannels,outputChannels)
-        for i in np.arange(1, outputChannels+1) :
-            MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-            data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
-        #print("\nLa MLS ancora non l'abbiamo fatta...\n")
-        #exit()
-    elif measureMethod == 3 :
-        data = createRir(knownPos, cal_type, delayType)
+    #if measureMethod == 1 :
+    #    # Misura SineSweep
+    #    data = createDataMatrix(inputChannels,outputChannels)
+    #    for i in np.arange(1, outputChannels+1) :
+    #        RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
+    #elif measureMethod == 2 :
+    #    # Misura MLS
+    #    data = createDataMatrix(inputChannels,outputChannels)
+    #    for i in np.arange(1, outputChannels+1) :
+    #        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
+    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
+    #    #print("\nLa MLS ancora non l'abbiamo fatta...\n")
+    #    #exit()
+    #elif measureMethod == 3 :
+    #    data = createRir(knownPos, cal_type, delayType)
 
-buttonStart = tk.Button(mainWindow, height=4, width=10, text="START MEASURE", command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.place(x=700, y=540)
+buttonStart = tk.Button(mainWindow, height=2, width=15, text="START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart.place(x=400, y=360)
 
 # 14 - Print Posizione Microfoni stimata -> TO DO
-micPositionPrintLabel = tk.Label(mainWindow, text="MICROPHONES POSITION ESTIMATION PLOT",fg='#36454f')
-micPositionPrintLabel.place(x=10, y=310)
+micPositionPrintLabel = tk.Button(mainWindow, text="CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
+micPositionPrintLabel.place(x=35, y=340)
 
 mainWindow.mainloop()
 # END
