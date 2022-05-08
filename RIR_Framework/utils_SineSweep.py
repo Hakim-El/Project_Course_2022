@@ -26,15 +26,15 @@ def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevic
 
 #--------------------------
 
-def saverecording(RIR, RIRtoSave, testsignal, recorded, fs):
+def saverecording(RIR, RIRtoSave, testsignal, recorded, fs, measureName):
 
         dirflag = False
-        counter = 1
-        dirname = 'SineSweepMeasures/MeasureLoudspeaker1'
+        counter = 0
+        dirname = 'SineSweepMeasures/' + str(measureName)
         while dirflag == False:
             if os.path.exists(dirname):
                 counter = counter + 1
-                dirname = 'SineSweepMeasures/MeasureLoudspeaker' + str(counter)
+                dirname = 'SineSweepMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(counter)
             else:
                 os.mkdir(dirname)
                 dirflag = True
@@ -54,6 +54,6 @@ def saverecording(RIR, RIRtoSave, testsignal, recorded, fs):
         wavwrite( 'SineSweepMeasures/_lastMeasureData_/sigtest.wav',fs,testsignal)
        # for idx in range(recorded.shape[1]):
         #    wavwrite('sigrec' + str(idx+1) + '.wav',fs,recorded[:,idx])
-         #   wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])
+        #    wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])
 
         print('Success! Recording saved in directory ' + dirname)

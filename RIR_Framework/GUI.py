@@ -148,11 +148,11 @@ t = tk.Entry(mainWindow, width=5)
 t.place(x=700, y=390)
 
 ###################### 10 - Nome della misura
-measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below without spaces", bg='#36454f', fg='#f7f7f7')
-measureNameLabel.place(x=350, y=170)
+measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below", bg='#36454f', fg='#f7f7f7')
+measureNameLabel.place(x=325, y=170)
 
-Name = tk.Entry(mainWindow, width=18)
-Name.place(x=415, y=200)
+Name = tk.Entry(mainWindow, width=38)
+Name.place(x=325, y=200)
 
 ###################### 11 - Dimensioni della stanza
 def printRoomDimension():
@@ -338,7 +338,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     print(knownPos)
     print('\n')
 
-    ## CREAZIONE CARTELLE ## -> TO DO
+    ## CREAZIONE CARTELLE ##
     #creazione cartelle misura primcipali (SineSweep & MLS)
     dirnameSineSweep = 'SineSweepMeasures/'
     dirnameMLS = 'MLSMeasures/'
@@ -346,30 +346,42 @@ def multipleStartFunctions(): # to get all the needed varaibles
         dirSineSweepFlag = True
     else :
         dirSineSweepFlag = False
-    print(dirSineSweepFlag)
     
     if os.path.exists(dirnameMLS):
         dirMLSFlag = True
     else :
         dirMLSFlag = False
-    print(dirMLSFlag)
 
-    #creazione cartella _lastMeasureData_ -> TO DO
+    if dirSineSweepFlag == False:
+        os.mkdir('SineSweepMeasures/')
+        dirSineSweepFlag = True
+
+    if dirMLSFlag == False:
+        os.mkdir('MLSMeasures/')
+        dirMLSFlag = True
+
+    #creazione cartella _lastMeasureData_
     dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
     dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
     if os.path.exists(dirnameLast1):
         dirLast1Flag = True
     else :
         dirLast1Flag = False
-    print(dirLast1Flag)
     
     if os.path.exists(dirnameLast2):
         dirLast2Flag = True
     else :
         dirLast2Flag = False
-    print(dirLast2Flag)
 
-    #creazione sottocartelle misura
+    if dirLast1Flag == False:
+        os.mkdir('SineSweepMeasures/_lastMeasureData_')
+        dirLast1Flag = True
+
+    if dirLast2Flag == False:
+        os.mkdir('MLSMeasures/_lastMeasureData_')
+        dirLast2Flag = True
+
+    #creazione sottocartelle con dati misura
     if dirSineSweepFlag == True and measureMethod == 1:
         dirname1 = 'SineSweepMeasures/' + str(measureName)
         os.mkdir(dirname1)
@@ -377,7 +389,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         dirname2 = 'MLSMeasures/' + str(measureName)
         os.mkdir(dirname2)
     
-    ### CREAZIONE FILE DI TESTO ##
+    ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure
     if measureMethod == 1:
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.txt', 'w') as f:
@@ -432,21 +444,19 @@ def multipleStartFunctions(): # to get all the needed varaibles
              for i in range (0,outputChannels) : 
               f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))      
 
-    # MISURA
-    #if measureMethod == 1 :
-    #    # Misura SineSweep
-    #    data = createDataMatrix(inputChannels,outputChannels)
-    #    for i in np.arange(1, outputChannels+1) :
-    #        RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
-    #elif measureMethod == 2 :
-    #    # Misura MLS
-    #    data = createDataMatrix(inputChannels,outputChannels)
-    #    for i in np.arange(1, outputChannels+1) :
-    #        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice)
-    #        data = fillDataMatrix(data,inputChannels,i-1) #da testare con outputChannels>=2
-    #    #print("\nLa MLS ancora non l'abbiamo fatta...\n")
-    #    #exit()
+    ## MISURA ##
+    if measureMethod == 1 :
+        # Misura SineSweep
+        data = createDataMatrix(inputChannels,outputChannels)
+        for i in np.arange(1, outputChannels+1) :
+            RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName)
+            data = fillDataMatrix(data,inputChannels,i-1)
+    elif measureMethod == 2 :
+        # Misura MLS
+        data = createDataMatrix(inputChannels,outputChannels)
+        for i in np.arange(1, outputChannels+1) :
+            MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName)
+            data = fillDataMatrix(data,inputChannels,i-1)
     #elif measureMethod == 3 :
     #    data = createRir(knownPos, cal_type, delayType)
 
@@ -455,7 +465,8 @@ buttonStart.place(x=400, y=360)
 
 # 14 - Print Posizione Microfoni stimata -> TO DO
 micPositionPrintLabel = tk.Button(mainWindow, text="CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
-micPositionPrintLabel.place(x=35, y=340)
+micPositionPrintLabel.place(x=35, y=335)
 
 mainWindow.mainloop()
+
 # END

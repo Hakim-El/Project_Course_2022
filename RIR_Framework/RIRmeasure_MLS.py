@@ -7,7 +7,7 @@ from numpy.fft import fft, ifft, fftshift, fftfreq
 from scipy.io.wavfile import write as wavwrite
 import os
 
-def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice):
+def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
     orderMLS = 18
@@ -31,17 +31,17 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     specMLS = fft(mls)
     RIR = ifft(specMLS * np.conj(specRecorded)).real # circular cross correlation
 
-    plt.plot(RIR)
-    plt.show()
+    #plt.plot(RIR)
+    #plt.show()
 
     # Salvataggio files RIR
     dirflag = False
-    counter = 1
-    dirname = 'MLSMeasures/MeasureLoudspeaker1'
+    counter = 0
+    dirname = 'MLSMeasures/' + str(measureName)
     while dirflag == False:
         if os.path.exists(dirname):
             counter = counter + 1
-            dirname = 'MLSMeasures/MeasureLoudspeaker' + str(counter)
+            dirname = 'MLSMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(counter)
         else:
             os.mkdir(dirname)
             dirflag = True

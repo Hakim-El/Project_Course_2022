@@ -11,7 +11,7 @@ import utils_SineSweep as utils
 # ATTENZIONE: Il corretto input e output viene impostato nel file utils!
 # é tutto una funzione richiamata nel MAIN qui!
 
-def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice):
+def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName):
     # --- Parse command line arguments and check defaults
     flag_defaultsInitialized = parse._checkdefaults()
     args = parse._parse()
@@ -74,4 +74,4 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
             RIRtoSave = RIR[RIR.shape[0]//2:,:]
 
             # Save recordings and RIRs
-            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs)
+            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName)
