@@ -17,11 +17,11 @@ from RIRsimulation import createRir
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("940x450") # dimensioni
+mainWindow.geometry("940x550") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
 credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 12 italic'), bg='#36454f', fg='#000000')
-credits.place(x=10, y=420)
+credits.place(x=10, y=520)
 
 ###################### 1 - Selezione Audio Device di Input
 inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
@@ -147,12 +147,23 @@ opt9.place(x=700, y=360)
 t = tk.Entry(mainWindow, width=5)
 t.place(x=700, y=390)
 
+
+###################### Tara del sistema 
+comment1 = tk.Label(mainWindow, text='SYSTEM TARE', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
+comment1.place(x=425, y=160)
+comment2 = tk.Label(mainWindow, text="Point the mic capsule at a certain distance (d)\nfrom a loudspeaker\n---\nPress TEST button to launch the test signal\nfor the latency estimation", bg='#36454f', fg='#f7f7f7')
+comment2.place(x=350, y=190)
+
+testSignalButton = tk.Button(mainWindow, text="TEST", fg='#36454f')
+testSignalButton.place(x=450, y=280)   
+
+
 ###################### 10 - Nome della misura
-measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measue below", bg='#36454f', fg='#f7f7f7')
-measureNameLabel.place(x=325, y=170)
+measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measure below", bg='#36454f', fg='#f7f7f7')
+measureNameLabel.place(x=325, y=320)
 
 Name = tk.Entry(mainWindow, width=38)
-Name.place(x=325, y=200)
+Name.place(x=325, y=350)
 
 ###################### 11 - Dimensioni della stanza
 def printRoomDimension():
@@ -217,7 +228,7 @@ def printRoomDimension():
         getDimensions.place(x=10, y=130)
 
 roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions                    ", command = printRoomDimension, fg='#36454f')
-roomDimensionButton.place(x=325, y=250)
+roomDimensionButton.place(x=325, y=400)
 
 ###################### 12 - Posizione Loudspeakers
 def printLoudspeakerPosition():
@@ -276,7 +287,7 @@ def printLoudspeakerPosition():
     getPositions.place(x=440, y=10)
 
 loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
-loudspeakerPositionButton.place(x=325, y=300)       
+loudspeakerPositionButton.place(x=325, y=450)       
 
 ###################### 13 - START MEASURE BUTTON
 def multipleStartFunctions(): # to get all the needed varaibles
@@ -460,11 +471,8 @@ def multipleStartFunctions(): # to get all the needed varaibles
     #elif measureMethod == 3 :
     #    data = createRir(knownPos, cal_type, delayType)
 
-    ## CALIBRATION ##
-    calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
-
 buttonStart = tk.Button(mainWindow, height=2, width=15, text="START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.place(x=400, y=360)
+buttonStart.place(x=400, y=490)
 
 # 14 - Print Posizione Microfoni stimata -> TO DO
 micPositionPrintLabel = tk.Button(mainWindow, text="CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
