@@ -9,7 +9,7 @@ import os
 
 from RIRmeasure_SineSweep import RIRmeasure_function
 from RIRmeasure_MLS import MLSmeasure_function
-from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix
+from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
 from RIRsimulation import createRir
 
 ###################################################################################################
@@ -149,12 +149,45 @@ t.place(x=700, y=390)
 
 
 ###################### Tara del sistema 
+
+# prima della funzione creare l'input per inserire la distanza dal Loudspeaker
+
 comment1 = tk.Label(mainWindow, text='SYSTEM TARE', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
 comment1.place(x=425, y=160)
 comment2 = tk.Label(mainWindow, text="Point the mic capsule at a certain distance (d)\nfrom a loudspeaker\n---\nPress TEST button to launch the test signal\nfor the latency estimation", bg='#36454f', fg='#f7f7f7')
 comment2.place(x=350, y=190)
 
-testSignalButton = tk.Button(mainWindow, text="TEST", fg='#36454f')
+variableDistance = tk.Entry(mainWindow, width=5)
+variableDistance.place(x=500, y=280)
+
+def systemTare():
+    global systemLatency
+    fs = int(variableFreq.get())
+    inputDevice = int(variableInputDev.get()[0])
+    outputDevice = int(variableOutputDev.get()[0])
+
+    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+        c = 343
+    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+        c = (331.3 + 0.606*int(t.get())) # m/s
+    else:
+        c = 343
+
+    d = float(variableDistance.get())
+
+    # by default the tare uses sine sweep since the only information neede is the pirst peak position
+    RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
+
+    tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIRac.npy')
+    tareRIR = tareRIR[:,0]
+    firstPeak = find_directPath(tareRIR)
+    sampleDist = (d/c)*fs
+    systemLatency = firstPeak-sampleDist
+
+    # cancellare la cartella 'Tare'
+
+
+testSignalButton = tk.Button(mainWindow, text="TEST",command=systemTare, fg='#36454f')
 testSignalButton.place(x=450, y=280)   
 
 
@@ -460,7 +493,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         # Misura SineSweep
         data = createDataMatrix(inputChannels,outputChannels)
         for i in np.arange(1, outputChannels+1) :
-            RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName)
+            RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
             data = fillDataMatrix(data,inputChannels,i-1)
     elif measureMethod == 2 :
         # Misura MLS
