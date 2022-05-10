@@ -182,7 +182,7 @@ def systemTare():
     tareRIR = tareRIR[:,0]
     firstPeak = find_directPath(tareRIR)
     sampleDist = (d/c)*fs
-    systemLatency = firstPeak-sampleDist
+    systemLatency = int(firstPeak-sampleDist)
 
     # cancellare la cartella 'Tare'
 
