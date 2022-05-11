@@ -24,7 +24,7 @@ credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lelli
 credits.place(x=10, y=520)
 
 ###################### 1 - Selezione Audio Device di Input
-inputDeviceLabel = tk.Label(mainWindow, text="Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
+inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
 inputDeviceLabel.place(x=10, y=10)
 
 devicesDict = sd.query_devices()
@@ -60,7 +60,7 @@ opt1.config(width=30)
 opt1.place(x=10, y=40)
 
 ###################### 2 - Selezione Audio Device di Output
-outputDeviceLabel = tk.Label(mainWindow, text="Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
+outputDeviceLabel = tk.Label(mainWindow, text="3) Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.place(x=10, y=90)
 
 variableOutputDev = tk.StringVar(mainWindow)
@@ -71,7 +71,7 @@ opt2.config(width=30)
 opt2.place(x=10, y=120)
 
 ###################### 3 - Selezione numero canali Input
-inputChannelLabel = tk.Label(mainWindow, text="Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
+inputChannelLabel = tk.Label(mainWindow, text="2) Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
 inputChannelLabel.place(x=350, y=10)
 
 #InputDevicesListInputCh = np.arange(1,NInputs+1)
@@ -81,7 +81,7 @@ opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
 opt3.place(x=415, y=40)
 
 ###################### 4 - Selezione numero canali  
-outputChannelLabel = tk.Label(mainWindow, text="Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
+outputChannelLabel = tk.Label(mainWindow, text="4) Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
 outputChannelLabel.place(x=350, y=90)
 
 variableOutputCh = tk.StringVar(mainWindow)
@@ -96,7 +96,7 @@ instructions2 = tk.Label(mainWindow, text="Connect the selected number N of\nmic
 instructions2.place(x=10, y=190)
 
 ###################### 5 - Selezione tipo di misura
-measureTypelLabel = tk.Label(mainWindow, text="Type of measure", bg='#36454f', fg='#f7f7f7')
+measureTypelLabel = tk.Label(mainWindow, text="5) Type of measure", bg='#36454f', fg='#f7f7f7')
 measureTypelLabel.place(x=700, y=10)
 
 InputDevicesListMeasure = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
@@ -106,7 +106,7 @@ opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
 opt5.place(x=700, y=40)
 
 ###################### 6 - Selezione Sampling Frequency
-frequencyLabel = tk.Label(mainWindow, text="Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
+frequencyLabel = tk.Label(mainWindow, text="6) Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
 frequencyLabel.place(x=700, y=90)
 
 InputDevicesListFreq = [44100, 48000,96000]
