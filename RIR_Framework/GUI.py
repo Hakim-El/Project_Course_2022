@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import ImageTk, Image
 from typing import Literal
 import sounddevice as sd
 import pyroomacoustics
@@ -284,14 +285,14 @@ loudspeakerPositionButton.place(x=325, y=450)
 
 def measureCalWindow():
     measureCalWindow = tk.Tk()
-    measureCalWindow.title("Measurement Calibration") # titolo
-    measureCalWindow.geometry('400x400') # dimensioni
+    measureCalWindow.title("System Calibration") # titolo
+    measureCalWindow.geometry('470x300') # dimensioni
     measureCalWindow.config(bg='#36454f') # colore
 
-    comment1 = tk.Label(measureCalWindow, text='SYSTEM TARE', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
-    comment1.place(x=10, y=10)
-    comment2 = tk.Label(measureCalWindow, text="Point the capsule of the microphone connected to the first Input Channel \nto the center of the loudspeaker connected to the first Output Channel\nMeasure 50cm between the lodspeaker and the microphone capsule\n---\nPress TEST button to launch the test signal\nfor the latency estimation", bg='#36454f', fg='#f7f7f7')
-    comment2.place(x=10, y=30)
+    comment1 = tk.Label(measureCalWindow, text='SYSTEM CALIBRATION', font='Helvetica 18 bold', bg='#36454f', fg='#f7f7f7')
+    comment1.place(x=140, y=10)
+    comment2 = tk.Label(measureCalWindow, text="Point the capsule of the microphone connected to the first Input Channel\nto the center of the loudspeaker connected to the first Output Channel\n---\nPlace the microphone capsule at 50cm from the center of the lodspeaker\n---\nPress CALIBRATE button\nfor the latency estimation\n---\nWait 20 seconds", bg='#36454f', fg='#f7f7f7')
+    comment2.place(x=10, y=50)
     
     def systemTare():
         global systemLatency
@@ -306,7 +307,8 @@ def measureCalWindow():
         else:
             c = 343
 
-        d = float(variableDistance.get())
+        #d = float(variableDistance.get())
+        d = 0.5 #[m]
 
         # by default the tare uses sine sweep since the only information neede is the pirst peak position
         RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
@@ -317,15 +319,15 @@ def measureCalWindow():
         sampleDist = (d/c)*fs
         systemLatency = int(firstPeak-sampleDist)
 
-    measureCalibrationButton = tk.Button(measureCalWindow, text="TEST",command=systemTare, fg='#36454f')
-    measureCalibrationButton.place(x=300, y=100)   
+    measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 16 bold', fg='#36454f')
+    measureCalibrationButton.place(x=170, y=230)   
 
     # cancellare la cartella 'Tare'
 
     measureCalWindow.mainloop()
 
-testSignalButton = tk.Button(mainWindow, text="13) Latency Calibration",command=measureCalWindow, fg='#36454f')
-testSignalButton.place(x=450, y=280)   
+testSignalButton = tk.Button(mainWindow, text="13) System Calibration", command=measureCalWindow, fg='#36454f')
+testSignalButton.place(x=480, y=280)   
 
 ###################### 14 - START MEASURE BUTTON ######################
 def multipleStartFunctions(): # to get all the needed varaibles
