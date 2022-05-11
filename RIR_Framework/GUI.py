@@ -23,7 +23,7 @@ mainWindow.config(bg='#36454f') # colore
 credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 12 italic'), bg='#36454f', fg='#000000')
 credits.place(x=10, y=520)
 
-###################### 1 - Selezione Audio Device di Input
+###################### 1 - Selezione Audio Device di Input ######################
 inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
 inputDeviceLabel.place(x=10, y=10)
 
@@ -59,7 +59,7 @@ opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
 opt1.config(width=30)
 opt1.place(x=10, y=40)
 
-###################### 2 - Selezione Audio Device di Output
+###################### 2 - Selezione Audio Device di Output ######################
 outputDeviceLabel = tk.Label(mainWindow, text="3) Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.place(x=10, y=90)
 
@@ -70,7 +70,7 @@ opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
 opt2.config(width=30)
 opt2.place(x=10, y=120)
 
-###################### 3 - Selezione numero canali Input
+###################### 3 - Selezione numero canali Input ######################
 inputChannelLabel = tk.Label(mainWindow, text="2) Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
 inputChannelLabel.place(x=350, y=10)
 
@@ -80,7 +80,7 @@ variableInputCh.set('- number of inputs -  ')
 opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
 opt3.place(x=415, y=40)
 
-###################### 4 - Selezione numero canali  
+###################### 4 - Selezione numero canali   ######################
 outputChannelLabel = tk.Label(mainWindow, text="4) Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
 outputChannelLabel.place(x=350, y=90)
 
@@ -89,13 +89,13 @@ variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
 opt4.place(x=415, y=120)
 
-###################### Istruzioni Collegamento 2
+###################### Istruzioni Collegamento ######################
 instructions1 = tk.Label(mainWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
 instructions1.place(x=55, y=160)
 instructions2 = tk.Label(mainWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n---\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device", bg='#36454f', fg='#f7f7f7')
 instructions2.place(x=10, y=190)
 
-###################### 5 - Selezione tipo di misura
+###################### 5 - Selezione tipo di misura ######################
 measureTypelLabel = tk.Label(mainWindow, text="5) Type of measure", bg='#36454f', fg='#f7f7f7')
 measureTypelLabel.place(x=700, y=10)
 
@@ -105,7 +105,7 @@ variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
 opt5.place(x=700, y=40)
 
-###################### 6 - Selezione Sampling Frequency
+###################### 6 - Selezione Sampling Frequency ######################
 frequencyLabel = tk.Label(mainWindow, text="6) Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
 frequencyLabel.place(x=700, y=90)
 
@@ -115,8 +115,8 @@ variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
 opt6.place(x=700, y=120)
 
-###################### 7 - Selezione tipo di calibrazione
-calibrationLabel = tk.Label(mainWindow, text="Calibration Type", bg='#36454f', fg='#f7f7f7')
+###################### 7 - Selezione tipo di calibrazione ######################
+calibrationLabel = tk.Label(mainWindow, text="7) Calibration Type", bg='#36454f', fg='#f7f7f7')
 calibrationLabel.place(x=700, y=170)
 
 InputDevicesListCal = ['2D calibration', '3D calibration']
@@ -125,8 +125,8 @@ variableCal.set('- select -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
 opt7.place(x=700, y=200)
 
-###################### 8 - Delay o no Delay
-delayLabel = tk.Label(mainWindow, text="Delay estimation type", bg='#36454f', fg='#f7f7f7')
+###################### 8 - Delay o no Delay ######################
+delayLabel = tk.Label(mainWindow, text="8) Delay estimation type", bg='#36454f', fg='#f7f7f7')
 delayLabel.place(x=700, y=250)
 
 InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
@@ -135,8 +135,8 @@ variableDelay.set('- select -')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
 opt8.place(x=700, y=280)
 
-###################### 9 - Sound Speed estimation
-soundSpeedLabel = tk.Label(mainWindow, text="Sound Speed estimation", bg='#36454f', fg='#f7f7f7')
+###################### 9 - Sound Speed estimation ######################
+soundSpeedLabel = tk.Label(mainWindow, text="9) Sound Speed estimation", bg='#36454f', fg='#f7f7f7')
 soundSpeedLabel.place(x=700, y=330)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
@@ -147,58 +147,14 @@ opt9.place(x=700, y=360)
 t = tk.Entry(mainWindow, width=5)
 t.place(x=700, y=390)
 
-
-###################### Tara del sistema 
-
-# prima della funzione creare l'input per inserire la distanza dal Loudspeaker
-
-comment1 = tk.Label(mainWindow, text='SYSTEM TARE', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
-comment1.place(x=425, y=160)
-comment2 = tk.Label(mainWindow, text="Point the mic capsule at a certain distance (d)\nfrom a loudspeaker\n---\nPress TEST button to launch the test signal\nfor the latency estimation", bg='#36454f', fg='#f7f7f7')
-comment2.place(x=350, y=190)
-
-variableDistance = tk.Entry(mainWindow, width=5)
-variableDistance.place(x=500, y=280)
-
-def systemTare():
-    global systemLatency
-    fs = int(variableFreq.get())
-    inputDevice = int(variableInputDev.get()[0])
-    outputDevice = int(variableOutputDev.get()[0])
-
-    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-        c = 343
-    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-        c = (331.3 + 0.606*int(t.get())) # m/s
-    else:
-        c = 343
-
-    d = float(variableDistance.get())
-
-    # by default the tare uses sine sweep since the only information neede is the pirst peak position
-    RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
-
-    tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIRac.npy')
-    tareRIR = tareRIR[:,0]
-    firstPeak = find_directPath(tareRIR)
-    sampleDist = (d/c)*fs
-    systemLatency = int(firstPeak-sampleDist)
-
-    # cancellare la cartella 'Tare'
-
-
-testSignalButton = tk.Button(mainWindow, text="TEST",command=systemTare, fg='#36454f')
-testSignalButton.place(x=450, y=280)   
-
-
-###################### 10 - Nome della misura
-measureNameLabel = tk.Label(mainWindow, text="Insert the name of the measure below", bg='#36454f', fg='#f7f7f7')
+###################### 10 - Nome della misura ######################
+measureNameLabel = tk.Label(mainWindow, text="10) Insert the name of the measure below", bg='#36454f', fg='#f7f7f7')
 measureNameLabel.place(x=325, y=320)
 
 Name = tk.Entry(mainWindow, width=38)
 Name.place(x=325, y=350)
 
-###################### 11 - Dimensioni della stanza
+###################### 11 - Dimensioni della stanza ######################
 def printRoomDimension():
     dimension2DWindow = tk.Tk()
     dimension2DWindow.title("Room Dimensions") # titolo
@@ -260,10 +216,10 @@ def printRoomDimension():
     elif variableCal.get() == '3D calibration':
         getDimensions.place(x=10, y=130)
 
-roomDimensionButton = tk.Button(mainWindow, text="CLICK HERE to insert Room Dimensions                    ", command = printRoomDimension, fg='#36454f')
+roomDimensionButton = tk.Button(mainWindow, text="11) CLICK HERE to insert Room Dimensions                   ", command = printRoomDimension, fg='#36454f')
 roomDimensionButton.place(x=325, y=400)
 
-###################### 12 - Posizione Loudspeakers
+###################### 12 - Posizione Loudspeakers ######################
 def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
     LoudSpeakerWindow = tk.Tk()
@@ -319,10 +275,59 @@ def printLoudspeakerPosition():
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known Loudspeaker positions', command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.place(x=440, y=10)
 
-loudspeakerPositionButton = tk.Button(mainWindow, text="CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton = tk.Button(mainWindow, text="12) CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.place(x=325, y=450)       
 
-###################### 13 - START MEASURE BUTTON
+###################### 13 - Calibrazione Sistema di Misura ######################
+
+# prima della funzione creare l'input per inserire la distanza dal Loudspeaker
+
+def measureCalWindow():
+    measureCalWindow = tk.Tk()
+    measureCalWindow.title("Measurement Calibration") # titolo
+    measureCalWindow.geometry('400x400') # dimensioni
+    measureCalWindow.config(bg='#36454f') # colore
+
+    comment1 = tk.Label(measureCalWindow, text='SYSTEM TARE', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
+    comment1.place(x=10, y=10)
+    comment2 = tk.Label(measureCalWindow, text="Point the capsule of the microphone connected to the first Input Channel \nto the center of the loudspeaker connected to the first Output Channel\nMeasure 50cm between the lodspeaker and the microphone capsule\n---\nPress TEST button to launch the test signal\nfor the latency estimation", bg='#36454f', fg='#f7f7f7')
+    comment2.place(x=10, y=30)
+    
+    def systemTare():
+        global systemLatency
+        fs = int(variableFreq.get())
+        inputDevice = int(variableInputDev.get()[0])
+        outputDevice = int(variableOutputDev.get()[0])
+
+        if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+            c = 343
+        elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+            c = (331.3 + 0.606*int(t.get())) # m/s
+        else:
+            c = 343
+
+        d = float(variableDistance.get())
+
+        # by default the tare uses sine sweep since the only information neede is the pirst peak position
+        RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
+
+        tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIRac.npy')
+        tareRIR = tareRIR[:,0]
+        firstPeak = find_directPath(tareRIR)
+        sampleDist = (d/c)*fs
+        systemLatency = int(firstPeak-sampleDist)
+
+    measureCalibrationButton = tk.Button(measureCalWindow, text="TEST",command=systemTare, fg='#36454f')
+    measureCalibrationButton.place(x=300, y=100)   
+
+    # cancellare la cartella 'Tare'
+
+    measureCalWindow.mainloop()
+
+testSignalButton = tk.Button(mainWindow, text="13) Latency Calibration",command=measureCalWindow, fg='#36454f')
+testSignalButton.place(x=450, y=280)   
+
+###################### 14 - START MEASURE BUTTON ######################
 def multipleStartFunctions(): # to get all the needed varaibles
     ### DEFINIZIONE VARIABILI ###
     #input/output device
@@ -504,14 +509,14 @@ def multipleStartFunctions(): # to get all the needed varaibles
     #elif measureMethod == 3 :
     #    data = createRir(knownPos, cal_type, delayType)
 
-    ## CALIBRATION ##
+    ## CALIBRAZIONE ##
     calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
 
-buttonStart = tk.Button(mainWindow, height=2, width=15, text="START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart = tk.Button(mainWindow, height=2, width=15, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=400, y=490)
 
-# 14 - Print Posizione Microfoni stimata -> TO DO
-micPositionPrintLabel = tk.Button(mainWindow, text="CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
+# 15 - Print Posizione Microfoni stimata ###################### -> TO DO
+micPositionPrintLabel = tk.Button(mainWindow, text="15) CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
 micPositionPrintLabel.place(x=35, y=335)
 
 mainWindow.mainloop()
