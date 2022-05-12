@@ -299,6 +299,7 @@ def measureCalWindow():
     
     def systemTare():
         global systemLatency
+        buffer = np.zeros(3)
         fs = int(variableFreq.get())
         inputDevice = int(variableInputDev.get()[0])
         outputDevice = int(variableOutputDev.get()[0])
@@ -313,15 +314,16 @@ def measureCalWindow():
         d = float(variableDistance.get())
 
         # by default the tare uses sine sweep since the only information neede is the pirst peak position
-        RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
+        for i in np.arange(0,len(buffer)):
+            RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare')    
+            tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIRac.npy')
+            tareRIR = tareRIR[:,0]
+            firstPeak = find_directPath(tareRIR)
+            sampleDist = (d/c)*fs
+            buffer[i] = int(firstPeak-sampleDist)
+            shutil.rmtree('SineSweepMeasures/Tare') # Delete the tare folder
 
-        tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIRac.npy')
-        tareRIR = tareRIR[:,0]
-        firstPeak = find_directPath(tareRIR)
-        sampleDist = (d/c)*fs
-        systemLatency = int(firstPeak-sampleDist)
-
-        shutil.rmtree('SineSweepMeasures/Tare') # Delete the tare folder
+        systemLatency = int(np.average(buffer))
 
     measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 16 bold', fg='#36454f')
     measureCalibrationButton.place(x=170, y=230)   
