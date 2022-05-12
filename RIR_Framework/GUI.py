@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import scipy
 import numpy as np
 import os
+import shutil
 
 from RIRmeasure_SineSweep import RIRmeasure_function
 from RIRmeasure_MLS import MLSmeasure_function
@@ -294,7 +295,7 @@ def measureCalWindow():
     comment2.place(x=10, y=50)
 
     variableDistance = tk.Entry(measureCalWindow, width=5)
-    variableDistance.place(x=170, y=200) 
+    variableDistance.place(x=200, y=200)
     
     def systemTare():
         global systemLatency
@@ -319,6 +320,8 @@ def measureCalWindow():
         firstPeak = find_directPath(tareRIR)
         sampleDist = (d/c)*fs
         systemLatency = int(firstPeak-sampleDist)
+
+        shutil.rmtree('SineSweepMeasures/Tare') # Delete the tare folder
 
     measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 16 bold', fg='#36454f')
     measureCalibrationButton.place(x=170, y=230)   
