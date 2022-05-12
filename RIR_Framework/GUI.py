@@ -292,6 +292,9 @@ def measureCalWindow():
     comment1.place(x=140, y=10)
     comment2 = tk.Label(measureCalWindow, text="Point the capsule of the microphone connected to the first Input Channel\nto the center of the loudspeaker connected to the first Output Channel\n---\nPlace the microphone capsule at 50cm from the center of the lodspeaker\n---\nPress CALIBRATE button\nfor the latency estimation\n---\nWait 20 seconds", bg='#36454f', fg='#f7f7f7')
     comment2.place(x=10, y=50)
+
+    variableDistance = tk.Entry(measureCalWindow, width=5)
+    variableDistance.place(x=170, y=200) 
     
     def systemTare():
         global systemLatency
@@ -306,8 +309,7 @@ def measureCalWindow():
         else:
             c = 343
 
-        #d = float(variableDistance.get())
-        d = 0.5 #[m]
+        d = float(variableDistance.get())
 
         # by default the tare uses sine sweep since the only information neede is the pirst peak position
         RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare') 
