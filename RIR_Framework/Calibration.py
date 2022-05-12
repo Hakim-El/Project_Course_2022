@@ -229,7 +229,7 @@ def calibration3D_del(audio, fs, PosKnown, c, bnds,nUnknown):
     return resM.x
 
 #Function to compute the estimation position in 2D/3D and with/without estimation delay (GUI function)
-def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs, knownPos, x_bound, y_bound, z_bound):
+def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs, knownPos, x_bound, y_bound, z_bound, measureName):
     #Number of unknown positions
     upd = int(nMics)
     #Arrays of zeroes for the plots
@@ -333,6 +333,6 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
         plt.show()
 
     if measureMethod == 1:
-        fig.savefig('SineSweepMeasures/calibrationGraph.png', bbox_inches='tight')
+        fig.savefig('SineSweepMeasures/{}/calibrationGraph.png'.format(measureName), bbox_inches='tight')
     else:
-        fig.savefig('MLSMeasures/calibrationGraph.png')
+        fig.savefig('MLSMeasures/{}/calibrationGraph.png'.format(measureName))

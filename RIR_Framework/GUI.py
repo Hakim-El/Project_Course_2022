@@ -518,7 +518,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     #    data = createRir(knownPos, cal_type, delayType)
 
     ## CALIBRAZIONE ##
-    calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis)
+    calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis, measureName)
 
 buttonStart = tk.Button(mainWindow, height=2, width=15, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.place(x=400, y=490)
