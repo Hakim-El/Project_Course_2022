@@ -18,15 +18,55 @@ from RIRsimulation import createRir
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("940x550") # dimensioni
+mainWindow.geometry("980x510") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
-credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 12 italic'), bg='#36454f', fg='#000000')
-credits.place(x=10, y=520)
+# MAIN WINDOW SPACING
+borderSpace1 = tk.Label(mainWindow, text='', bg='#36454f').grid(row=1,rowspan=1)
+borderSpace2 = tk.Label(mainWindow, text='', bg='#36454f').grid(column=1, columnspan=1)
+
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=3, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=4, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=5, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=6, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=7, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=8, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=9, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=10, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=11, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=12, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=13, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=14, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=15, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=16, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=17, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=3)
+
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=3, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=4, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=5, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=6, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=7, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=8, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=9, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=10, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=11, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=12, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=13, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=14, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=15, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=16, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=17, column=5)
+verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=5)
+
+credits = tk.Label(mainWindow, text='\n\nDeveloped by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
+credits.grid(row=17, column=2)
 
 ###################### 1 - Selezione Audio Device di Input ######################
 inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
-inputDeviceLabel.place(x=10, y=10)
+inputDeviceLabel.grid(row=2, column=2)
 
 devicesDict = sd.query_devices()
 devicesList = []
@@ -58,102 +98,123 @@ variableInputDev.set('- input AudioDevice -')
 variableInputDev.trace('w', inputChanged)
 opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
 opt1.config(width=30)
-opt1.place(x=10, y=40)
+opt1.grid(row=3, column=2)
 
 ###################### 2 - Selezione Audio Device di Output ######################
-outputDeviceLabel = tk.Label(mainWindow, text="3) Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
-outputDeviceLabel.place(x=10, y=90)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=2)
+outputDeviceLabel = tk.Label(mainWindow, text="2) Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
+outputDeviceLabel.grid(row=5, column=2)
 
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
 variableOutputDev.trace('w', outputChanged)
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
 opt2.config(width=30)
-opt2.place(x=10, y=120)
+opt2.grid(row=6, column=2)
 
 ###################### 3 - Selezione numero canali Input ######################
-inputChannelLabel = tk.Label(mainWindow, text="2) Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
-inputChannelLabel.place(x=350, y=10)
+inputChannelLabel = tk.Label(mainWindow, text="3) Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
+inputChannelLabel.grid(row=2, column=4)
 
 #InputDevicesListInputCh = np.arange(1,NInputs+1)
 variableInputCh = tk.StringVar(mainWindow)
 variableInputCh.set('- number of inputs -  ')
 opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
-opt3.place(x=415, y=40)
+opt3.config(width=13)
+opt3.grid(row=3, column=4)
+
 
 ###################### 4 - Selezione numero canali   ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=4)
 outputChannelLabel = tk.Label(mainWindow, text="4) Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
-outputChannelLabel.place(x=350, y=90)
+outputChannelLabel.grid(row=5, column=4)
 
 variableOutputCh = tk.StringVar(mainWindow)
 variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
-opt4.place(x=415, y=120)
+opt4.config(width=13)
+opt4.grid(row=6, column=4)
 
 ###################### Istruzioni Collegamento ######################
-instructions1 = tk.Label(mainWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
-instructions1.place(x=55, y=160)
-instructions2 = tk.Label(mainWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n---\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device", bg='#36454f', fg='#f7f7f7')
-instructions2.place(x=10, y=190)
+
+def wiringInstructions():
+    wiringInstructionsWindow = tk.Tk()
+    wiringInstructionsWindow.title("Cable Connections") # titolo
+    wiringInstructionsWindow.config(bg='#36454f') # colore
+
+    instructions1 = tk.Label(wiringInstructionsWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
+    instructions1.grid(row=2, column=2)
+    instructions2 = tk.Label(wiringInstructionsWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
+    instructions2.grid(row=3, column=2)
+
+wiringButton = tk.Button(mainWindow, text='- CLICK HERE FOR WIRING INSTRUCTIONS - ', command=wiringInstructions)
+wiringButton.grid(row=9, column=2)
 
 ###################### 5 - Selezione tipo di misura ######################
 measureTypelLabel = tk.Label(mainWindow, text="5) Type of measure", bg='#36454f', fg='#f7f7f7')
-measureTypelLabel.place(x=700, y=10)
+measureTypelLabel.grid(row=2, column=6)
 
 InputDevicesListMeasure = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
 variableMeasure = tk.StringVar(mainWindow)
 variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
-opt5.place(x=700, y=40)
+opt5.config(width=8)
+opt5.grid(row=3, column=6)
 
 ###################### 6 - Selezione Sampling Frequency ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=6)
 frequencyLabel = tk.Label(mainWindow, text="6) Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
-frequencyLabel.place(x=700, y=90)
+frequencyLabel.grid(row=5, column=6)
 
 InputDevicesListFreq = [44100, 48000,96000]
 variableFreq = tk.StringVar(mainWindow)
 variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
-opt6.place(x=700, y=120)
+opt6.config(width=8)
+opt6.grid(row=6, column=6)
 
 ###################### 7 - Selezione tipo di calibrazione ######################
-calibrationLabel = tk.Label(mainWindow, text="7) Calibration Type", bg='#36454f', fg='#f7f7f7')
-calibrationLabel.place(x=700, y=170)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=6)
+calibrationLabel = tk.Label(mainWindow, text="7) Estimation Type", bg='#36454f', fg='#f7f7f7')
+calibrationLabel.grid(row=8, column=6)
 
 InputDevicesListCal = ['2D calibration', '3D calibration']
 variableCal = tk.StringVar(mainWindow)
 variableCal.set('- select -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
-opt7.place(x=700, y=200)
+opt7.config(width=8)
+opt7.grid(row=9, column=6)
 
 ###################### 8 - Delay o no Delay ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=6)
 delayLabel = tk.Label(mainWindow, text="8) Delay estimation type", bg='#36454f', fg='#f7f7f7')
-delayLabel.place(x=700, y=250)
+delayLabel.grid(row=11, column=6)
 
 InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
 variableDelay = tk.StringVar(mainWindow)
-variableDelay.set('- select -')
+variableDelay.set('- select -     ')
 opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
-opt8.place(x=700, y=280)
+opt8.grid(row=12, column=6)
 
 ###################### 9 - Sound Speed estimation ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=13, column=6)
 soundSpeedLabel = tk.Label(mainWindow, text="9) Sound Speed estimation", bg='#36454f', fg='#f7f7f7')
-soundSpeedLabel.place(x=700, y=330)
+soundSpeedLabel.grid(row=14, column=6)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
 variableSoundSpeed = tk.StringVar(mainWindow)
-variableSoundSpeed.set('- select -')
+variableSoundSpeed.set('- select -     ')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
-opt9.place(x=700, y=360)
+opt9.grid(row=15, column=6)
 t = tk.Entry(mainWindow, width=5)
-t.place(x=700, y=390)
+t.grid(row=16, column=6)
 
 ###################### 10 - Nome della misura ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=6)
 measureNameLabel = tk.Label(mainWindow, text="10) Insert the name of the measure below", bg='#36454f', fg='#f7f7f7')
-measureNameLabel.place(x=325, y=320)
-
-Name = tk.Entry(mainWindow, width=38)
-Name.place(x=325, y=350)
+measureNameLabel.grid(row=8, column=4)
+Name = tk.Entry(mainWindow, width=40)
+Name.grid(row=9, column=4)
 
 ###################### 11 - Dimensioni della stanza ######################
 def printRoomDimension():
@@ -217,8 +278,9 @@ def printRoomDimension():
     elif variableCal.get() == '3D calibration':
         getDimensions.place(x=10, y=130)
 
-roomDimensionButton = tk.Button(mainWindow, text="11) CLICK HERE to insert Room Dimensions                   ", command = printRoomDimension, fg='#36454f')
-roomDimensionButton.place(x=325, y=400)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=4)
+roomDimensionButton = tk.Button(mainWindow, height=1, width=37, text="11) CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
+roomDimensionButton.grid(row=11, column=4)
 
 ###################### 12 - Posizione Loudspeakers ######################
 def printLoudspeakerPosition():
@@ -276,8 +338,9 @@ def printLoudspeakerPosition():
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known Loudspeaker positions', command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.place(x=440, y=10)
 
-loudspeakerPositionButton = tk.Button(mainWindow, text="12) CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
-loudspeakerPositionButton.place(x=325, y=450)       
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
+loudspeakerPositionButton = tk.Button(mainWindow,text="12) CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton.grid(row=13, column=4)      
 
 ###################### 13 - Calibrazione Sistema di Misura ######################
 
@@ -307,7 +370,7 @@ def measureCalWindow():
         if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
             c = 343
         elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-            c = (331.3 + 0.606*int(t.get())) # m/s
+            c = (331.3 + 0.606*float(t.get())) # m/s
         else:
             c = 343
 
@@ -332,8 +395,8 @@ def measureCalWindow():
 
     measureCalWindow.mainloop()
 
-testSignalButton = tk.Button(mainWindow, text="13) System Calibration", command=measureCalWindow, fg='#36454f')
-testSignalButton.place(x=480, y=280)   
+testSignalButton = tk.Button(mainWindow, height=1, width=38, text="13) CLICK HERE to calibrate the system", command=measureCalWindow, fg='#36454f')
+testSignalButton.grid(row=15, column=4)   
 
 ###################### 14 - START MEASURE BUTTON ######################
 def multipleStartFunctions(): # to get all the needed varaibles
@@ -353,7 +416,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
         c = 343
     elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-        c = (331.3 + 0.606*int(t.get())) # m/s
+        c = (331.3 + 0.606*float(t.get())) # m/s
     else:
         c = 343
     
@@ -520,12 +583,12 @@ def multipleStartFunctions(): # to get all the needed varaibles
     ## CALIBRAZIONE ##
     calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis, measureName)
 
-buttonStart = tk.Button(mainWindow, height=2, width=15, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.place(x=400, y=490)
+buttonStart = tk.Button(mainWindow, height=2, width=30, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart.grid(row=17, column=4)
 
 # 15 - Print Posizione Microfoni stimata ###################### -> TO DO
-micPositionPrintLabel = tk.Button(mainWindow, text="15) CLICK HERE after the measure\nto show the Microphone\nposition estimation plot",fg='#36454f')
-micPositionPrintLabel.place(x=35, y=335)
+micPositionPrintLabel = tk.Button(mainWindow, height=2, width=30, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot",fg='#36454f')
+micPositionPrintLabel.grid(row=16, column=2)
 
 mainWindow.mainloop()
 
