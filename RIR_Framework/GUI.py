@@ -223,44 +223,50 @@ def printRoomDimension():
     dimension2DWindow.config(bg='#36454f') # colore
 
     if variableCal.get() == '2D calibration' :
-        dimension2DWindow.geometry("270x130") # dimensioni
-
+        dimension2DWindow.geometry("270x160") # dimensioni
+        space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+        space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
-        xAxisLabel.place(x=10, y=10)
+        xAxisLabel.grid(row=2, column=2)
         x_dim = tk.Entry(dimension2DWindow, width=5)
-        x_dim.place(x=200, y=10)
+        x_dim.grid(row=2, column=3)
 
+        space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=3)
         yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:', bg='#36454f', fg='#f7f7f7')
-        yAxisLabel.place(x=10, y=50)
+        yAxisLabel.grid(row=4, column=2)
         y_dim = tk.Entry(dimension2DWindow, width=5)
-        y_dim.place(x=200, y=50)
+        y_dim.grid(row=4, column=3)
 
         z_dim = tk.StringVar(dimension2DWindow) 
         z_dim.set('0.0')
 
     elif variableCal.get() == '3D calibration':
-        dimension2DWindow.geometry("270x170") # dimensioni
+        dimension2DWindow.geometry("270x200") # dimensioni
 
+        space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+        space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
-        xAxisLabel.place(x=10, y=10)
+        xAxisLabel.grid(row=2, column=2)
         x_dim = tk.Entry(dimension2DWindow, width=5)
-        x_dim.place(x=200, y=10)
-        
+        x_dim.grid(row=2, column=3)
+
+        space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=3)
         yAxisLabel = tk.Label(dimension2DWindow, text='Insert room Y dimension [m]:', bg='#36454f', fg='#f7f7f7')
-        yAxisLabel.place(x=10, y=50)
+        yAxisLabel.grid(row=4, column=2)
         y_dim = tk.Entry(dimension2DWindow, width=5)
-        y_dim.place(x=200, y=50)
+        y_dim.grid(row=4, column=3)
        
+        space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=5)
         zAxisLabel = tk.Label(dimension2DWindow, text='Insert room Z dimension [m]:', bg='#36454f', fg='#f7f7f7')
-        zAxisLabel.place(x=10, y=90)
+        zAxisLabel.grid(row=6, column=2)
         z_dim = tk.Entry(dimension2DWindow, width=5)
-        z_dim.place(x=200, y=90)
+        z_dim.grid(row=6, column=3)
 
     elif variableCal.get() == '- select -':
         dimension2DWindow.geometry("270x60") # dimensioni
 
-        errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before', bg='#36454f', fg='#f7f7f7')
-        errDimLabel.place(x=10, y=10)
+        errDimLabel = tk.Label(dimension2DWindow, text='Select an Estimation Type before', bg='#36454f', fg='#f7f7f7')
+        errDimLabel.grid(row=1, column=1)
 
     def getRoomDimensions():
         global x_axis
@@ -271,12 +277,14 @@ def printRoomDimension():
         y_axis = float(y_dim.get())
         z_axis = float(z_dim.get())
     
-    getDimensions = tk.Button(dimension2DWindow, text='CLICK HERE to confirm dimemsions', command=getRoomDimensions, fg='#36454f')
+    getDimensions = tk.Button(dimension2DWindow, text='CLICK HERE to\nconfirm dimemsions', command=getRoomDimensions, fg='#36454f')
 
     if variableCal.get() == '2D calibration' :
-        getDimensions.place(x=10, y=90)
+        space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=5)
+        getDimensions.grid(row=6, column=2)
     elif variableCal.get() == '3D calibration':
-        getDimensions.place(x=10, y=130)
+        space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=7)
+        getDimensions.grid(row=8, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=4)
 roomDimensionButton = tk.Button(mainWindow, height=1, width=37, text="11) CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
