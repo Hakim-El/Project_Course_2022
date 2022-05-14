@@ -382,6 +382,49 @@ def measureCalWindow():
 
         d = float(variableDistance.get())
 
+        ## CREAZIONE CARTELLE ##
+        #creazione cartelle misura primcipali (SineSweep & MLS)
+        dirnameSineSweep = 'SineSweepMeasures/'
+        dirnameMLS = 'MLSMeasures/'
+        if os.path.exists(dirnameSineSweep):
+            dirSineSweepFlag = True
+        else :
+            dirSineSweepFlag = False
+
+        if os.path.exists(dirnameMLS):
+            dirMLSFlag = True
+        else :
+            dirMLSFlag = False
+
+        if dirSineSweepFlag == False:
+            os.mkdir('SineSweepMeasures/')
+            dirSineSweepFlag = True
+
+        if dirMLSFlag == False:
+            os.mkdir('MLSMeasures/')
+            dirMLSFlag = True
+
+        #creazione cartella _lastMeasureData_
+        dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
+        dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
+        if os.path.exists(dirnameLast1):
+            dirLast1Flag = True
+        else :
+            dirLast1Flag = False
+
+        if os.path.exists(dirnameLast2):
+            dirLast2Flag = True
+        else :
+            dirLast2Flag = False
+
+        if dirLast1Flag == False:
+            os.mkdir('SineSweepMeasures/_lastMeasureData_')
+            dirLast1Flag = True
+
+        if dirLast2Flag == False:
+            os.mkdir('MLSMeasures/_lastMeasureData_')
+            dirLast2Flag = True
+
         # by default the tare uses sine sweep since the only information neede is the pirst peak position
         for i in np.arange(0,len(buffer)):
             RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare')    
@@ -591,10 +634,26 @@ def multipleStartFunctions(): # to get all the needed varaibles
 buttonStart = tk.Button(mainWindow, height=2, width=30, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.grid(row=17, column=4)
 
-# 15 - Print Posizione Microfoni stimata ###################### -> TO DO
-micPositionPrintLabel = tk.Button(mainWindow, height=2, width=30, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot",fg='#36454f')
+# 15 - Print Posizione Microfoni stimata ######################
+def showPlot ():
+    #measure name
+    measureName = Name.get()
+
+    #measure type
+    if variableMeasure.get() == 'SineSweep':
+        measureMethod = 1
+    elif variableMeasure.get() == 'MLS':
+        measureMethod = 2
+    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
+        measureMethod = 3
+
+    if measureMethod == 1:
+        open('SineSweepMeasures/'+ str(measureName) +'/estimationGraph.png')
+    elif measureMethod == 2:
+        open('MLSMeasures/'+ str(measureName) +'/estimationGraph.png')
+
+micPositionPrintLabel = tk.Button(mainWindow, height=2, width=30, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot", command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=16, column=2)
 
 mainWindow.mainloop()
-
 # END

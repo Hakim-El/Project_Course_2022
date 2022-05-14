@@ -307,7 +307,7 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
         plt.legend(['With delay'])
-        plt.show()
+        #plt.show()
         #plt.xlim((0,x_bound))
         #plt.ylim((0,y_bound))
         
@@ -330,9 +330,9 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
         plt.legend(['No delay'])
-        plt.show()
+        #plt.show()
 
     if measureMethod == 1:
-        fig.savefig('SineSweepMeasures/{}/calibrationGraph.png'.format(measureName), bbox_inches='tight')
+        fig.savefig('SineSweepMeasures/{}/estimationGraph.png'.format(measureName), bbox_inches='tight')
     else:
-        fig.savefig('MLSMeasures/{}/calibrationGraph.png'.format(measureName))
+        fig.savefig('MLSMeasures/{}/estimationGraph.png'.format(measureName))
