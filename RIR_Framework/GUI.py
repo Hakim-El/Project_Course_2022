@@ -1,5 +1,5 @@
 import tkinter as tk
-from typing import Literal
+#from typing import Literal
 import sounddevice as sd
 import pyroomacoustics
 import matplotlib.pyplot as plt
@@ -61,7 +61,7 @@ verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=17, column=5)
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=5)
 
-credits = tk.Label(mainWindow, text='\n\nDeveloped by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
+credits = tk.Label(mainWindow, text='\n\n\nDeveloped by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
 credits.grid(row=17, column=2)
 
 ###################### 1 - Selezione Audio Device di Input ######################
@@ -178,7 +178,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 calibrationLabel = tk.Label(mainWindow, text="7) Estimation Type", bg='#36454f', fg='#f7f7f7')
 calibrationLabel.grid(row=8, column=6)
 
-InputDevicesListCal = ['2D calibration', '3D calibration']
+InputDevicesListCal = ['2D', '3D']
 variableCal = tk.StringVar(mainWindow)
 variableCal.set('- select -')
 opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
@@ -222,10 +222,11 @@ def printRoomDimension():
     dimension2DWindow.title("Room Dimensions") # titolo
     dimension2DWindow.config(bg='#36454f') # colore
 
-    if variableCal.get() == '2D calibration' :
+    if variableCal.get() == '2D' :
         dimension2DWindow.geometry("270x160") # dimensioni
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
+
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
         xAxisLabel.grid(row=2, column=2)
         x_dim = tk.Entry(dimension2DWindow, width=5)
@@ -240,11 +241,11 @@ def printRoomDimension():
         z_dim = tk.StringVar(dimension2DWindow) 
         z_dim.set('0.0')
 
-    elif variableCal.get() == '3D calibration':
+    elif variableCal.get() == '3D':
         dimension2DWindow.geometry("270x200") # dimensioni
-
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
+
         xAxisLabel = tk.Label(dimension2DWindow, text='Insert room X dimension [m]:', bg='#36454f', fg='#f7f7f7')
         xAxisLabel.grid(row=2, column=2)
         x_dim = tk.Entry(dimension2DWindow, width=5)
@@ -279,10 +280,10 @@ def printRoomDimension():
     
     getDimensions = tk.Button(dimension2DWindow, text='CLICK HERE to\nconfirm dimemsions', command=getRoomDimensions, fg='#36454f')
 
-    if variableCal.get() == '2D calibration' :
+    if variableCal.get() == '2D' :
         space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=5)
         getDimensions.grid(row=6, column=2)
-    elif variableCal.get() == '3D calibration':
+    elif variableCal.get() == '3D':
         space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=7)
         getDimensions.grid(row=8, column=2)
 
@@ -295,78 +296,75 @@ def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
     LoudSpeakerWindow = tk.Tk()
     LoudSpeakerWindow.title("Loudspeakers Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(810, (8+(var_i*100)/2.5))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(770, (8+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
-    if variableCal.get() == '2D calibration' :
+    if variableCal.get() == '2D' :
         global x_pos 
         global y_pos
         global z_pos
         x_pos = []
         y_pos = []
         z_pos = 0
+        
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y)",  bg='#36454f', fg='#f7f7f7').place(x=10, y=11*3.5*i)
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
-            x_pos[i].place(x=220, y=11*3.5*i)
+            x_pos[i].grid(row=2+i, column=2)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
-            y_pos[i].place(x=290, y=11*3.5*i)
+            y_pos[i].grid(row=2+i, column=3)
 
-    elif variableCal.get() == '3D calibration' :
+    elif variableCal.get() == '3D' :
         x_pos = []
         y_pos = []
         z_pos = []
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y ; Z)",  bg='#36454f', fg='#f7f7f7').place(x=10, y=11*3.5*i)
+            tk.Label(LoudSpeakerWindow, text= "Loudspeaker " +str(i+1) +" Position (X ; Y ; Z)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
-            x_pos[i].place(x=230, y=11*3.5*i)
+            x_pos[i].grid(row=2+i, column=2)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
-            y_pos[i].place(x=300, y=11*3.5*i)
+            y_pos[i].grid(row=2+i, column=3)
             z_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
-            z_pos[i].place(x=370, y=11*3.5*i)
-            
-    elif variableCal.get() == '- select -':
-        errDimLabel2 = tk.Label(LoudSpeakerWindow, text='Select a Calibration Type before', bg='#36454f', fg='#f7f7f7')
-        errDimLabel2.place(x=10, y=10)
+            z_pos[i].grid(row=2+i, column=4)
 
     def getLoudSpeakersPositions():
         global knownPos
-        if variableCal.get() == '2D calibration' :
+        if variableCal.get() == '2D' :
             knownPos = np.zeros((var_i,2))
             for i in range(0,var_i) : 
                 knownPos[i,0] = float(x_pos[i].get())
                 knownPos[i,1] = float(y_pos[i].get())
-        elif variableCal.get() == '3D calibration' :
+        elif variableCal.get() == '3D' :
             knownPos = np.zeros((var_i,3))
             for i in range(0,var_i) : 
                 knownPos[i,0] = float(x_pos[i].get())
                 knownPos[i,1] = float(y_pos[i].get())
                 knownPos[i,2] = float(z_pos[i].get())
     
+    verticalSpaces = tk.Label(LoudSpeakerWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=5)
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known Loudspeaker positions', command=getLoudSpeakersPositions, fg='#36454f')
-    getPositions.place(x=440, y=10)
+    getPositions.grid(row=2, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,text="12) CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.grid(row=13, column=4)      
 
 ###################### 13 - Calibrazione Sistema di Misura ######################
-
-# prima della funzione creare l'input per inserire la distanza dal Loudspeaker
-
 def measureCalWindow():
     measureCalWindow = tk.Tk()
     measureCalWindow.title("System Calibration") # titolo
-    measureCalWindow.geometry('470x300') # dimensioni
+    measureCalWindow.geometry('530x500') # dimensioni
     measureCalWindow.config(bg='#36454f') # colore
+    space = tk.Label(measureCalWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(measureCalWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
 
     comment1 = tk.Label(measureCalWindow, text='SYSTEM CALIBRATION', font='Helvetica 18 bold', bg='#36454f', fg='#f7f7f7')
-    comment1.place(x=140, y=10)
-    comment2 = tk.Label(measureCalWindow, text="Point the capsule of the microphone connected to the first Input Channel\nto the center of the loudspeaker connected to the first Output Channel\n---\nPlace the microphone capsule at 50cm from the center of the lodspeaker\n---\nPress CALIBRATE button\nfor the latency estimation\n---\nWait 20 seconds", bg='#36454f', fg='#f7f7f7')
-    comment2.place(x=10, y=50)
+    comment1.grid(row=2, column=2)
+    comment2 = tk.Label(measureCalWindow, text="System must be calibrated before the first measure.\nCalibration is needed to compensate the connected audio device delay.\nThis delay can be different and depends on the used computer and audio device.\nAfter this calibration process, the user can do more than one measurements.\nCalibration is needed again only if the user changes the Input/Output audio device.\n\n------\n\nPoint the capsule of the microphone connected to the first Input Channel\nto the center of the loudspeaker connected to the first Output Channel\nMicrophone capsule must be on the same axis of loudspeaker 0° polar pattern.\nMeasure the distance between the microphone capsule\nand the center of the loudspeaker and insert that value in meters in the box below.\n\n------\n\nPress CALIBRATE button and wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.\n", bg='#36454f', fg='#f7f7f7')
+    comment2.grid(row=3, column=2)
 
     variableDistance = tk.Entry(measureCalWindow, width=5)
-    variableDistance.place(x=200, y=200)
+    variableDistance.grid(row=5, column=2)
     
     def systemTare():
         global systemLatency
@@ -396,10 +394,9 @@ def measureCalWindow():
 
         systemLatency = int(np.average(buffer))
 
+    space = tk.Label(measureCalWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=6, column=2)
     measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 16 bold', fg='#36454f')
-    measureCalibrationButton.place(x=170, y=230)   
-
-    # cancellare la cartella 'Tare'
+    measureCalibrationButton.grid(row=7, column=2)  
 
     measureCalWindow.mainloop()
 
@@ -435,9 +432,9 @@ def multipleStartFunctions(): # to get all the needed varaibles
         delayType = 2
     
     #calibration type
-    if variableCal.get() == '2D calibration':
+    if variableCal.get() == '2D':
         cal_type = 1
-    elif variableCal.get() == '3D calibration':
+    elif variableCal.get() == '3D':
         cal_type = 2
     
     #sampling frequency
