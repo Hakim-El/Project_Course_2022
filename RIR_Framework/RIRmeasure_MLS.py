@@ -3,16 +3,23 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import sounddevice as sd
 from scipy.signal import max_len_seq
-from numpy.fft import fft, ifft, fftshift, fftfreq
+from numpy.fft import fft, ifft
 from scipy.io.wavfile import write as wavwrite
 import os
 
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
-    orderMLS = 18
-    #MLS = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
-    mls = max_len_seq(orderMLS)[0]    # 0 and 1 , binary convention
+    orderMLS = 16
+    mls = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
+
+    # AGGIUNGERE 1S DI SILENZIO PRIMA E DOPO
+    duration = fs
+    zeropad = np.zeros(duration)
+    mlsPadded = np.zeros(len(mls)+2*len(zeropad))
+    mlsPadded[:len(zeropad)] = zeropad
+    mlsPadded[len(zeropad):len(zeropad)+len(mls)] = mls
+    mlsPadded[len(zeropad)+len(mls):] = zeropad
 
     # Selezione device audio di input e output
     sd.default.device = [inputDevice,outputDevice] #[input, output]
@@ -21,18 +28,16 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     sd.default.samplerate = fs
     sd.default.dtype = 'float32'
 
-    recordedMLS = sd.playrec(mls, samplerate=fs, output_mapping=[outputChannels])
+    recordedMLS = sd.playrec(mlsPadded*4, samplerate=fs,dtype='float32', output_mapping=[outputChannels])
     sd.wait()
 
-    recordedMLSreshaped = recordedMLS.reshape(mls.shape)
-
     # Deconvoluzione
-    specRecorded = fft(recordedMLSreshaped)
-    specMLS = fft(mls)
-    RIR = ifft(specMLS * np.conj(specRecorded)).real # circular cross correlation
+    tmplen = mlsPadded.shape[0]
+    RIR = np.zeros(shape = (tmplen,recordedMLS.shape[1])) 
+    for idx in range(0,recordedMLS.shape[1]):
+        RIR[:,idx] = ifft(fft(recordedMLS[:,idx]) * np.conj(fft(mlsPadded*4))).real # circular cross correlation
 
-    #plt.plot(RIR)
-    #plt.show()
+    # TAGLIO RIR CON LATENZA
 
     # Salvataggio files RIR
     dirflag = False
@@ -48,8 +53,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
 
     # Saving the RIRs and the captured signals
     np.save(dirname+ '/RIR.npy',RIR)
-    #np.save(dirname+ '/RIRac.npy',RIRtoSave)
-    wavwrite(dirname+ '/sigtest.wav',fs,mls)
+    wavwrite(dirname+ '/sigtest.wav',fs,mlsPadded)
 
     for idx in range(recordedMLS.shape[1]):
         wavwrite(dirname+ '/sigrec_Mic' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
@@ -57,8 +61,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
 
     # Save in the MLSMeasures/_lastMeasureData_ for a quick check
     np.save('MLSMeasures/_lastMeasureData_/RIR.npy',RIR)
-    #np.save( 'MLSMeasures/_lastMeasureData_/RIRac.npy',RIRtoSave)
-    wavwrite( 'MLSMeasures/_lastMeasureData_/sigtest.wav',fs,mls)
+    wavwrite( 'MLSMeasures/_lastMeasureData_/sigtest.wav',fs,mlsPadded)
     # for idx in range(recordedMLS.shape[1]):
     #    wavwrite('sigrec' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
     #    wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])
