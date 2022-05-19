@@ -664,12 +664,12 @@ def showPlot ():
     if measureMethod == 1:
         img = ImageTk.PhotoImage(Image.open("SineSweepMeasures/"+ str(measureName) +"/estimationGraph.png"))
         #print('Immagine trovata!')
-        plot = tk.Label(showPlot, image= img)
+        plot = tk.Label(plotWindow, image= img)
         plot.grid(row=1, column=1)
     elif measureMethod == 2:
         img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/estimationGraph.png"))
         #print('Immagine trovata!')
-        plot = tk.Label(showPlot, image= img)
+        plot = tk.Label(plotWindow, image= img)
         plot.grid(row=1, column=1)
 
 micPositionPrintLabel = tk.Button(mainWindow, height=2, width=39, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot",font='Helvetica 12', command= showPlot, fg='#36454f')
