@@ -28,14 +28,14 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     sd.default.samplerate = fs
     sd.default.dtype = 'float32'
 
-    recordedMLS = sd.playrec(mlsPadded*4, samplerate=fs,dtype='float32', output_mapping=[outputChannels])
+    recordedMLS = sd.playrec(mlsPadded, samplerate=fs,dtype='float32', output_mapping=[outputChannels])
     sd.wait()
 
     # Deconvoluzione
     tmplen = mlsPadded.shape[0]
     RIR = np.zeros(shape = (tmplen,recordedMLS.shape[1])) 
     for idx in range(0,recordedMLS.shape[1]):
-        RIR[:,idx] = ifft(fft(recordedMLS[:,idx]) * np.conj(fft(mlsPadded*4))).real # circular cross correlation
+        RIR[:,idx] = ifft(fft(recordedMLS[:,idx]) * np.conj(fft(mlsPadded))).real # circular cross correlation
 
     # TAGLIO RIR CON LATENZA
     RIR = RIR[latency:,:]
