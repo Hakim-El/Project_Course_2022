@@ -636,8 +636,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
         for i in np.arange(1, outputChannels+1) :
             MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName)
             data = fillDataMatrix(data,inputChannels,i-1)
-    #elif measureMethod == 3 :
-    #    data = createRir(knownPos, cal_type, delayType)
 
     ## CALIBRAZIONE ##
     calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis, measureName)
