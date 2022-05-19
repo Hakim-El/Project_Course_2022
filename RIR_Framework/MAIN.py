@@ -634,7 +634,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         # Misura MLS
         data = createDataMatrix(inputChannels,outputChannels)
         for i in np.arange(1, outputChannels+1) :
-            MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName)
+            MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
             data = fillDataMatrix(data,inputChannels,i-1)
 
     ## CALIBRAZIONE ##

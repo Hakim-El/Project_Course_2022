@@ -7,7 +7,7 @@ from numpy.fft import fft, ifft
 from scipy.io.wavfile import write as wavwrite
 import os
 
-def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName):
+def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName, latency=0):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
     orderMLS = 16
@@ -38,6 +38,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
         RIR[:,idx] = ifft(fft(recordedMLS[:,idx]) * np.conj(fft(mlsPadded*4))).real # circular cross correlation
 
     # TAGLIO RIR CON LATENZA
+    RIR = RIR[latency:,:]
 
     # Salvataggio files RIR
     dirflag = False
