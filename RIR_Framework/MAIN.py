@@ -1,12 +1,29 @@
+# Moduli da importare per far funzionare il MAIN
 import tkinter as tk
 import sounddevice as sd
-import matplotlib.pyplot as plt
-import scipy
 import numpy as np
 import os
 import shutil
 from PIL import Image, ImageTk
 
+# Moduli da importare per far funzionare gli script secondari che vengono richiamati nel MAIN
+import matplotlib.pyplot as plt
+import argparse
+import soundfile as sf
+import scipy
+from scipy import interpolate
+from scipy.optimize import minimize
+from scipy.io.wavfile import write as wavwrite
+from scipy.signal import spectrogram, fftconvolve, find_peaks
+from mpl_toolkits.mplot3d import Axes3D
+from math import pi as pi
+from numpy.fft import fft, ifft, fftshift, fftfreq
+from numpy import log as log
+from numpy import exp as exp
+from numpy import sin as sin
+from numpy import cos as cos
+
+# Script secondari da importare per far funzionare il MAIN
 from RIRmeasure_SineSweep import RIRmeasure_function
 from RIRmeasure_MLS import MLSmeasure_function
 from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
