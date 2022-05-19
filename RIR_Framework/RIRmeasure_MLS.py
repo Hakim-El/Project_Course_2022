@@ -63,4 +63,4 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     #    wavwrite('sigrec' + str(idx+1) + '.wav',fs,recordedMLS[:,idx])
     #    wavwrite(dirname+ '/RIR' + str(idx+1) + '.wav',fs,RIR[:,idx])
 
-    print('Success! Recording saved in directory ' + dirname)
+    #print('Success! Recording saved in directory ' + dirname)

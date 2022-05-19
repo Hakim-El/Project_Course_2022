@@ -1,7 +1,5 @@
 import tkinter as tk
-#from typing import Literal
 import sounddevice as sd
-import pyroomacoustics
 import matplotlib.pyplot as plt
 import scipy
 import numpy as np
@@ -11,14 +9,13 @@ import shutil
 from RIRmeasure_SineSweep import RIRmeasure_function
 from RIRmeasure_MLS import MLSmeasure_function
 from Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
-from RIRsimulation import createRir
 
 ###################################################################################################
 
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
-mainWindow.geometry("980x510") # dimensioni
+mainWindow.geometry("925x490") # dimensioni
 mainWindow.config(bg='#36454f') # colore
 
 # MAIN WINDOW SPACING
@@ -65,7 +62,7 @@ credits = tk.Label(mainWindow, text='\n\n\nDeveloped by: Hakim El Achak, Lorenzo
 credits.grid(row=17, column=2)
 
 ###################### 1 - Selezione Audio Device di Input ######################
-inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device", bg='#36454f', fg='#f7f7f7')
+inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 inputDeviceLabel.grid(row=2, column=2)
 
 devicesDict = sd.query_devices()
@@ -102,7 +99,7 @@ opt1.grid(row=3, column=2)
 
 ###################### 2 - Selezione Audio Device di Output ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=2)
-outputDeviceLabel = tk.Label(mainWindow, text="2) Select Output Audio Device", bg='#36454f', fg='#f7f7f7')
+outputDeviceLabel = tk.Label(mainWindow, text="2) Select Output Audio Device",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.grid(row=5, column=2)
 
 variableOutputDev = tk.StringVar(mainWindow)
@@ -113,26 +110,26 @@ opt2.config(width=30)
 opt2.grid(row=6, column=2)
 
 ###################### 3 - Selezione numero canali Input ######################
-inputChannelLabel = tk.Label(mainWindow, text="3) Select the number of Input Channels (Microphones)", bg='#36454f', fg='#f7f7f7')
+inputChannelLabel = tk.Label(mainWindow, text="3) Select the number of Input Channels (Microphones)",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 inputChannelLabel.grid(row=2, column=4)
 
 #InputDevicesListInputCh = np.arange(1,NInputs+1)
 variableInputCh = tk.StringVar(mainWindow)
 variableInputCh.set('- number of inputs -  ')
 opt3 = tk.OptionMenu(mainWindow, variableInputCh, '')
-opt3.config(width=13)
+opt3.config(width=15)
 opt3.grid(row=3, column=4)
 
 
 ###################### 4 - Selezione numero canali   ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=4)
-outputChannelLabel = tk.Label(mainWindow, text="4) Select the number of Output Channels (Loudspeakers)", bg='#36454f', fg='#f7f7f7')
+outputChannelLabel = tk.Label(mainWindow, text="4) Select the number of Output Channels (Loudspeakers)",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 outputChannelLabel.grid(row=5, column=4)
 
 variableOutputCh = tk.StringVar(mainWindow)
 variableOutputCh.set('- number of outputs -')
 opt4 = tk.OptionMenu(mainWindow, variableOutputCh, '')
-opt4.config(width=13)
+opt4.config(width=15)
 opt4.grid(row=6, column=4)
 
 ###################### Istruzioni Collegamento ######################
@@ -147,14 +144,14 @@ def wiringInstructions():
     instructions2 = tk.Label(wiringInstructionsWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
     instructions2.grid(row=3, column=2)
 
-wiringButton = tk.Button(mainWindow, text='- CLICK HERE FOR WIRING INSTRUCTIONS - ', command=wiringInstructions)
+wiringButton = tk.Button(mainWindow, width=40, text='- CLICK HERE FOR WIRING INSTRUCTIONS - ',font='Helvetica 12', command=wiringInstructions)
 wiringButton.grid(row=9, column=2)
 
 ###################### 5 - Selezione tipo di misura ######################
-measureTypelLabel = tk.Label(mainWindow, text="5) Type of measure", bg='#36454f', fg='#f7f7f7')
+measureTypelLabel = tk.Label(mainWindow, text="5) Type of measure",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 measureTypelLabel.grid(row=2, column=6)
 
-InputDevicesListMeasure = ['SineSweep', 'MLS','PyRoomAcoustics simulation']
+InputDevicesListMeasure = ['SineSweep', 'MLS']
 variableMeasure = tk.StringVar(mainWindow)
 variableMeasure.set('- select -')
 opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
@@ -163,7 +160,7 @@ opt5.grid(row=3, column=6)
 
 ###################### 6 - Selezione Sampling Frequency ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=6)
-frequencyLabel = tk.Label(mainWindow, text="6) Sampling Frequency [Hz]", bg='#36454f', fg='#f7f7f7')
+frequencyLabel = tk.Label(mainWindow, text="6) Sampling Frequency [Hz]",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 frequencyLabel.grid(row=5, column=6)
 
 InputDevicesListFreq = [44100, 48000,96000]
@@ -175,7 +172,7 @@ opt6.grid(row=6, column=6)
 
 ###################### 7 - Selezione tipo di calibrazione ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=6)
-calibrationLabel = tk.Label(mainWindow, text="7) Estimation Type", bg='#36454f', fg='#f7f7f7')
+calibrationLabel = tk.Label(mainWindow, text="7) Estimation Type",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 calibrationLabel.grid(row=8, column=6)
 
 InputDevicesListCal = ['2D', '3D']
@@ -187,7 +184,7 @@ opt7.grid(row=9, column=6)
 
 ###################### 8 - Delay o no Delay ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=6)
-delayLabel = tk.Label(mainWindow, text="8) Delay estimation type", bg='#36454f', fg='#f7f7f7')
+delayLabel = tk.Label(mainWindow, text="8) Delay estimation type",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 delayLabel.grid(row=11, column=6)
 
 InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
@@ -198,7 +195,7 @@ opt8.grid(row=12, column=6)
 
 ###################### 9 - Sound Speed estimation ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=13, column=6)
-soundSpeedLabel = tk.Label(mainWindow, text="9) Sound Speed estimation", bg='#36454f', fg='#f7f7f7')
+soundSpeedLabel = tk.Label(mainWindow, text="9) Sound Speed estimation",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 soundSpeedLabel.grid(row=14, column=6)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
@@ -211,9 +208,9 @@ t.grid(row=16, column=6)
 
 ###################### 10 - Nome della misura ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=6)
-measureNameLabel = tk.Label(mainWindow, text="10) Insert the name of the measure below", bg='#36454f', fg='#f7f7f7')
+measureNameLabel = tk.Label(mainWindow, text="10) Insert the name of the measure below",font='Helvetica 12', bg='#36454f', fg='#f7f7f7')
 measureNameLabel.grid(row=8, column=4)
-Name = tk.Entry(mainWindow, width=40)
+Name = tk.Entry(mainWindow, width=34)
 Name.grid(row=9, column=4)
 
 ###################### 11 - Dimensioni della stanza ######################
@@ -288,7 +285,7 @@ def printRoomDimension():
         getDimensions.grid(row=8, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=4)
-roomDimensionButton = tk.Button(mainWindow, height=1, width=37, text="11) CLICK HERE to insert Room Dimensions", command = printRoomDimension, fg='#36454f')
+roomDimensionButton = tk.Button(mainWindow, height=1, width=40, text="11) CLICK HERE to insert Room Dimensions",font='Helvetica 12', command = printRoomDimension, fg='#36454f')
 roomDimensionButton.grid(row=11, column=4)
 
 ###################### 12 - Posizione Loudspeakers ######################
@@ -346,7 +343,7 @@ def printLoudspeakerPosition():
     getPositions.grid(row=2, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
-loudspeakerPositionButton = tk.Button(mainWindow,text="12) CLICK HERE to insert known Loudspeaker positions", command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton = tk.Button(mainWindow,text="12) CLICK HERE to insert known Loudspeaker positions",font='Helvetica 12', command = printLoudspeakerPosition, fg='#36454f')
 loudspeakerPositionButton.grid(row=13, column=4)      
 
 ###################### 13 - Calibrazione Sistema di Misura ######################
@@ -438,12 +435,12 @@ def measureCalWindow():
         systemLatency = int(np.average(buffer))
 
     space = tk.Label(measureCalWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=6, column=2)
-    measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 16 bold', fg='#36454f')
+    measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 14 bold', fg='#36454f')
     measureCalibrationButton.grid(row=7, column=2)  
 
     measureCalWindow.mainloop()
 
-testSignalButton = tk.Button(mainWindow, height=1, width=38, text="13) CLICK HERE to calibrate the system", command=measureCalWindow, fg='#36454f')
+testSignalButton = tk.Button(mainWindow, height=1, width=41, text="13) CLICK HERE to calibrate the system", command=measureCalWindow,font='Helvetica 12', fg='#36454f')
 testSignalButton.grid(row=15, column=4)   
 
 ###################### 14 - START MEASURE BUTTON ######################
@@ -488,8 +485,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
         measureMethod = 1
     elif variableMeasure.get() == 'MLS':
         measureMethod = 2
-    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
-        measureMethod = 3
 
     # print all variables on Terminal
     print('\n')
@@ -631,11 +626,15 @@ def multipleStartFunctions(): # to get all the needed varaibles
     ## CALIBRAZIONE ##
     calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis, measureName)
 
-buttonStart = tk.Button(mainWindow, height=2, width=30, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart = tk.Button(mainWindow, height=2, width=26, text="14) START MEASURE", font='Helvetica 18 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.grid(row=17, column=4)
 
 # 15 - Print Posizione Microfoni stimata ######################
 def showPlot ():
+    plotWindow = tk.Tk()
+    plotWindow.title("Microphones Position Estimation") # titolo
+    #plotWindow.geometry('530x500') # dimensioni
+    plotWindow.config(bg='#36454f') # colore
     #measure name
     measureName = Name.get()
 
@@ -644,15 +643,13 @@ def showPlot ():
         measureMethod = 1
     elif variableMeasure.get() == 'MLS':
         measureMethod = 2
-    elif variableMeasure.get() == 'PyRoomAcoustics simulation':
-        measureMethod = 3
 
-    if measureMethod == 1:
-        open('SineSweepMeasures/'+ str(measureName) +'/estimationGraph.png')
-    elif measureMethod == 2:
-        open('MLSMeasures/'+ str(measureName) +'/estimationGraph.png')
+    #if measureMethod == 1:
+    #    open('SineSweepMeasures/'+ str(measureName) +'/estimationGraph.png')
+    #elif measureMethod == 2:
+    #    open('MLSMeasures/'+ str(measureName) +'/estimationGraph.png')
 
-micPositionPrintLabel = tk.Button(mainWindow, height=2, width=30, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot", command= showPlot, fg='#36454f')
+micPositionPrintLabel = tk.Button(mainWindow, height=2, width=39, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot",font='Helvetica 12', command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=16, column=2)
 
 mainWindow.mainloop()
