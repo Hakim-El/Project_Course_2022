@@ -1,4 +1,3 @@
-#from curses.ascii import NL
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import find_peaks
@@ -8,21 +7,7 @@ from modules.RIRsimulation import createRir
 from mpl_toolkits.mplot3d import Axes3D
 
 #import RIRmeasure_SineSweep
-#calType = M.cal_type
-#delayType = M.delayType
-#fs = M.fs
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
-#nMics = M.inputChannels       # Mics are our unknown position devices
-#nLS = M.outputChannels        # Loudspeakers are our known position devices
-#x_bound = M.x_axis    # room bound on the x axis
-#y_bound = M.y_axis    # room bound on the y axis
-#if calType == 2:
-#    z_bound = M.z_axis
-
-#knownPos = M.knownPos # know positions of the Loudspeakers used in the pyroomacoustics simulation
-
-# data contains the RIRs of the simulation it's shape is (nMics*RIRlen , nLS) 
-# data = createRir(RIRlen) # Create a RIR with Pyroomacoustics (See RIRsimulation file)
 
 def createDataMatrix(nMics, nLS):
     data = np.zeros((nMics*RIRlen,nLS))
@@ -30,7 +15,6 @@ def createDataMatrix(nMics, nLS):
 
 def fillDataMatrix(data, nMics, nLS):
     lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
-    #lastRecording = lastRecording[lastRecording.shape[0]//2:,:]
     for i in np.arange(0,nMics):
         data[i*RIRlen:RIRlen*(i+1),nLS] = lastRecording[0:RIRlen,i]
     return data
