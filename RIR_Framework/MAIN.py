@@ -7,9 +7,9 @@ import shutil
 from PIL import Image, ImageTk
 
 # Script secondari da importare per far funzionare il MAIN
-from modules.RIRmeasure_SineSweep import RIRmeasure_function
-from modules.RIRmeasure_MLS import MLSmeasure_function
-from modules.Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
+from _modules.RIRmeasure_SineSweep import RIRmeasure_function
+from _modules.RIRmeasure_MLS import MLSmeasure_function
+from _modules.Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
 
 ###################################################################################################
 
