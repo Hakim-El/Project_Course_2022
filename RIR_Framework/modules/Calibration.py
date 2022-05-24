@@ -4,7 +4,7 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.optimize import minimize
 from scipy import interpolate
-from functions.RIRsimulation import createRir
+from modules.RIRsimulation import createRir
 from mpl_toolkits.mplot3d import Axes3D
 
 #import RIRmeasure_SineSweep

@@ -4,9 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # Modules from this software
-import functions.stimulus_SineSweep as stim
-import functions._parseargs_SineSweep as parse
-import functions.utils_SineSweep as utils
+import modules.stimulus_SineSweep as stim
+import modules._parseargs_SineSweep as parse
+import modules.utils_SineSweep as utils
 
 # ATTENZIONE: Il corretto input e output viene impostato nel file utils!
 # é tutto una funzione richiamata nel MAIN qui!
