@@ -5,6 +5,9 @@ from scipy.signal import fftconvolve
 import IPython
 import pyroomacoustics as pra
 
+### IMPORTANT: This script is not actually used in the RIR Framework but it is implemented in the 
+### Main file and in the Calibration module and it can be used to make some simulations with pyroomacoustics
+
 # Creates a simulation of a RIR with 4 Loudspeakers and 1 mic at determined positions
 # Used for testing the calibration algorithm
 # Predetermined room shape for testing: x = 5m , y = 5m for the 2D case, z = 3m for 3D
