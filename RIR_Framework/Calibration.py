@@ -253,16 +253,26 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
             z[n] = pos_3Ddel[counter1 + 2]
             counter1 = counter1 + 3
             
-        fig = plt.figure(figsize=(4,4))
-        ax = Axes3D(fig, auto_add_to_figure=False)
-        ax.scatter(x,y,z, marker = 'o')
-        ax.grid()
-        ax.legend(['With delay'])
-        ax.set_xlabel('$x[m]$', fontsize=18)
-        ax.set_ylabel('$y[m]$', fontsize=18)
-        ax.set_zlabel('$z[m]$', fontsize=18)
-        fig.add_axes(ax)
-        plt.show()
+        fig = plt.figure(figsize=(8,4))
+        plt.subplot(1,2,1)
+        plt.scatter(x, y, marker = 'o')
+        plt.title("Estimated position plane xy")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('y[m]')
+        plt.legend(['No delay'])
+        plt.xlim((0,x_bound))
+        plt.ylim((0,y_bound))
+
+        plt.subplot(1,2,2)
+        plt.scatter(x, z, marker = 'o')
+        plt.title("Estimated position plane xy")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('z[m]')
+        plt.legend(['No delay'])
+        plt.xlim((0,x_bound))
+        plt.ylim((0,z_bound))
     
     #If we are in a 3D case without estimation delay:
     if (calType == 2 and delayType == 2):
@@ -277,16 +287,26 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
             z[n] = pos_3Dnodel[counter1 + 2]
             counter1 = counter1 + 3
         
-        fig = plt.figure(figsize=(4,4))
-        ax = Axes3D(fig, auto_add_to_figure=False)
-        ax.scatter(x,y,z, marker = 'o')
-        ax.grid()
-        ax.legend(['No delay'])
-        ax.set_xlabel('$x[m]$', fontsize=18)
-        ax.set_ylabel('$y[m]$', fontsize=18)
-        ax.set_zlabel('$z[m]$', fontsize=18)
-        fig.add_axes(ax)
-        plt.show()
+        fig = plt.figure(figsize=(8,4))
+        plt.subplot(1,2,1)
+        plt.scatter(x, y, marker = 'o')
+        plt.title("Estimated position plane xy")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('y[m]')
+        plt.legend(['No delay'])
+        plt.xlim((0,x_bound))
+        plt.ylim((0,y_bound))
+
+        plt.subplot(1,2,2)
+        plt.scatter(x, z, marker = 'o')
+        plt.title("Estimated position plane xz")
+        plt.grid()
+        plt.xlabel('x[m]')
+        plt.ylabel('z[m]')
+        plt.legend(['No delay'])
+        plt.xlim((0,x_bound))
+        plt.ylim((0,z_bound))
 
     #If we are in a 2D case with estimation delay:
     if (calType == 1 and delayType == 1):
@@ -308,8 +328,8 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
         plt.ylabel('y[m]')
         plt.legend(['With delay'])
         #plt.show()
-        #plt.xlim((0,x_bound))
-        #plt.ylim((0,y_bound))
+        plt.xlim((0,x_bound))
+        plt.ylim((0,y_bound))
         
     #If we are in a 2D case without estimation delay:   
     if (calType == 1 and delayType == 2):
@@ -330,6 +350,8 @@ def calculate_Calibration(data, nMics, calType, delayType, measureMethod, c, fs,
         plt.xlabel('x[m]')
         plt.ylabel('y[m]')
         plt.legend(['No delay'])
+        plt.xlim((0,x_bound))
+        plt.ylim((0,y_bound))
         #plt.show()
 
     if measureMethod == 1:
