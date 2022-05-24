@@ -12,7 +12,7 @@ import os
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName, latency=0):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale
-    orderMLS = 16
+    orderMLS = 18
     mls = max_len_seq(orderMLS)[0]*2-1     # just the first array, # +1 and -1
     #mls = max_len_seq(orderMLS)[0]        # binary sequence 0 and 1
     #mls = mls*sqrt(2)                # clip it to the range [-sqrt(2) , sqrt(2)] for 3dB headroom
@@ -84,6 +84,10 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     RIR = RIR[latency:,:]
     RIR1 = RIR1[latency:,:]
     RIR2 = RIR2[latency:,:]
+
+    # NORMALIZE RIRs
+    for idx in np.arange(0,RIR.shape[1]):
+        RIR[:,idx] = RIR[:,idx]/np.max(RIR[:,idx])
 
     # Salvataggio files RIR
     dirflag = False

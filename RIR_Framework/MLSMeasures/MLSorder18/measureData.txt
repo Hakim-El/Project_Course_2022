@@ -1,13 +1,13 @@
 RIR MEASUREMENT DATA
 
-Measure Name: MLS1.1order18
+Measure Name: MLSorder18
 Type of measure: MLS 
 Sound speed: 343.00 [m/s] 
 Sampling Frequency: 44100 [Hz]
 Number of Microphones: 1 
 Number of Loudspeakers: 1
 Calibration Type: 2D
-Delaycompensation: NO
+Delay compensation: YES
 
 ROOM DIMENSIONS:
 Room X axis dimension: 4.00 [m]
