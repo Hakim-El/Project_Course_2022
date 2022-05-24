@@ -1,11 +1,12 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
-from tkinter import *
+#from tkinter import *
 import sounddevice as sd
 import numpy as np
 import os
 import shutil
 from PIL import Image, ImageTk
+
 
 # Moduli da importare per far funzionare gli script secondari che vengono richiamati nel MAIN
 import matplotlib.pyplot as plt
@@ -284,6 +285,7 @@ def printRoomDimension():
         errDimLabel = tk.Label(dimension2DWindow, text='Select an Estimation Type before', bg='#36454f', fg='#f7f7f7')
         errDimLabel.grid(row=1, column=1)
 
+
     def getRoomDimensions():
         global x_axis
         global y_axis
@@ -341,6 +343,8 @@ def printLoudspeakerPosition():
             y_pos[i].grid(row=2+i, column=3)
             z_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             z_pos[i].grid(row=2+i, column=4)
+
+    
 
     def getLoudSpeakersPositions():
         global knownPos
@@ -645,7 +649,7 @@ buttonStart.grid(row=17, column=4)
 
 ###################### 15 - Print Posizione Microfoni stimata ######################
 def showPlot ():
-    plotWindow = tk.Tk()
+    plotWindow = tk.Toplevel(mainWindow)
     plotWindow.title("Microphones Position Estimation") # titolo
     #plotWindow.geometry('530x500') # dimensioni
     plotWindow.config(bg='#36454f') # colore
@@ -653,22 +657,16 @@ def showPlot ():
     #measure name
     measureName = Name.get()
 
-    #measure type
     if variableMeasure.get() == 'SineSweep':
-        measureMethod = 1
-    elif variableMeasure.get() == 'MLS':
-        measureMethod = 2
-
-    if measureMethod == 1:
         img = ImageTk.PhotoImage(Image.open("SineSweepMeasures/"+ str(measureName) +"/estimationGraph.png"))
-        #print('Immagine trovata!')
-        plot = tk.Label(plotWindow, image= img)
-        plot.grid(row=1, column=1)
-    elif measureMethod == 2:
+        plotLabel = tk.Label(plotWindow, image= img)
+        plotLabel.grid(row=1, column=1)
+    elif variableMeasure.get() == 'MLS':
         img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/estimationGraph.png"))
-        #print('Immagine trovata!')
-        plot = tk.Label(plotWindow, image= img)
-        plot.grid(row=1, column=1)
+        plotLabel = tk.Label(plotWindow, image= img)
+        plotLabel.grid(row=1, column=1)
+
+    plotWindow.mainloop()
 
 micPositionPrintLabel = tk.Button(mainWindow, height=2, width=39, text="15) CLICK HERE after the measure to show the\nMicrophone position estimation plot",font='Helvetica 12', command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=16, column=2)
