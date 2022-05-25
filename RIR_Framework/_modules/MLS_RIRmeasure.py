@@ -82,12 +82,10 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
 
     # TAGLIO RIR CON LATENZA
     RIR = RIR[latency:,:]
-    RIR1 = RIR1[latency:,:]
-    RIR2 = RIR2[latency:,:]
 
     # NORMALIZE RIRs
     for idx in np.arange(0,RIR.shape[1]):
-        RIR[:,idx] = RIR[:,idx]/np.max(RIR[:,idx])
+        RIR[:,idx] = RIR[:,idx]/np.max(abs(RIR[:,idx]))
 
     # Salvataggio files RIR
     dirflag = False
@@ -103,14 +101,12 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
 
     # Saving the RIRs and the captured signals
     np.save(dirname+ '/RIR.npy',RIR)
-    np.save(dirname+ '/RIR1.npy',RIR1)
-    np.save(dirname+ '/RIR2.npy',RIR2)
 
     wavwrite(dirname+ '/sigtest.wav',fs,mlsPadded)
 
     for idx in range(averagedMLS1.shape[1]):
         wavwrite(dirname+ '/sigrec_Mic' + str(idx+1) + '.wav',fs,averagedMLS1[:,idx])
-        wavwrite(dirname+ '/RIR_Mic' + str(idx+1) + '.wav',fs,0.01*RIR[:,idx])
+        wavwrite(dirname+ '/RIR_Mic' + str(idx+1) + '.wav',fs,RIR[:,idx])
 
     # Save in the MLSMeasures/_lastMeasureData_ for a quick check
     np.save('MLSMeasures/_lastMeasureData_/RIR.npy',RIR)

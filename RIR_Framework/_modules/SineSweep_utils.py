@@ -46,7 +46,7 @@ def saverecording(RIR, RIRtoSave, testsignal, recorded, fs, measureName):
 
         for idx in range(recorded.shape[1]):
             wavwrite(dirname+ '/sigrec_Mic' + str(idx+1) + '.wav',fs,recorded[:,idx])
-            wavwrite(dirname+ '/RIR_Mic' + str(idx+1) + '.wav',fs,10*RIRtoSave[:,idx])
+            wavwrite(dirname+ '/RIR_Mic' + str(idx+1) + '.wav',fs,RIRtoSave[:,idx])
 
         # Save in the Sine_Sweep_Measures/_lastMeasureData_ for a quick check
         #np.save('SineSweepMeasures/_lastMeasureData_/RIR.npy',RIR)
