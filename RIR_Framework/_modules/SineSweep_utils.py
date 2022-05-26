@@ -5,7 +5,7 @@ import sounddevice as sd
 
 #--------------------------
 
-def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevice):
+def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevice, calibration=0):
 
 # Selezione device audio di input e output
     sd.default.device = [inputDevice,outputDevice] #[input, output]
@@ -17,10 +17,14 @@ def record(testsignal,fs,inputChannels, outputChannels, inputDevice, outputDevic
     sd.default.dtype = 'float32'
    # print("Input channels:",  inputChannels)
    # print("Output channels:", outputChannels)
+    if calibration == 0:
+        recorded = sd.playrec(testsignal, samplerate=fs,output_mapping=[27])
+        sd.wait()
 
-    # Start the recording
-    recorded = sd.playrec(testsignal, samplerate=fs, output_mapping=[outputChannels])
-    sd.wait()
+    else:
+        # Start the recording
+        recorded = sd.playrec(testsignal, samplerate=fs, input_mapping=[1,2,3,4,5,6,7,8,11,12,13,14,15,16,17],output_mapping=[outputChannels])
+        sd.wait()
 
     return recorded
 

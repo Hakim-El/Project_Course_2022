@@ -1,5 +1,6 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
+from turtle import clear
 import sounddevice as sd
 import numpy as np
 import os
@@ -611,10 +612,28 @@ def multipleStartFunctions(): # to get all the needed varaibles
     ## MISURA ##
     if measureMethod == 1 :
         # Misura SineSweep
+        #for i in np.arange(1, outputChannels+1) :
+        #    RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
+        #    data = fillDataMatrix(data,inputChannels,i-1)
+        RIRmeasure_function (fs,inputChannels, 1, inputDevice, outputDevice, measureName, latency= systemLatency)
         data = createDataMatrix(inputChannels,outputChannels)
-        for i in np.arange(1, outputChannels+1) :
-            RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
-            data = fillDataMatrix(data,inputChannels,i-1)
+        data = fillDataMatrix(data,inputChannels,0)
+        RIRmeasure_function (fs,inputChannels, 4, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,1)
+        RIRmeasure_function (fs,inputChannels, 5, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,2)
+        RIRmeasure_function (fs,inputChannels, 8, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,3)
+        RIRmeasure_function (fs,inputChannels, 11, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,4)
+        RIRmeasure_function (fs,inputChannels, 14, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,5)
+        RIRmeasure_function (fs,inputChannels, 15, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,6)
+        RIRmeasure_function (fs,inputChannels, 18, inputDevice, outputDevice, measureName, latency= systemLatency)
+        data = fillDataMatrix(data,inputChannels,7)
+        np.save('RIRMatrix.npy',data)
+
     elif measureMethod == 2 :
         # Misura MLS
         data = createDataMatrix(inputChannels,outputChannels)

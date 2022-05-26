@@ -10,13 +10,15 @@ from mpl_toolkits.mplot3d import Axes3D
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
 
 def createDataMatrix(nMics, nLS):
-    data = np.zeros((nMics*RIRlen,nLS))
+    lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
+    data = np.zeros((nMics,nLS,len(lastRecording)))
     return data
 
 def fillDataMatrix(data, nMics, nLS):
     lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
+    #data = np.zeros((nMics,nLS,len(lastRecording)))
     for i in np.arange(0,nMics):
-        data[i*RIRlen:RIRlen*(i+1),nLS] = lastRecording[0:RIRlen,i]
+        data[i,nLS,:] = lastRecording[:,i]
     return data
 
 # create the bounds (necessary for the scipy minimize function used in calibration)

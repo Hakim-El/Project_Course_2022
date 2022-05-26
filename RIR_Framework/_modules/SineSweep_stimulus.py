@@ -24,12 +24,12 @@ class stimulus:
 
         if self.type == 'sinesweep':
 
-            f1 = np.max((sweeprange[0],1))             # start of sweep in Hz.
+            #f1 = np.max((sweeprange[0],1))             # start of sweep in Hz.
             if sweeprange[1] == 0:
                 f2 = int(fs/2)      # end of sweep in Hz. Sweep till Nyquist to avoid ringing
             else:
                 f2 = sweeprange[1]
-
+            f1 = 50
             w1 = 2*pi*f1/fs     # start of sweep in rad/sample
             w2 = 2*pi*f2/fs     # end of sweep in rad/sample
 
@@ -107,7 +107,7 @@ class stimulus:
                 RIRs[:,idx] = fftconvolve(self.invfilter,sig_avg);
 
                 # Normalization
-                RIRs[:,idx] = RIRs[:,idx]/np.max(abs(RIRs[:,idx]))
+                #RIRs[:,idx] = RIRs[:,idx]/np.max(abs(RIRs[:,idx]))
 
             return RIRs
 

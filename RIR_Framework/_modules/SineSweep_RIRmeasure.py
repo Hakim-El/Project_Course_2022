@@ -57,7 +57,12 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
             testStimulus.generate(fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange)
 
             # Record
-            recorded = utils.record(testStimulus.signal,fs,inputChannels, outputChannels, inputDevice, outputDevice)
+            if inputChannels==1:
+                recorded = utils.record(testStimulus.signal,fs,inputChannels, outputChannels, inputDevice, outputDevice, calibration = 0)
+
+            else:
+                recorded = utils.record(testStimulus.signal,fs,inputChannels, outputChannels, inputDevice, outputDevice, calibration = 1)
+
 
             # Deconvolve
             RIR = testStimulus.deconvolve(recorded)
@@ -72,7 +77,7 @@ def RIRmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
             # RIR = RIR[startId:endId,:]
 
             RIRtoSave = RIR[RIR.shape[0]//2:,:]
-            RIRtoSave = RIRtoSave[latency:,:]
+            #RIRtoSave = RIRtoSave[latency:,:]
 
             # Save recordings and RIRs
             utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName)
