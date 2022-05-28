@@ -6,6 +6,7 @@ import numpy as np
 import os
 import shutil
 from PIL import Image, ImageTk
+import csv
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function
@@ -24,30 +25,30 @@ mainWindow.config(bg='#36454f') # colore
 borderSpace1 = tk.Label(mainWindow, text='', bg='#36454f').grid(row=1,rowspan=1)
 borderSpace2 = tk.Label(mainWindow, text='', bg='#36454f').grid(column=1, columnspan=1)
 
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=1, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=3, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=4, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=5, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=6, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=7, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=8, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=9, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=10, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=11, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=12, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=13, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=14, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=15, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=16, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=17, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=19, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=20, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=21, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=22, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=23, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=24, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=1, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=3, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=4, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=5, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=6, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=7, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=8, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=9, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=10, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=11, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=12, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=13, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=14, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=15, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=16, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=17, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=19, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=20, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=21, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=22, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=23, column=3)
+verticalSpaces = tk.Label(mainWindow, text='  | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=24, column=3)
 
 credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
 credits.grid(row=24, column=4)
@@ -109,7 +110,7 @@ opt2.grid(row=6, column=2)
 
 ###################### 3 - Selezione numero canali Input/Output (Matrix) ######################
 def inputWindow():
-    inputMatrixWindow = tk.Tk()
+    inputMatrixWindow = tk.Toplevel(mainWindow)
     inputMatrixWindow.title("Input/Output selection") # titolo
     inputMatrixWindow.config(bg='#36454f') # colore
 
@@ -123,7 +124,6 @@ def inputWindow():
     opt3 = tk.OptionMenu(inputMatrixWindow, variableInputCh, '')
     opt3.config(width=15)
     opt3.grid(row=3, column=1)
-
 
     ###################### Selezione numero canali Ouput ######################
     space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=1)
@@ -207,7 +207,7 @@ t.grid(row=21, column=2)
 
 ###################### 8 - Calibrazione Sistema di Misura ######################
 def measureCalWindow():
-    measureCalWindow = tk.Tk()
+    measureCalWindow = tk.Toplevel(mainWindow)
     measureCalWindow.title("System latency calibration") # titolo
     #measureCalWindow.geometry('530x500') # dimensioni
     measureCalWindow.config(bg='#36454f') # colore
@@ -317,7 +317,7 @@ Name.grid(row=4, column=4)
 
 ###################### 2 - Dimensioni della stanza ######################
 def printRoomDimension():
-    dimension2DWindow = tk.Tk()
+    dimension2DWindow = tk.Toplevel(mainWindow)
     dimension2DWindow.title("Room Dimensions") # titolo
     dimension2DWindow.config(bg='#36454f') # colore
 
@@ -368,7 +368,6 @@ def printRoomDimension():
         errDimLabel = tk.Label(dimension2DWindow, text='Select a Calibration Type before', bg='#36454f', fg='#f7f7f7')
         errDimLabel.grid(row=1, column=1)
 
-
     def getRoomDimensions():
         global x_axis
         global y_axis
@@ -394,7 +393,7 @@ roomDimensionButton.grid(row=6, column=4)
 ###################### 3 - Posizione Loudspeakers ######################
 def printLoudspeakerPosition():
     var_i = int(variableOutputCh.get())
-    LoudSpeakerWindow = tk.Tk()
+    LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers Known Positions") # titolo
     LoudSpeakerWindow.geometry('%dx%d' %(760, (8+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
@@ -472,11 +471,11 @@ def multipleStartFunctions(): # to get all the needed varaibles
     else:
         c = 343
     
-    #delay type
-    if variableDelay.get() == 'Delay estimation':
-        delayType = 1
-    elif variableDelay.get() == 'NO Delay estimation':
-        delayType = 2
+    ##delay type
+    #if variableDelay.get() == 'Delay estimation':
+    #    delayType = 1
+    #elif variableDelay.get() == 'NO Delay estimation':
+    #    delayType = 2
     
     #calibration type
     if variableCal.get() == '2D':
@@ -562,57 +561,79 @@ def multipleStartFunctions(): # to get all the needed varaibles
     ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure
     if measureMethod == 1:
-        with open('SineSweepMeasures/' + str(measureName) + '/measureData.txt', 'w') as f:
-         f.write('RIR MEASUREMENT DATA\n\n')
-         f.write('Measure Name: %s\n' %measureName)
-         f.write('Type of measure: SineSweep \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+        with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
+         writer = csv.writer(f)
+         writer.writerow(['RIR MEASUREMENT DATA'])
+         writer.writerow(['Measure Name:', '%s'] %measureName)
+         writer.writerow(['Type of measure:', 'SineSweep'])
+         writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
+         writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
+         writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
+         writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
          if cal_type == 1 :
-             f.write('Calibration Type: 2D\n')
+             writer.writerow('Calibration Type:', '2D')
          elif cal_type == 2 :
-             f.write('Calibration Type: 3D\n')
-         if delayType == 1 :
-             f.write('Delay compensation: YES\n')
-         elif delayType == 2 :
-             f.write('Delaycompensation: NO\n')
-         f.write('\nROOM DIMENSIONS:\n')
+             writer.writerow('Calibration Type:', '3D')
+         writer.writerow([' '])
+         writer.writerow(['ROOM DIMENSIONS:'])
          if cal_type == 1 :
-             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
          if cal_type == 2 :
-             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
-         f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+             writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
+         writer.writerow([' '])
+         writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
          if cal_type == 1 :
              for i in range (0,outputChannels) : 
-              f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+              writer.writerow(['Loudspeaker %d:'] %(i+1))
+              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
          if cal_type == 2 :
              for i in range (0,outputChannels) : 
-              f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))
+              writer.writerow(['Loudspeaker %d:'] %(i+1))
+              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+              writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
 
     # MLS measure
     elif measureMethod == 2:
-        with open('MLSMeasures/' + str(measureName) + '/measureData.txt', 'w') as f:
-         f.write('RIR MEASUREMENT DATA\n\n')
-         f.write('Measure Name: %s\n' %measureName)
-         f.write('Type of measure: MLS \nSound speed: %.2f [m/s] \nSampling Frequency: %d [Hz]\nNumber of Microphones: %d \nNumber of Loudspeakers: %d\n' %(c, fs, inputChannels, outputChannels))
+        with open('MLSMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
+         writer = csv.writer(f)
+         writer.writerow(['RIR MEASUREMENT DATA'])
+         writer.writerow(['Measure Name:', '%s'] %measureName)
+         writer.writerow(['Type of measure:', 'MLS'])
+         writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
+         writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
+         writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
+         writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
          if cal_type == 1 :
-             f.write('Calibration Type: 2D\n')
+             writer.writerow('Calibration Type:', '2D')
          elif cal_type == 2 :
-             f.write('Calibration Type: 3D\n')
-         if delayType == 1 :
-             f.write('Delay compensation: YES\n')
-         elif delayType == 2 :
-             f.write('Delaycompensation: NO\n')
-         f.write('\nROOM DIMENSIONS:\n')
+             writer.writerow('Calibration Type:', '3D')
+         writer.writerow([' '])
+         writer.writerow(['ROOM DIMENSIONS:'])
          if cal_type == 1 :
-             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\n' %(x_axis, y_axis))
+             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
          if cal_type == 2 :
-             f.write('Room X axis dimension: %.2f [m]\nRoom Y axis dimension: %.2f [m]\nRoom Z axis dimension: %.2f [m]\n' %(x_axis, y_axis, z_axis))
-         f.write('\nLOUDSPEAKER KNOWN POSITIONS:\n')
+             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+             writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
+         writer.writerow([' '])
+         writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
          if cal_type == 1 :
              for i in range (0,outputChannels) : 
-              f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1]))
+              writer.writerow(['Loudspeaker %d:'] %(i+1))
+              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
          if cal_type == 2 :
              for i in range (0,outputChannels) : 
-              f.write('Loudspeaker %d:\nX position: %.2f [m]\nY position: %.2f [m]\nZ position: %.2f [m]\n\n' %(i+1, knownPos[i,0], knownPos[i,1], knownPos[i,2]))      
+              writer.writerow(['Loudspeaker %d:'] %(i+1))
+              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+              writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
 
     ## MISURA ##
     if measureMethod == 1 :
@@ -703,8 +724,37 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="1) Show estimated microphone positions",font='Helvetica 14', command= showPlot, fg='#36454f')
 micPositionsLabel.grid(row=18, column=4)
 
+############ ESTIMATION MAESURE ############
+
+def lodspeakerEstimationMeasure():
+    # creazione cartella
+    measureName = Name.get() #measure name and method
+    if variableMeasure.get() == 'SineSweep':
+        measureMethod = 1
+    elif variableMeasure.get() == 'MLS':
+        measureMethod = 2
+
+    dirnameSineSweep = 'SineSweepMeasures/' + str(measureName)
+    dirnameMLS = 'MLSMeasures/' + str(measureName)
+    if os.path.exists(dirnameSineSweep):
+        dirSineSweepFlag = True
+    else :
+        dirSineSweepFlag = False
+
+    if os.path.exists(dirnameMLS):
+        dirMLSFlag = True
+    else :
+        dirMLSFlag = False
+
+    if dirSineSweepFlag == True and measureMethod == 1:
+        os.mkdir('SineSweepMeasures/' + str(measureName) + '/Loudspeaker_Estimation')
+
+    if dirMLSFlag == True and measureMethod == 2:
+        os.mkdir('MLSMeasures/' + str(measureName) + '/Loudspeaker_Estimation')
+    
+
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=19, column=4)
-buttonStartest = tk.Button(mainWindow, height=1, width=31, text="2) START ESTIMATION MEASURE", font='Helvetica 15 bold', fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStartest = tk.Button(mainWindow, height=1, width=31, text="2) START ESTIMATION MEASURE", font='Helvetica 15 bold', command=lodspeakerEstimationMeasure, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStartest.grid(row=20, column=4)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=21, column=4)

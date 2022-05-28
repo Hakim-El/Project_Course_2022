@@ -94,7 +94,7 @@ def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDe
     while dirflag == False:
         if os.path.exists(dirname):
             counter = counter + 1
-            dirname = 'MLSMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(counter)
+            dirname = 'MLSMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(counter)
         else:
             os.mkdir(dirname)
             dirflag = True

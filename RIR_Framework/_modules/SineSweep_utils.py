@@ -38,7 +38,7 @@ def saverecording(RIR, RIRtoSave, testsignal, recorded, fs, measureName):
         while dirflag == False:
             if os.path.exists(dirname):
                 counter = counter + 1
-                dirname = 'SineSweepMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(counter)
+                dirname = 'SineSweepMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(counter)
             else:
                 os.mkdir(dirname)
                 dirflag = True
