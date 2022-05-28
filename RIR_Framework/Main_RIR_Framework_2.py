@@ -58,8 +58,6 @@ credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lelli
 credits.grid(row=24, column=4)
 
 ################################################################################################################################################
-################################################################################################################################################
-################################################################################################################################################
 ########## SECTION 1 ########## 
 
 sect1 = tk.Label(mainWindow,text='1) SYSTEM SETTINGS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=2)
@@ -792,7 +790,6 @@ micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="5) Show 
 micPositionPrintLabel.grid(row=12, column=4)
 
 ###################### 6 - Print RIR ottenute ######################
-# da fare: implementare plot rir in base a combilaznione microfono/louspeaker
 def showRIR():
     RIRplot = tk.Toplevel(mainWindow)
     RIRplot.title("Room Impulse Response plot") # titolo
@@ -801,20 +798,43 @@ def showRIR():
     
     space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(RIRplot,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
-    text1 = tk.Label(RIRplot, text='Select a Loudsoeaker (Output channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2, column=2)
-    ## output select
-    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=3, column=2)
-    text2 = tk.Label(RIRplot, text='Select a microphone (Input channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=4, column=2)
-    ## input select
+    text1 = tk.Label(RIRplot, text='Select a Loudspeaker (Output channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2, column=2)
+    variableRIRout = tk.StringVar(RIRplot)
+    variableRIRout.set('- Loudspeaker Number -')
+    optRIRout = tk.OptionMenu(RIRplot, variableRIRout, *outputMap)
+    optRIRout.config(width=15)
+    optRIRout.grid(row=3, column=2)
+    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=2)
+    text2 = tk.Label(RIRplot, text='Select a Microphone (Input channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=5, column=2)
+    variableRIRin = tk.StringVar(RIRplot)
+    variableRIRin.set('- Microphone Number -')
+    optRIRin = tk.OptionMenu(RIRplot, variableRIRin, *inputMap)
+    optRIRin.config(width=15)
+    optRIRin.grid(row=6, column=2)
 
     def RIRplotshow():
         RIRplot = tk.Toplevel(mainWindow)
         RIRplot.title("PLOT") # titolo
         #plotWindow.geometry('530x500') # dimensioni
         RIRplot.config(bg='#36454f') # colore
+
+        #measure name
+        measureName = Name.get()
+        #output and input select
+        output_select = variableRIRout.get()
+        input_select = variableRIRin.get()
+
+        if variableMeasure.get() == 'SineSweep':
+            img = ImageTk.PhotoImage(Image.open('SineSweepMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
+            plotLabel = tk.Label(RIRplot, image= img)
+            plotLabel.grid(row=1, column=1)
+        elif variableMeasure.get() == 'MLS':
+            img = ImageTk.PhotoImage(Image.open('MLSMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
+            plotLabel = tk.Label(RIRplot, image= img)
+            plotLabel.grid(row=1, column=1)
     
-    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=6, column=2)
-    showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=7, column=2)
+    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
+    showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=8, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=13, column=4)
 RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show RIRs plot",font='Helvetica 14', command= showRIR, fg='#36454f')
@@ -829,7 +849,7 @@ Horizontalspace = tk.Label(mainWindow,  text='----------------------------------
 
 sect3 = tk.Label(mainWindow,text='3) LOUDSPEAKERS ESTIMATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=16, column=4)
 
-############ 1 - show estimated position
+############ 1 - show estimated position ############
 
 def printMicPositions():
     micpositionsplot = tk.Toplevel(mainWindow)
@@ -843,7 +863,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="1) Show estimated microphone positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
 micPositionsLabel.grid(row=18, column=4)
 
-############ ESTIMATION MAESURE ############
+############ 2 - ESTIMATION MAESURE ############
 
 def lodspeakerEstimationMeasure():
     # creazione cartella
@@ -871,11 +891,11 @@ def lodspeakerEstimationMeasure():
     if dirMLSFlag == True and measureMethod == 2:
         os.mkdir('MLSMeasures/' + str(measureName) + '/Loudspeaker_Estimation')
     
-
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=19, column=4)
 buttonStartest = tk.Button(mainWindow, height=1, width=31, text="2) START ESTIMATION MEASURE", font='Helvetica 15 bold', command=lodspeakerEstimationMeasure, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStartest.grid(row=20, column=4)
 
+############## 3 - Loudspeaker estimation plot ################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=21, column=4)
 LoudspeakersPrintLabel = tk.Button(mainWindow, height=1, width=35, text="3) Show Loudspeakers estimation plot",font='Helvetica 14', command= showPlot, fg='#36454f')
 LoudspeakersPrintLabel.grid(row=22, column=4)
