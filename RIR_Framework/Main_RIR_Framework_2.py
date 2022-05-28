@@ -71,27 +71,27 @@ for i in np.arange(0,len(devicesDict)):
     name = f"{i} - {devicesDict[i]['name']} - IN: {devicesDict[i]['max_input_channels']} | OUT:  {devicesDict[i]['max_output_channels']}"
     devicesList.append(name)
 
-def inputChanged(event, *args):
-    i = int(variableInputDev.get()[0])
-    NInputs = devicesDict[i]['max_input_channels']
-    menu = opt3['menu']
-    menu.delete(0,'end')
-    for idx in np.arange(1,NInputs+1):
-        menu.add_command(label=str(idx), command=lambda ch=idx: variableInputCh.set(ch))
-    opt1.config(anchor='w')
-
-def outputChanged(event, *args):
-    i = int(variableOutputDev.get()[0])
-    NOutputs = devicesDict[i]['max_output_channels']
-    menu = opt4['menu']
-    menu.delete(0,'end')
-    for idx in np.arange(1,NOutputs+1):
-        menu.add_command(label=str(idx), command=lambda ch=idx: variableOutputCh.set(ch))
-    opt2.config(anchor='w')
+#def inputChanged(event, *args):
+#    i = int(variableInputDev.get()[0])
+#    NInputs = devicesDict[i]['max_input_channels']
+#    menu = opt3['menu']
+#    menu.delete(0,'end')
+#    for idx in np.arange(1,NInputs+1):
+#        menu.add_command(label=str(idx), command=lambda ch=idx: variableInputCh.set(ch))
+#    opt1.config(anchor='w')
+#
+#def outputChanged(event, *args):
+#    i = int(variableOutputDev.get()[0])
+#    NOutputs = devicesDict[i]['max_output_channels']
+#    menu = opt4['menu']
+#    menu.delete(0,'end')
+#    for idx in np.arange(1,NOutputs+1):
+#        menu.add_command(label=str(idx), command=lambda ch=idx: variableOutputCh.set(ch))
+#    opt2.config(anchor='w')
 
 variableInputDev = tk.StringVar(mainWindow)
 variableInputDev.set('- input AudioDevice -')
-variableInputDev.trace('w', inputChanged)
+#variableInputDev.trace('w', inputChanged)
 opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
 opt1.config(width=30)
 opt1.grid(row=4, column=2)
@@ -103,7 +103,7 @@ outputDeviceLabel.grid(row=5, column=2)
 
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
-variableOutputDev.trace('w', outputChanged)
+#variableOutputDev.trace('w', outputChanged)
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
 opt2.config(width=30)
 opt2.grid(row=6, column=2)
@@ -114,33 +114,51 @@ def inputWindow():
     inputMatrixWindow.title("Input/Output selection") # titolo
     inputMatrixWindow.config(bg='#36454f') # colore
 
-    ###################### Selezione numero canali Input ######################
-    inputChannelLabel = tk.Label(inputMatrixWindow, text="Select the number of Input Channels (Microphones)",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-    inputChannelLabel.grid(row=2, column=1)
+    ####################### Selezione numero canali Input ######################
+    #inputChannelLabel = tk.Label(inputMatrixWindow, text="Select the number of Input Channels (Microphones)",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+    #inputChannelLabel.grid(row=2, column=1)
+#
+    ##InputDevicesListInputCh = np.arange(1,NInputs+1)
+    #variableInputCh = tk.StringVar(inputMatrixWindow)
+    #variableInputCh.set('- number of inputs -  ')
+    #opt3 = tk.OptionMenu(inputMatrixWindow, variableInputCh, '')
+    #opt3.config(width=15)
+    #opt3.grid(row=3, column=1)
+#
+    ####################### Selezione numero canali Ouput ######################
+    #space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=1)
+    #outputChannelLabel = tk.Label(inputMatrixWindow, text="Select the number of Output Channels (Loudspeakers)",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+    #outputChannelLabel.grid(row=5, column=1)
+#
+    #variableOutputCh = tk.StringVar(inputMatrixWindow)
+    #variableOutputCh.set('- number of outputs -')
+    #opt4 = tk.OptionMenu(inputMatrixWindow, variableOutputCh, '')
+    #opt4.config(width=15)
+    #opt4.grid(row=6, column=1)
+#
+    #space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=1)
+    #instructions1 = tk.Label(inputMatrixWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
+    #instructions1.grid(row=8, column=1)
+    #instructions2 = tk.Label(inputMatrixWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
+    #instructions2.grid(row=9, column=1)
 
-    #InputDevicesListInputCh = np.arange(1,NInputs+1)
-    variableInputCh = tk.StringVar(inputMatrixWindow)
-    variableInputCh.set('- number of inputs -  ')
-    opt3 = tk.OptionMenu(inputMatrixWindow, variableInputCh, '')
-    opt3.config(width=15)
-    opt3.grid(row=3, column=1)
+    space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
+    inputSelection = tk.Label(inputMatrixWindow, text='Select your Input channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2,column=2)
+    space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3)
+    outputSelection = tk.Label(inputMatrixWindow, text='Select your Output channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=4, column=2)
+    
+    #creazione input
+    i = int(variableInputDev.get()[0])
+    NInputs = devicesDict[i]['max_input_channels']
+    for j in range(0, NInputs):
+        inputButton = tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1)).grid(row=2, column=j+3)
 
-    ###################### Selezione numero canali Ouput ######################
-    space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=1)
-    outputChannelLabel = tk.Label(inputMatrixWindow, text="Select the number of Output Channels (Loudspeakers)",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-    outputChannelLabel.grid(row=5, column=1)
-
-    variableOutputCh = tk.StringVar(inputMatrixWindow)
-    variableOutputCh.set('- number of outputs -')
-    opt4 = tk.OptionMenu(inputMatrixWindow, variableOutputCh, '')
-    opt4.config(width=15)
-    opt4.grid(row=6, column=1)
-
-    space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=1)
-    instructions1 = tk.Label(inputMatrixWindow, text='WIRING INSTRUCTIONS', font='Helvetica 16 bold', bg='#36454f', fg='#f7f7f7')
-    instructions1.grid(row=8, column=1)
-    instructions2 = tk.Label(inputMatrixWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
-    instructions2.grid(row=9, column=1)
+    #creazione output
+    i = int(variableOutputDev.get()[0])
+    NOutputs = devicesDict[i]['max_output_channels']
+    for j in range(0, NOutputs):
+        outputButton = tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1)).grid(row=4, column=j+3)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
 in_outButton = tk.Button(mainWindow, width=35, text='3) Select your Input/Output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
