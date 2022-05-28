@@ -154,10 +154,6 @@ def inputWindow():
     odev = int(variableOutputDev.get()[0])
     NOutputs = devicesDict[odev]['max_output_channels']
 
-    global inputButton
-    global outputButton
-    global inButtonState
-    global outButtonState
     inButtonState = np.zeros(NInputs)
     outButtonState = np.zeros(NOutputs)
     inputButton = []
@@ -172,6 +168,9 @@ def inputWindow():
             inButtonState[idx] = 0
             inputButton[idx].configure(highlightbackground='white') # Activate with macOS
             #inputButton[idx].configure(bg='white') # Activate with Windows OS
+        global inputMap
+        inputMap = np.nonzero(inButtonState)
+        inputMap = inputMap[0]+1        
 
     def outButtonPressed(idx):
         if outButtonState[idx] == 0:
@@ -182,6 +181,9 @@ def inputWindow():
             outButtonState[idx] = 0
             outputButton[idx].configure(highlightbackground='white') # Activate with macOS
             #outputButton[idx].configure(bg='white') # Activate with Windows OS
+        global outputMap
+        outputMap = np.nonzero(outButtonState)
+        outputMap = outputMap[0]+1
 
     #creazione input
     for j in range(0, NInputs):
@@ -481,7 +483,7 @@ roomDimensionButton.grid(row=6, column=4)
 
 ###################### 3 - Posizione Loudspeakers ######################
 def printLoudspeakerPosition():
-    var_i = int(variableOutputCh.get())
+    var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers Known Positions") # titolo
     LoudSpeakerWindow.geometry('%dx%d' %(760, (8+(var_i*100)/3))) # dimensioni
@@ -546,8 +548,8 @@ def multipleStartFunctions(): # to get all the needed varaibles
     outputDevice = int(variableOutputDev.get()[0])
     
     #number of inputs/outputs
-    inputChannels = int(variableInputCh.get())
-    outputChannels = int(variableOutputCh.get())
+    inputChannels = len(inputMap)
+    outputChannels = len(outputMap)
     
     #measure name
     measureName = Name.get()
