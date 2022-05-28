@@ -1,7 +1,7 @@
 # Moduli da importare per far funzionare il MAIN
 from gettext import dpgettext
 import tkinter as tk
-from turtle import clear
+from turtle import clear, position
 import sounddevice as sd
 import numpy as np
 import os
@@ -12,7 +12,7 @@ import csv
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
-from _modules.Calibration import calculate_Calibration, find_directPath
+from _modules.Calibration3 import calibrate, find_directPath
 
 ###################################################################################################
 # CREA MAIN WINDOW
@@ -197,7 +197,7 @@ in_outButton = tk.Button(mainWindow, width=35, text='3) Select your Input/Output
 in_outButton.grid(row=8, column=2)
 
 ###################### 4 - Selezione tipo di misura ######################
-#Horizontalspace = tk.Label(mainWindow,  text='-----------------------------------------------------------------------------------------------------------------------------------------',font='Helvetica 8', bg='#36454f',fg='#f7f7f7').grid(row=9, column=2)
+Horizontalspace = tk.Label(mainWindow,  text='-----------------------------------------------------------------------------------------------------------------------------------------',font='Helvetica 8', bg='#36454f',fg='#f7f7f7').grid(row=9, column=2)
 measureTypelLabel = tk.Label(mainWindow, text="4) Type of measure",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 measureTypelLabel.grid(row=10, column=2)
 
@@ -276,19 +276,19 @@ def measureCalWindow():
     instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the Input/Output audio device.\n\n------\n\nAfter pressing "CALIBRATE" button wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
-        #indev = int(variableInputDev.get()[0])
-        #outdev = int(variableOutputDev.get()[0])
+        global systemLatency
+        indev = int(variableInputDev.get()[0])
+        outdev = int(variableOutputDev.get()[0])
         #nIN = int(input.get())
         #nOUT = int(output_mapping.get())
         fs = int(InputDevicesListFreq.get())
-        name = 'RIR for latency'
+        name = 'RIR_for_latency'
         
-        data = createDataMatrix(len(inputMap),len(outputMap))
-        #RIRmeasure_function(fs,nIN = inputMap,nOUT = outputMap,indev= len(inputMap),outdev=len(outputMap), name) 
-        data = fillDataMatrix(data,len(inputMap),len(outputMap))
-        RIRlat = data
-        find_directPath(RIRlat,top_peaks=10)
-        latsample = dp
+        # data = createDataMatrix(len(inputMap),len(outputMap))
+        RIRmeasure_function(fs, indev, outdev, name, input_mapping= inputMap, output_mapping= outputMap) 
+        larencyRIR = np.load('SineSweepMeasures\_lastMeasureData_\RIR.npy')
+        systemLatency = find_directPath(larencyRIR)
+        #latsample = dp
         #systemLatency = 
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
@@ -728,7 +728,11 @@ def multipleStartFunctions(): # to get all the needed varaibles
             data = fillDataMatrix(data,inputChannels,i-1)
 
     ## CALIBRAZIONE ##
-    calculate_Calibration(data, inputChannels, cal_type, delayType, measureMethod, c, fs, knownPos, x_axis, y_axis, z_axis, measureName)
+    posType = 's'
+    maxBuffer = 1e-3
+    interpFactor = 2
+    posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
+    calibrate(data, fs, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="4) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura

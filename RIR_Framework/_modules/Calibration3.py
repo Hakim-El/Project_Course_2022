@@ -35,7 +35,7 @@ def find_position(positions, toa, positions_bounds, buffer=True, ndim=3, max_buf
     bnd = tuple(tuple(x) for x in bnds)
 
     res = minimize(obj_function, x0, method='SLSQP', bounds=bnd, args=(positions, toa, buffer))
-    if ndim is 3:
+    if ndim == 3:
         if buffer:
             return res.x
         else:
@@ -70,7 +70,7 @@ def calibrate(rir, fs, position_type: str, positions, max_buffer: float,
               sound_speed: float = 343, estimate_buffer: bool = True, do_plot: bool = True):
     c = sound_speed
     # %% DATA LOADING
-    if position_type is 's':
+    if position_type == 's':
         rir = np.transpose(rir, (0, 2, 1))
 
     # %% Position estimation
