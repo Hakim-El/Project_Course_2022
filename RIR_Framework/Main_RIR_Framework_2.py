@@ -8,17 +8,13 @@ import os
 import shutil
 from PIL import Image, ImageTk
 import csv
-#from RIR_Framework.LoopRIR import RIR
-from _modules.Calibration import RIRlen
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
 from _modules.Calibration import calculate_Calibration, find_directPath
 
-
 ###################################################################################################
-
 # CREA MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
@@ -99,7 +95,6 @@ opt1.config(width=30)
 opt1.grid(row=4, column=2)
 
 ###################### 2 - Selezione Audio Device di Output ######################
-
 outputDeviceLabel = tk.Label(mainWindow, text="2) Select Output Audio Device",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.grid(row=5, column=2)
 
@@ -113,7 +108,7 @@ opt2.grid(row=6, column=2)
 ###################### 3 - Selezione numero canali Input/Output (Matrix) ######################
 def inputWindow():
     inputMatrixWindow = tk.Toplevel(mainWindow)
-    inputMatrixWindow.title("Input/Output selection") # titolo
+    inputMatrixWindow.title("Input/Output Matrix") # titolo
     inputMatrixWindow.config(bg='#36454f') # colore
 
     ####################### Selezione numero canali Input ######################
@@ -237,16 +232,6 @@ opt7 = tk.OptionMenu(mainWindow, variableCal, *InputDevicesListCal)
 opt7.config(width=8)
 opt7.grid(row=17, column=2)
 
-######################  - Delay o no Delay ######################
-#delayLabel = tk.Label(mainWindow, text="8) Delay estimation type",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-#delayLabel.grid(row=11, column=6)
-#
-#InputDevicesListDelay = ['Delay estimation', 'NO Delay estimation']
-#variableDelay = tk.StringVar(mainWindow)
-#variableDelay.set('- select -     ')
-#opt8 = tk.OptionMenu(mainWindow, variableDelay, *InputDevicesListDelay)
-#opt8.grid(row=12, column=6)
-
 ###################### 7 - Sound Speed estimation ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=2)
 soundSpeedLabel = tk.Label(mainWindow, text="7) Sound Speed estimation",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
@@ -271,7 +256,7 @@ def measureCalWindow():
     space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     instr1 = tk.Label(measureCalWindow,text='SYSTEM CALIBRATION INSTRUCTIONS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
-    instr3 = tk.Label(measureCalWindow,text='1) CONNECT WITH A CABLE A GENERAL OUTPUT CHANNEL OF YOUR DEVICE INTO A GENERAL INPUT CHANNEL\nTO PERFORM A LOOP, SELECT BELOW THE PROPER CHOICE', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
+    instr3 = tk.Label(measureCalWindow,text='1) Select an Input and Output channel from your selected Audio Device.\n(Suggestion: select Input and Output channels that are not used in the measure\nIf needed, activate another Input and Output channel from the Input/Output matrix.)\n\n2) Make a loop with a cable between the selected Input and Output.\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=5, column=2)
 
     varcal_in = tk.StringVar(measureCalWindow)
@@ -288,7 +273,7 @@ def measureCalWindow():
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
     instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    instr5 = tk.Label(measureCalWindow, text='2) CLICK ON "CALIBRATE" BUTTON TO START THE ESTIMATION OF THE SYSTEM LATENCY', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
+    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the Input/Output audio device.\n\n------\n\nAfter pressing "CALIBRATE" button wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
         #indev = int(variableInputDev.get()[0])
@@ -304,16 +289,10 @@ def measureCalWindow():
         RIRlat = data
         find_directPath(RIRlat,top_peaks=10)
         latsample = dp
-        
         #systemLatency = 
-
-
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
     signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
-    #instr7 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    #instr8 = tk.Label(measureCalWindow,text='System Latency Estimated:', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
-    #print('System Latency Estimated: %s' %systemLatency)
 
     #comment1 = tk.Label(measureCalWindow, text='SYSTEM CALIBRATION', font='Helvetica 18 bold', bg='#36454f', fg='#f7f7f7')
     #comment1.grid(row=2, column=2)
@@ -404,8 +383,6 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 testSignalButton = tk.Button(mainWindow, height=1, width=35, text="8) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
 testSignalButton.grid(row=23, column=2)   
 
-################################################################################################################################################
-################################################################################################################################################
 ################################################################################################################################################
 ########## SECTION 2 ########## 
 
@@ -529,7 +506,6 @@ def printLoudspeakerPosition():
             z_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             z_pos[i].grid(row=2+i, column=4)
 
-
     def getLoudSpeakersPositions():
         global knownPos
         if variableCal.get() == '2D' :
@@ -573,13 +549,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         c = (331.3 + 0.606*float(t.get())) # m/s
     else:
         c = 343
-    
-    ##delay type
-    #if variableDelay.get() == 'Delay estimation':
-    #    delayType = 1
-    #elif variableDelay.get() == 'NO Delay estimation':
-    #    delayType = 2
-    
+
     #calibration type
     if variableCal.get() == '2D':
         cal_type = 1
@@ -841,16 +811,11 @@ RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show RIRs plo
 RIRPrintLabel.grid(row=14, column=4)
 
 ################################################################################################################################################
-################################################################################################################################################
-################################################################################################################################################
 ########## SECTION 3 ########## 
-
 Horizontalspace = tk.Label(mainWindow,  text='----------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=15, column=4)
-
 sect3 = tk.Label(mainWindow,text='3) LOUDSPEAKERS ESTIMATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=16, column=4)
 
 ############ 1 - show estimated position ############
-
 def printMicPositions():
     micpositionsplot = tk.Toplevel(mainWindow)
     micpositionsplot.title("Calibrated Mic positions") # titolo
@@ -864,7 +829,6 @@ micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="1) Show esti
 micPositionsLabel.grid(row=18, column=4)
 
 ############ 2 - ESTIMATION MAESURE ############
-
 def lodspeakerEstimationMeasure():
     # creazione cartella
     measureName = Name.get() #measure name and method
