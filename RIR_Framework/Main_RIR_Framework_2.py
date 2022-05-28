@@ -1,4 +1,5 @@
 # Moduli da importare per far funzionare il MAIN
+from gettext import dpgettext
 import tkinter as tk
 from turtle import clear
 import sounddevice as sd
@@ -7,11 +8,14 @@ import os
 import shutil
 from PIL import Image, ImageTk
 import csv
+#from RIR_Framework.LoopRIR import RIR
+from _modules.Calibration import RIRlen
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
 from _modules.Calibration import calculate_Calibration, find_directPath
+
 
 ###################################################################################################
 
@@ -274,13 +278,13 @@ def measureCalWindow():
 
     varcal_in = tk.StringVar(measureCalWindow)
     varcal_in.set('- input channel -')
-    wi1 = tk.OptionMenu(measureCalWindow, varcal_in, '')
+    wi1 = tk.OptionMenu(measureCalWindow, varcal_in, *inputMap)
     wi1.config(width=15)
     wi1.grid(row=6, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
     varcal_out = tk.StringVar(measureCalWindow)
     varcal_out.set('- output channel -')
-    wi2 = tk.OptionMenu(measureCalWindow, varcal_out, '')
+    wi2 = tk.OptionMenu(measureCalWindow, varcal_out, *outputMap)
     wi2.config(width=15)
     wi2.grid(row=8, column=2)
 
@@ -289,13 +293,23 @@ def measureCalWindow():
     instr5 = tk.Label(measureCalWindow, text='2) CLICK ON "CALIBRATE" BUTTON TO START THE ESTIMATION OF THE SYSTEM LATENCY', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
-        indev = int(variableInputDev.get()[0])
-        outdev = int(variableOutputDev.get()[0])
-        nIN = int(input_mapping.get())
-        nOUT = int(output_mapping.get())
+        #indev = int(variableInputDev.get()[0])
+        #outdev = int(variableOutputDev.get()[0])
+        #nIN = int(input.get())
+        #nOUT = int(output_mapping.get())
         fs = int(InputDevicesListFreq.get())
         name = 'RIR for latency'
-        RIRmeasure_function(fs,nIN,nOUT,indev,outdev,name) 
+        
+        data = createDataMatrix(len(inputMap),len(outputMap))
+        #RIRmeasure_function(fs,nIN = inputMap,nOUT = outputMap,indev= len(inputMap),outdev=len(outputMap), name) 
+        data = fillDataMatrix(data,len(inputMap),len(outputMap))
+        RIRlat = data
+        find_directPath(RIRlat,top_peaks=10)
+        latsample = dp
+        
+        #systemLatency = 
+
+
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
     signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
