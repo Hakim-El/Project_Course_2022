@@ -142,23 +142,57 @@ def inputWindow():
     #instructions2 = tk.Label(inputMatrixWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
     #instructions2.grid(row=9, column=1)
 
+
     space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     inputSelection = tk.Label(inputMatrixWindow, text='Select your Input channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2,column=2)
     space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3)
     outputSelection = tk.Label(inputMatrixWindow, text='Select your Output channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=4, column=2)
-    
+
+    idev = int(variableInputDev.get()[0])
+    NInputs = devicesDict[idev]['max_input_channels']
+
+    odev = int(variableOutputDev.get()[0])
+    NOutputs = devicesDict[odev]['max_output_channels']
+
+    global inputButton
+    global outputButton
+    global inButtonState
+    global outButtonState
+    inButtonState = np.zeros(NInputs)
+    outButtonState = np.zeros(NOutputs)
+    inputButton = []
+    outputButton = []
+
+    def inButtonPressed(idx):
+        if inButtonState[idx] == 0:
+            inButtonState[idx] = 1
+            inputButton[idx].configure(bg="green")
+        elif inButtonState[idx] == 1:
+            inButtonState[idx] = 0
+            inputButton[idx].configure(bg='white')
+
+    def outButtonPressed(idx):
+        if outButtonState[idx] == 0:
+            outButtonState[idx] = 1
+            outputButton[idx].configure(bg="green")
+        elif outButtonState[idx] == 1:
+            outButtonState[idx] = 0
+            outputButton[idx].configure(bg='white')
+
+
     #creazione input
-    i = int(variableInputDev.get()[0])
-    NInputs = devicesDict[i]['max_input_channels']
+    
     for j in range(0, NInputs):
-        inputButton = tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1)).grid(row=2, column=j+3)
+        inputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: inButtonPressed(j1)))
+        inputButton[j].grid(row=2, column=j+3)
 
     #creazione output
-    i = int(variableOutputDev.get()[0])
-    NOutputs = devicesDict[i]['max_output_channels']
+
     for j in range(0, NOutputs):
-        outputButton = tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1)).grid(row=4, column=j+3)
+        outputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: outButtonPressed(j1)))
+        outputButton[j].grid(row=4, column=j+3)
+
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
 in_outButton = tk.Button(mainWindow, width=35, text='3) Select your Input/Output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
