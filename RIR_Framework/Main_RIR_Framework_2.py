@@ -167,18 +167,22 @@ def inputWindow():
     def inButtonPressed(idx):
         if inButtonState[idx] == 0:
             inButtonState[idx] = 1
-            inputButton[idx].configure(bg="green")
+            inputButton[idx].configure(highlightbackground='green') # Activate with macOS
+            #inputButton[idx].configure(bg='green') # Activate with Windows OS
         elif inButtonState[idx] == 1:
             inButtonState[idx] = 0
-            inputButton[idx].configure(bg='white')
+            inputButton[idx].configure(highlightbackground='white') # Activate with macOS
+            #inputButton[idx].configure(bg='white') # Activate with Windows OS
 
     def outButtonPressed(idx):
         if outButtonState[idx] == 0:
             outButtonState[idx] = 1
-            outputButton[idx].configure(bg="green")
+            outputButton[idx].configure(highlightbackground="green") # Activate with macOS
+            #outputButton[idx].configure(bg="green") # Activate with Windows OS
         elif outButtonState[idx] == 1:
             outButtonState[idx] = 0
-            outputButton[idx].configure(bg='white')
+            outputButton[idx].configure(highlightbackground='white') # Activate with macOS
+            #outputButton[idx].configure(bg='white') # Activate with Windows OS
 
 
     #creazione input
@@ -264,49 +268,43 @@ def measureCalWindow():
     #measureCalWindow.geometry('530x500') # dimensioni
     measureCalWindow.config(bg='#36454f') # colore
 
-    instr1 = tk.Label(measureCalWindow,text=' - LOOP CABLE INSTRUCTIONS - ', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=2)
-    instr2 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
-    instr3 = tk.Label(measureCalWindow,text='1) CONNECT WITH A CABLE A GENERAL OUTPUT CHANNEL OF YOUR DEVICE INTO A GENERAL INPUT CHANNEL \nTO PERFORM A LOOP, SELECT BELOW THE PROPER CHOICE', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
-    instr4 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
+    space = tk.Label(measureCalWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
+    instr1 = tk.Label(measureCalWindow,text='SYSTEM CALIBRATION INSTRUCTIONS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
+    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
+    instr3 = tk.Label(measureCalWindow,text='1) CONNECT WITH A CABLE A GENERAL OUTPUT CHANNEL OF YOUR DEVICE INTO A GENERAL INPUT CHANNEL\nTO PERFORM A LOOP, SELECT BELOW THE PROPER CHOICE', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
+    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=5, column=2)
 
     varcal_in = tk.StringVar(measureCalWindow)
     varcal_in.set('- input channel -')
     wi1 = tk.OptionMenu(measureCalWindow, varcal_in, '')
     wi1.config(width=15)
-    wi1.grid(row=5, column=2)
-
+    wi1.grid(row=6, column=2)
+    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
     varcal_out = tk.StringVar(measureCalWindow)
     varcal_out.set('- output channel -')
     wi2 = tk.OptionMenu(measureCalWindow, varcal_out, '')
     wi2.config(width=15)
-    wi2.grid(row=6, column=2)
+    wi2.grid(row=8, column=2)
 
-    instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
-    instr5 = tk.Label(measureCalWindow,text='2) CLICK ON "TEST" BUTTON TO START THE ESTIMATION OF THE SYSTEM LATENCY', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=8, column=2)
+    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
+    instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
+    instr5 = tk.Label(measureCalWindow, text='2) CLICK ON "CALIBRATE" BUTTON TO START THE ESTIMATION OF THE SYSTEM LATENCY', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
-
         indev = int(variableInputDev.get()[0])
         outdev = int(variableOutputDev.get()[0])
         nIN = int(input_mapping.get())
         nOUT = int(output_mapping.get())
         fs = int(InputDevicesListFreq.get())
         name = 'RIR for latency'
+        RIRmeasure_function(fs,nIN,nOUT,indev,outdev,name) 
 
-        RIRmeasure_function(fs,nIN,nOUT,indev,outdev,name)
-
-        #systemLatency = 
-
-        
-    signalTest = tk.Button(measureCalWindow, text='TEST', command=EstimLatency, fg='#36454f').grid(row=9, column=2)
-
-    instr7 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    instr8 = tk.Label(measureCalWindow,text='System Latency Estimated:', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
-
-    
-    
-    print('System Latency Estimated: %s' %systemLatency)
-
+    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
+    signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
+    #instr7 = tk.Label(measureCalWindow,text='\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
+    #instr8 = tk.Label(measureCalWindow,text='System Latency Estimated:', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
+    #print('System Latency Estimated: %s' %systemLatency)
 
     #comment1 = tk.Label(measureCalWindow, text='SYSTEM CALIBRATION', font='Helvetica 18 bold', bg='#36454f', fg='#f7f7f7')
     #comment1.grid(row=2, column=2)
