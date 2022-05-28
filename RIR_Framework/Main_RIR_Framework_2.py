@@ -142,7 +142,6 @@ def inputWindow():
     #instructions2 = tk.Label(inputMatrixWindow, text="Connect the selected number N of\nmicrophones to the first N input channels\nof the selected input device\n------\nConnect the selected number M of\nloudspeakers to the first M output channels\nof the selected output device\n", bg='#36454f', fg='#f7f7f7')
     #instructions2.grid(row=9, column=1)
 
-
     space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     inputSelection = tk.Label(inputMatrixWindow, text='Select your Input channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2,column=2)
@@ -184,19 +183,15 @@ def inputWindow():
             outputButton[idx].configure(highlightbackground='white') # Activate with macOS
             #outputButton[idx].configure(bg='white') # Activate with Windows OS
 
-
     #creazione input
-    
     for j in range(0, NInputs):
         inputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: inButtonPressed(j1)))
         inputButton[j].grid(row=2, column=j+3)
 
     #creazione output
-
     for j in range(0, NOutputs):
         outputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: outButtonPressed(j1)))
         outputButton[j].grid(row=4, column=j+3)
-
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
 in_outButton = tk.Button(mainWindow, width=35, text='3) Select your Input/Output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
@@ -593,7 +588,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
     print('Number of Output Channels: %d' %outputChannels)
     print('Measure Type: %d' %measureMethod)
     print('Calibration Type: %d' %cal_type)
-    #print('Delay Estimation Type: %d' %delayType)
     print('Sampling Frequency [Hz]: %d' %fs)
     print('Sound Speed [m/s]: %.2f' %c)
     print('Room Dimensions X, Y, Z [m]: %.2f, %.2f, %.2f' %(x_axis, y_axis, z_axis))
@@ -767,18 +761,18 @@ def showPlot ():
     measureName = Name.get()
 
     if variableMeasure.get() == 'SineSweep':
-        img = ImageTk.PhotoImage(Image.open("SineSweepMeasures/"+ str(measureName) +"/estimationGraph.png"))
+        img = ImageTk.PhotoImage(Image.open("SineSweepMeasures/"+ str(measureName) +"/MicCalibrationGraph.png"))
         plotLabel = tk.Label(plotWindow, image= img)
         plotLabel.grid(row=1, column=1)
     elif variableMeasure.get() == 'MLS':
-        img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/estimationGraph.png"))
+        img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/MicCalibrationGraph.png"))
         plotLabel = tk.Label(plotWindow, image= img)
         plotLabel.grid(row=1, column=1)
 
     plotWindow.mainloop()
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=11, column=4)
-micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="5) Show Microphones calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
+micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="5) Show Microphones Calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=12, column=4)
 
 ###################### 6 - Print RIR ottenute ######################
@@ -789,8 +783,25 @@ def showRIR():
     #plotWindow.geometry('530x500') # dimensioni
     RIRplot.config(bg='#36454f') # colore
     
+    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(RIRplot,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
+    text1 = tk.Label(RIRplot, text='Select a Loudsoeaker (Output channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2, column=2)
+    ## output select
+    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=3, column=2)
+    text2 = tk.Label(RIRplot, text='Select a microphone (Input channel)', font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=4, column=2)
+    ## input select
+
+    def RIRplotshow():
+        RIRplot = tk.Toplevel(mainWindow)
+        RIRplot.title("PLOT") # titolo
+        #plotWindow.geometry('530x500') # dimensioni
+        RIRplot.config(bg='#36454f') # colore
+    
+    space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=6, column=2)
+    showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=7, column=2)
+
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=13, column=4)
-RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show RIRs plot",font='Helvetica 14', command= showPlot, fg='#36454f')
+RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show RIRs plot",font='Helvetica 14', command= showRIR, fg='#36454f')
 RIRPrintLabel.grid(row=14, column=4)
 
 ################################################################################################################################################
@@ -802,8 +813,18 @@ Horizontalspace = tk.Label(mainWindow,  text='----------------------------------
 
 sect3 = tk.Label(mainWindow,text='3) LOUDSPEAKERS ESTIMATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=16, column=4)
 
+############ 1 - show estimated position
+
+def printMicPositions():
+    micpositionsplot = tk.Toplevel(mainWindow)
+    micpositionsplot.title("Calibrated Mic positions") # titolo
+    #plotWindow.geometry('530x500') # dimensioni
+    micpositionsplot.config(bg='#36454f') # colore
+    space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
+
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=17, column=4)
-micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="1) Show estimated microphone positions",font='Helvetica 14', command= showPlot, fg='#36454f')
+micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="1) Show estimated microphone positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
 micPositionsLabel.grid(row=18, column=4)
 
 ############ ESTIMATION MAESURE ############
