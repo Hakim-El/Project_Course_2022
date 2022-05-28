@@ -106,9 +106,6 @@ class stimulus:
                 # Deconvolution
                 RIRs[:,idx] = fftconvolve(self.invfilter,sig_avg);
 
-                # Normalization
-                #RIRs[:,idx] = RIRs[:,idx]/np.max(abs(RIRs[:,idx]))
-
             return RIRs
 
         else:

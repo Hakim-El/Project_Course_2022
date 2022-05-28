@@ -9,9 +9,9 @@ from PIL import Image, ImageTk
 import csv
 
 # Moduli secondari da importare per far funzionare il MAIN
-from _modules.SineSweep_RIRmeasure import RIRmeasure_function
+from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
-from _modules.Calibration import calculate_Calibration, createDataMatrix, fillDataMatrix, find_directPath
+from _modules.Calibration import calculate_Calibration, find_directPath
 
 ###################################################################################################
 
@@ -638,27 +638,15 @@ def multipleStartFunctions(): # to get all the needed varaibles
     ## MISURA ##
     if measureMethod == 1 :
         # Misura SineSweep
-        #for i in np.arange(1, outputChannels+1) :
-        #    RIRmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
-        #    data = fillDataMatrix(data,inputChannels,i-1)
-        RIRmeasure_function (fs,inputChannels, 1, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = createDataMatrix(inputChannels,outputChannels)
-        data = fillDataMatrix(data,inputChannels,0)
-        RIRmeasure_function (fs,inputChannels, 4, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,1)
-        RIRmeasure_function (fs,inputChannels, 5, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,2)
-        RIRmeasure_function (fs,inputChannels, 8, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,3)
-        RIRmeasure_function (fs,inputChannels, 11, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,4)
-        RIRmeasure_function (fs,inputChannels, 14, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,5)
-        RIRmeasure_function (fs,inputChannels, 15, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,6)
-        RIRmeasure_function (fs,inputChannels, 18, inputDevice, outputDevice, measureName, latency= systemLatency)
-        data = fillDataMatrix(data,inputChannels,7)
-        np.save('RIRMatrix.npy',data)
+        data = createDataMatrix(len(inputMap),len(outputMap))
+
+        for i in outputMap:
+            RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=[i], latency= systemLatency)
+            data = fillDataMatrix(data,len(inputMap),i)
+
+        # save the Matrix containing ALL RIRS
+        dirname = 'SineSweepMeasures/' + str(measureName)
+        np.save(dirname + '/RIRMatrix.npy',data)
 
     elif measureMethod == 2 :
         # Misura MLS

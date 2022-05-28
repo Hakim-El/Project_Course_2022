@@ -9,16 +9,17 @@ from mpl_toolkits.mplot3d import Axes3D
 #import RIRmeasure_SineSweep
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group
 
-def createDataMatrix(nMics, nLS):
-    lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
-    data = np.zeros((nMics,nLS,len(lastRecording)))
+def createDataMatrix(nMics, nLS, fs):
+    testSigLen = 12*fs          #12 is the duration in seconds of the sineSweep
+    RecordedSigLen = testSigLen
+    RIRlength = (testSigLen + RecordedSigLen-1)//2 
+    data = np.zeros((RIRlength,nMics,nLS))
     return data
 
 def fillDataMatrix(data, nMics, nLS):
     lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
-    #data = np.zeros((nMics,nLS,len(lastRecording)))
     for i in np.arange(0,nMics):
-        data[i,nLS,:] = lastRecording[:,i]
+        data[:,i,nLS-1] = lastRecording[:,i]
     return data
 
 # create the bounds (necessary for the scipy minimize function used in calibration)
