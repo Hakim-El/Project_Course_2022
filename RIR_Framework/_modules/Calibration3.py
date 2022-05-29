@@ -116,8 +116,8 @@ def calibrate(rir, fs, measureName, measureMethod, position_type: str, positions
 
         # passare come argomento di input measure method e measure name per decidere dove salvare il plot
         if measureMethod == 1:
-            fig.savefig('SineSweepMeasures/{}/MicCalibrationGraph.png'.format(measureName), bbox_inches='tight')
+            fig.savefig('SineSweepMeasures/{}/CalibrationGraph.png'.format(measureName), bbox_inches='tight')
         else:
-            fig.savefig('MLSMeasures/{}/MicCalibrationGraph.png'.format(measureName))
+            fig.savefig('MLSMeasures/{}/CalibrationGraph.png'.format(measureName))
 
     return estimatedPosition, estimatedBuffer
