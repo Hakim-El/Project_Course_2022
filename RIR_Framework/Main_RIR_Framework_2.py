@@ -3,6 +3,7 @@ from gettext import dpgettext
 import tkinter as tk
 from turtle import clear, position
 import sounddevice as sd
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 import shutil
@@ -193,7 +194,7 @@ def inputWindow():
         outputButton[j].grid(row=4, column=j+3)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
-in_outButton = tk.Button(mainWindow, width=35, text='3) Select your Input/Output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
+in_outButton = tk.Button(mainWindow, width=35, text='3) Select your input/output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
 in_outButton.grid(row=8, column=2)
 
 ###################### 4 - Selezione tipo di misura ######################
@@ -220,7 +221,7 @@ opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
 opt6.config(width=8)
 opt6.grid(row=14, column=2)
 
-###################### 6 - Selezione tipo di stima######################
+###################### 6 - Selezione tipo di stima ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=15, column=2)
 calibrationLabel = tk.Label(mainWindow, text="6) Calibration Type",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 calibrationLabel.grid(row=16, column=2)
@@ -248,7 +249,7 @@ t.grid(row=21, column=2)
 ###################### 8 - Calibrazione Sistema di Misura ######################
 def measureCalWindow():
     measureCalWindow = tk.Toplevel(mainWindow)
-    measureCalWindow.title("System latency calibration") # titolo
+    measureCalWindow.title("System Latency Calibration") # titolo
     #measureCalWindow.geometry('530x500') # dimensioni
     measureCalWindow.config(bg='#36454f') # colore
 
@@ -256,128 +257,50 @@ def measureCalWindow():
     space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     instr1 = tk.Label(measureCalWindow,text='SYSTEM CALIBRATION INSTRUCTIONS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
-    instr3 = tk.Label(measureCalWindow,text='1) Select an Input and Output channel from your selected Audio Device.\n(Suggestion: select Input and Output channels that are not used in the measure\nIf needed, activate another Input and Output channel from the Input/Output matrix.)\n\n2) Make a loop with a cable between the selected Input and Output.\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
+    instr3 = tk.Label(measureCalWindow,text='1) Select an input and output channel from your selected Audio Device.\n(Suggestion: select input and output channels that are not used in the measure\nIf needed, activate another input and output channel from the input/output matrix.)\n\n2) Make a loop with a cable between the selected input and output.\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=5, column=2)
+
+    idev = int(variableInputDev.get()[0])
+    NInputs = devicesDict[idev]['max_input_channels']
+
+    odev = int(variableOutputDev.get()[0])
+    NOutputs = devicesDict[odev]['max_output_channels']
 
     varcal_in = tk.StringVar(measureCalWindow)
     varcal_in.set('- input channel -')
-    wi1 = tk.OptionMenu(measureCalWindow, varcal_in, *inputMap)
+    wi1 = tk.OptionMenu(measureCalWindow, varcal_in, *np.arange(1,NInputs+1))
     wi1.config(width=15)
     wi1.grid(row=6, column=2)
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
     varcal_out = tk.StringVar(measureCalWindow)
     varcal_out.set('- output channel -')
-    wi2 = tk.OptionMenu(measureCalWindow, varcal_out, *outputMap)
+    wi2 = tk.OptionMenu(measureCalWindow, varcal_out, *np.arange(1,NOutputs+1))
     wi2.config(width=15)
     wi2.grid(row=8, column=2)
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
     instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the Input/Output audio device.\n\n------\n\nAfter pressing "CALIBRATE" button wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
+    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter pressing "CALIBRATE" button wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
         global systemLatency
         indev = int(variableInputDev.get()[0])
         outdev = int(variableOutputDev.get()[0])
-        #nIN = int(input.get())
-        #nOUT = int(output_mapping.get())
-        fs = int(InputDevicesListFreq.get())
+        fs = int(variableFreq.get())
         name = 'RIR_for_latency'
         
-        # data = createDataMatrix(len(inputMap),len(outputMap))
-        RIRmeasure_function(fs, indev, outdev, name, input_mapping= inputMap, output_mapping= outputMap) 
-        larencyRIR = np.load('SineSweepMeasures\_lastMeasureData_\RIR.npy')
-        systemLatency = find_directPath(larencyRIR)
-        #latsample = dp
-        #systemLatency = 
+        varcalIN = [int(varcal_in.get())]
+        varcalOUT = [int(varcal_out.get())]
+        
+        RIRmeasure_function(fs, indev, outdev, name, input_mapping= varcalIN, output_mapping= varcalOUT) 
+        latencyRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
+        latencyRIR = latencyRIR.reshape((latencyRIR.shape[0],))
+        systemLatency = find_directPath(latencyRIR)
+        shutil.rmtree('SineSweepMeasures/RIR_for_latency') # Delete the Latency measure folder
+        print('SystemLatency = %d' %systemLatency)
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
     signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
-
-    #comment1 = tk.Label(measureCalWindow, text='SYSTEM CALIBRATION', font='Helvetica 18 bold', bg='#36454f', fg='#f7f7f7')
-    #comment1.grid(row=2, column=2)
-    #comment2 = tk.Label(measureCalWindow, text="System must be calibrated before the first measure.\nCalibration is needed to compensate the connected audio device latency.\nThis latency can be different and depends on the used computer and audio device.\nAfter this calibration process, the user can do more than one measurements.\nCalibration is needed again only if the user changes the Input/Output audio device.\n\n------\n\nPoint the capsule of the microphone connected to the first Input Channel\nto the center of the loudspeaker connected to the first Output Channel\nMicrophone capsule must be on the same axis of loudspeaker 0° polar pattern.\nMeasure the distance between the microphone capsule\nand the center of the loudspeaker and insert that value in meters in the box below.\n\n------\n\nPress CALIBRATE button and wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.\n", bg='#36454f', fg='#f7f7f7')
-    #comment2.grid(row=3, column=2)
-#
-    #variableDistance = tk.Entry(measureCalWindow, width=5)
-    #variableDistance.grid(row=5, column=2)
-    #
-    #def systemTare():
-    #    global systemLatency
-    #    buffer = np.zeros(3)
-    #    fs = int(variableFreq.get())
-    #    inputDevice = int(variableInputDev.get()[0])
-    #    outputDevice = int(variableOutputDev.get()[0])
-#
-    #    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-    #        c = 343
-    #    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-    #        c = (331.3 + 0.606*float(t.get())) # m/s
-    #    else:
-    #        c = 343
-#
-    #    d = float(variableDistance.get())
-#
-    #    ## CREAZIONE CARTELLE ##
-    #    #creazione cartelle misura primcipali (SineSweep & MLS)
-    #    dirnameSineSweep = 'SineSweepMeasures/'
-    #    dirnameMLS = 'MLSMeasures/'
-    #    if os.path.exists(dirnameSineSweep):
-    #        dirSineSweepFlag = True
-    #    else :
-    #        dirSineSweepFlag = False
-#
-    #    if os.path.exists(dirnameMLS):
-    #        dirMLSFlag = True
-    #    else :
-    #        dirMLSFlag = False
-#
-    #    if dirSineSweepFlag == False:
-    #        os.mkdir('SineSweepMeasures/')
-    #        dirSineSweepFlag = True
-#
-    #    if dirMLSFlag == False:
-    #        os.mkdir('MLSMeasures/')
-    #        dirMLSFlag = True
-#
-    #    #creazione cartella _lastMeasureData_
-    #    dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
-    #    dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
-    #    if os.path.exists(dirnameLast1):
-    #        dirLast1Flag = True
-    #    else :
-    #        dirLast1Flag = False
-#
-    #    if os.path.exists(dirnameLast2):
-    #        dirLast2Flag = True
-    #    else :
-    #        dirLast2Flag = False
-#
-    #    if dirLast1Flag == False:
-    #        os.mkdir('SineSweepMeasures/_lastMeasureData_')
-    #        dirLast1Flag = True
-#
-    #    if dirLast2Flag == False:
-    #        os.mkdir('MLSMeasures/_lastMeasureData_')
-    #        dirLast2Flag = True
-#
-    #    # by default the tare uses sine sweep since the only information neede is the pirst peak position
-    #    for i in np.arange(0,len(buffer)):
-    #        RIRmeasure_function(fs,1, 1, inputDevice, outputDevice, 'Tare')    
-    #        tareRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
-    #        tareRIR = tareRIR[:,0]
-    #        firstPeak = find_directPath(tareRIR)
-    #        sampleDist = (d/c)*fs
-    #        buffer[i] = int(firstPeak-sampleDist)
-    #        shutil.rmtree('SineSweepMeasures/Tare') # Delete the tare folder
-#
-    #    systemLatency = int(np.average(buffer))
-#
-    #space = tk.Label(measureCalWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=6, column=2)
-    #measureCalibrationButton = tk.Button(measureCalWindow, height=2, width=10, text="CALIBRATE",command=systemTare, font='Helvetica 14 bold', fg='#36454f')
-    #measureCalibrationButton.grid(row=7, column=2)  
-#
-    #measureCalWindow.mainloop()
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=22, column=2)
 testSignalButton = tk.Button(mainWindow, height=1, width=35, text="8) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
@@ -385,8 +308,7 @@ testSignalButton.grid(row=23, column=2)
 
 ################################################################################################################################################
 ########## SECTION 2 ########## 
-
-sect2 = tk.Label(mainWindow,text='2) MICROPHONES CALIBRATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=4)
+sect2 = tk.Label(mainWindow,text='2) CALIBRATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=4)
 
 ###################### 1 - Nome della misura ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=4)
@@ -632,89 +554,95 @@ def multipleStartFunctions(): # to get all the needed varaibles
     
     ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure
-    if measureMethod == 1:
-        with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
-         writer = csv.writer(f)
-         writer.writerow(['RIR MEASUREMENT DATA'])
-         writer.writerow(['Measure Name:', '%s'] %measureName)
-         writer.writerow(['Type of measure:', 'SineSweep'])
-         writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
-         writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
-         writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
-         writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
-         if cal_type == 1 :
-             writer.writerow('Calibration Type:', '2D')
-         elif cal_type == 2 :
-             writer.writerow('Calibration Type:', '3D')
-         writer.writerow([' '])
-         writer.writerow(['ROOM DIMENSIONS:'])
-         if cal_type == 1 :
-             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-         if cal_type == 2 :
-             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-             writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
-         writer.writerow([' '])
-         writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
-         if cal_type == 1 :
-             for i in range (0,outputChannels) : 
-              writer.writerow(['Loudspeaker %d:'] %(i+1))
-              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-         if cal_type == 2 :
-             for i in range (0,outputChannels) : 
-              writer.writerow(['Loudspeaker %d:'] %(i+1))
-              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-              writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
-
-    # MLS measure
-    elif measureMethod == 2:
-        with open('MLSMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
-         writer = csv.writer(f)
-         writer.writerow(['RIR MEASUREMENT DATA'])
-         writer.writerow(['Measure Name:', '%s'] %measureName)
-         writer.writerow(['Type of measure:', 'MLS'])
-         writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
-         writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
-         writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
-         writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
-         if cal_type == 1 :
-             writer.writerow('Calibration Type:', '2D')
-         elif cal_type == 2 :
-             writer.writerow('Calibration Type:', '3D')
-         writer.writerow([' '])
-         writer.writerow(['ROOM DIMENSIONS:'])
-         if cal_type == 1 :
-             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-         if cal_type == 2 :
-             writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-             writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-             writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
-         writer.writerow([' '])
-         writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
-         if cal_type == 1 :
-             for i in range (0,outputChannels) : 
-              writer.writerow(['Loudspeaker %d:'] %(i+1))
-              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-         if cal_type == 2 :
-             for i in range (0,outputChannels) : 
-              writer.writerow(['Loudspeaker %d:'] %(i+1))
-              writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-              writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-              writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
-
+    #if measureMethod == 1:
+    #    with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
+    #     writer = csv.writer(f)
+    #     writer.writerow(['RIR MEASUREMENT DATA'])
+    #     writer.writerow(['Measure Name:', '%s'] %measureName)
+    #     writer.writerow(['Type of measure:', 'SineSweep'])
+    #     writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
+    #     writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
+    #     writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
+    #     writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
+    #     if cal_type == 1 :
+    #         writer.writerow('Calibration Type:', '2D')
+    #     elif cal_type == 2 :
+    #         writer.writerow('Calibration Type:', '3D')
+    #     writer.writerow([' '])
+    #     writer.writerow(['ROOM DIMENSIONS:'])
+    #     if cal_type == 1 :
+    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+    #     if cal_type == 2 :
+    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+    #         writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
+    #     writer.writerow([' '])
+    #     writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
+    #     if cal_type == 1 :
+    #         for i in range (0,outputChannels) : 
+    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
+    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+    #     if cal_type == 2 :
+    #         for i in range (0,outputChannels) : 
+    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
+    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+    #          writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
+#
+    ## MLS measure
+    #elif measureMethod == 2:
+    #    with open('MLSMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
+    #     writer = csv.writer(f)
+    #     writer.writerow(['RIR MEASUREMENT DATA'])
+    #     writer.writerow(['Measure Name:', '%s'] %measureName)
+    #     writer.writerow(['Type of measure:', 'MLS'])
+    #     writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
+    #     writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
+    #     writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
+    #     writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
+    #     if cal_type == 1 :
+    #         writer.writerow('Calibration Type:', '2D')
+    #     elif cal_type == 2 :
+    #         writer.writerow('Calibration Type:', '3D')
+    #     writer.writerow([' '])
+    #     writer.writerow(['ROOM DIMENSIONS:'])
+    #     if cal_type == 1 :
+    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+    #     if cal_type == 2 :
+    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+    #         writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
+    #     writer.writerow([' '])
+    #     writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
+    #     if cal_type == 1 :
+    #         for i in range (0,outputChannels) : 
+    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
+    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+    #     if cal_type == 2 :
+    #         for i in range (0,outputChannels) : 
+    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
+    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+    #          writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
+#
     ## MISURA ##
     if measureMethod == 1 :
         # Misura SineSweep
+        RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=outputMap[0], latency= systemLatency)
         data = createDataMatrix(len(inputMap),len(outputMap))
+        data = fillDataMatrix(data,len(inputMap), 1)
 
-        for i in outputMap:
+        outputMapNEW = outputMap[1:]
+        counter = 2
+
+        for i in outputMapNEW:
             RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=[i], latency= systemLatency)
-            data = fillDataMatrix(data,len(inputMap),i)
+            data = fillDataMatrix(data,len(inputMap),counter)
+            counter =+ 1
 
         # save the Matrix containing ALL RIRS
         dirname = 'SineSweepMeasures/' + str(measureName)
@@ -732,7 +660,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     maxBuffer = 1e-3
     interpFactor = 2
     posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
-    calibrate(data, fs, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
+    calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="4) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
@@ -795,15 +723,20 @@ def showRIR():
         #measure name
         measureName = Name.get()
         #output and input select
-        output_select = variableRIRout.get()
+        output_select = variableRIRout.get() 
         input_select = variableRIRin.get()
 
+        #### DA SISTEMARE
+        plotRIR = np.load('SineSweepMeasures/' + str(measureName) + '/RIRMatrix.npy')
+        plt.plot(plotRIR[:,input_select-1])
+        figRIR = plt.figure(figsize=(4,4))
+
         if variableMeasure.get() == 'SineSweep':
-            img = ImageTk.PhotoImage(Image.open('SineSweepMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
+            img = ImageTk.PhotoImage(Image.open('SineSweepMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
             plotLabel = tk.Label(RIRplot, image= img)
             plotLabel.grid(row=1, column=1)
         elif variableMeasure.get() == 'MLS':
-            img = ImageTk.PhotoImage(Image.open('MLSMeasures/' + str(measureName) + '/Microphones_Calibration/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
+            img = ImageTk.PhotoImage(Image.open('MLSMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
             plotLabel = tk.Label(RIRplot, image= img)
             plotLabel.grid(row=1, column=1)
     

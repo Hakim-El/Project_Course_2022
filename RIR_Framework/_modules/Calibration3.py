@@ -65,7 +65,7 @@ def find_directPath(this_rir, top_peaks=15):
     return dp
 
 
-def calibrate(rir, fs, position_type: str, positions, max_buffer: float,
+def calibrate(rir, fs, measureName, measureMethod, position_type: str, positions, max_buffer: float,
               positions_bounds, interp_factor: float, do_interpolation: bool = True,
               sound_speed: float = 343, estimate_buffer: bool = True, do_plot: bool = True):
     c = sound_speed
@@ -112,12 +112,12 @@ def calibrate(rir, fs, position_type: str, positions, max_buffer: float,
         ax.set_xlim3d(positions_bounds[0][0], positions_bounds[0][1])
         ax.set_ylim3d(positions_bounds[1][0], positions_bounds[1][1])
         ax.set_zlim3d(positions_bounds[2][0], positions_bounds[2][1])
-        plt.show()
+        #plt.show()
 
         # passare come argomento di input measure method e measure name per decidere dove salvare il plot
-        #if measureMethod == 1:
-        #    fig.savefig('SineSweepMeasures/{}/MicCalibrationGraph.png'.format(measureName), bbox_inches='tight')
-        #else:
-        #    fig.savefig('MLSMeasures/{}/MicCalibrationGraph.png'.format(measureName))
+        if measureMethod == 1:
+            fig.savefig('SineSweepMeasures/{}/MicCalibrationGraph.png'.format(measureName), bbox_inches='tight')
+        else:
+            fig.savefig('MLSMeasures/{}/MicCalibrationGraph.png'.format(measureName))
 
     return estimatedPosition, estimatedBuffer

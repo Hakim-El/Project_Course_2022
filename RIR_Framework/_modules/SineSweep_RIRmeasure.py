@@ -56,7 +56,7 @@ def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mappi
             testStimulus = stim.stimulus('sinesweep',fs)
             testStimulus.generate(fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange)
 
-            recorded = utils.record(testStimulus.signal,fs, inputDevice, outputDevice, input_mapping=input_mapping, output_mapping=output_mapping)
+            recorded = utils.record(testStimulus.signal,fs, inputDevice, outputDevice, inputMap=input_mapping, outputMap=output_mapping)
 
             # Deconvolve
             RIR = testStimulus.deconvolve(recorded)
@@ -74,12 +74,11 @@ def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mappi
             #RIRtoSave = RIRtoSave[latency:,:]
 
             # Save recordings and RIRs
-            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName)
+            utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName, output_mapping)
 
-def createDataMatrix(nMics, nLS, fs):
-    testSigLen = 12*fs          #12 is the duration in seconds of the sineSweep
-    RecordedSigLen = testSigLen
-    RIRlength = (testSigLen + RecordedSigLen-1)//2 
+def createDataMatrix(nMics, nLS):
+    lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
+    RIRlength = lastRecording.shape[0]
     data = np.zeros((RIRlength,nMics,nLS))
     return data
 
