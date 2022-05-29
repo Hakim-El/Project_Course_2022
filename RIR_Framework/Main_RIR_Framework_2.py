@@ -2,6 +2,7 @@
 import tkinter as tk
 import sounddevice as sd
 #import matplotlib.pyplot as plt
+import codecs, json
 import numpy as np
 import os
 import shutil
@@ -519,47 +520,44 @@ def multipleStartFunctions(): # to get all the needed varaibles
     elif dirMLSFlag == True and measureMethod == 2:
         dirname2 = 'MLSMeasures/' + str(measureName)
         os.mkdir(dirname2)
-    
-    ## CREAZIONE FILE DI TESTO ##
-    # SineSweep measure
-    #if measureMethod == 1:
-    #    with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
-    #     writer = csv.writer(f)
-    #     writer.writerow(['RIR MEASUREMENT DATA'])
-    #     writer.writerow(['Measure Name:', '%s'] %measureName)
-    #     writer.writerow(['Type of measure:', 'SineSweep'])
-    #     writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
-    #     writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
-    #     writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
-    #     writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
-    #     if cal_type == 1 :
-    #         writer.writerow('Calibration Type:', '2D')
-    #     elif cal_type == 2 :
-    #         writer.writerow('Calibration Type:', '3D')
-    #     writer.writerow([' '])
-    #     writer.writerow(['ROOM DIMENSIONS:'])
-    #     if cal_type == 1 :
-    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-    #     if cal_type == 2 :
-    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-    #         writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
-    #     writer.writerow([' '])
-    #     writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
-    #     if cal_type == 1 :
-    #         for i in range (0,outputChannels) : 
-    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
-    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-    #     if cal_type == 2 :
-    #         for i in range (0,outputChannels) : 
-    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
-    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-    #          writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
-#
-    ## MLS measure
+        
+        #with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
+        # writer = csv.writer(f)
+        # writer.writerow(['RIR MEASUREMENT DATA'])
+        # writer.writerow(['Measure Name:', '%s'] %measureName)
+        # writer.writerow(['Type of measure:', 'SineSweep'])
+        # writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
+        # writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
+        # writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
+        # writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
+        # if cal_type == 1 :
+        #     writer.writerow('Calibration Type:', '2D')
+        # elif cal_type == 2 :
+        #     writer.writerow('Calibration Type:', '3D')
+        # writer.writerow([' '])
+        # writer.writerow(['ROOM DIMENSIONS:'])
+        # if cal_type == 1 :
+        #     writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+        #     writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+        # if cal_type == 2 :
+        #     writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
+        #     writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
+        #     writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
+        # writer.writerow([' '])
+        # writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
+        # if cal_type == 1 :
+        #     for i in range (0,outputChannels) : 
+        #      writer.writerow(['Loudspeaker %d:'] %(i+1))
+        #      writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+        #      writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+        # if cal_type == 2 :
+        #     for i in range (0,outputChannels) : 
+        #      writer.writerow(['Loudspeaker %d:'] %(i+1))
+        #      writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
+        #      writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
+        #      writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
+
+    # MLS measure
     #elif measureMethod == 2:
     #    with open('MLSMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
     #     writer = csv.writer(f)
@@ -596,7 +594,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
     #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
     #          writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
-#
+
     ## MISURA ##
     if measureMethod == 1 :
         # Misura SineSweep
@@ -628,7 +626,41 @@ def multipleStartFunctions(): # to get all the needed varaibles
     maxBuffer = 1e-3
     interpFactor = 2
     posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
-    calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
+    estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
+
+    ## CREAZIONE FILE DI TESTO ##
+    # SineSweep measure
+    if measureMethod == 1:
+        RIR_Data ={
+            'Measure Name' : measureName,
+            'Type of measure': 'SineSweep',
+            'Sound speed': c,
+            'Sampling frequency': fs,
+            'Number of Microphones': inputChannels,
+            'Number of Loudspeakers': outputChannels,
+            'Room dimension': [x_axis, y_axis, z_axis],
+            'Known positions': knownPos.tolist(),
+            'Estimated positions': estimatedPosition.tolist()
+        }
+        json_object = json.dumps(RIR_Data, indent = 4)
+        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
+            outfile.write(json_object)
+
+    elif measureMethod ==2:
+        RIR_Data ={
+            'Measure Name' : measureName,
+            'Type of measure': 'MLS',
+            'Sound speed': c,
+            'Sampling frequency': fs,
+            'Number of Microphones': inputChannels,
+            'Number of Loudspeakers': outputChannels,
+            'Room dimension': [x_axis, y_axis, z_axis],
+            'Known positions': knownPos.tolist(),
+            'Estimated positions': estimatedPosition.tolist()
+        }
+        json_object = json.dumps(RIR_Data, indent = 4)
+        with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
+            outfile.write(json_object)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=11, column=4)
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="5) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
