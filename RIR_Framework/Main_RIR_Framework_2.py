@@ -1,12 +1,14 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
 import sounddevice as sd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import os
 import shutil
 from PIL import Image, ImageTk
 import csv
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
@@ -166,12 +168,17 @@ def inputWindow():
     def outButtonPressed(idx):
         if outButtonState[idx] == 0:
             outButtonState[idx] = 1
-            outputButton[idx].configure(highlightbackground="green") # Activate with macOS
-            #outputButton[idx].configure(bg="green") # Activate with Windows OS
+            if variableOS.get() == 'macOS':
+                outputButton[idx].configure(highlightbackground='green') # Activate with macOS
+            elif variableOS.get() == 'Windows':
+                outputButton[idx].configure(bg='green') # Activate with Windows OS
         elif outButtonState[idx] == 1:
             outButtonState[idx] = 0
-            outputButton[idx].configure(highlightbackground='white') # Activate with macOS
-            #outputButton[idx].configure(bg='white') # Activate with Windows OS
+            if variableOS.get() == 'macOS':
+                outputButton[idx].configure(highlightbackground='white') # Activate with macOS
+            elif variableOS.get() == 'Windows':
+                outputButton[idx].configure(bg='white') # Activate with Windows OS
+
         global outputMap
         outputMap = np.nonzero(outButtonState)
         outputMap = outputMap[0]+1
@@ -681,25 +688,27 @@ def showRIR():
         #plotWindow.geometry('530x500') # dimensioni
         RIRplot.config(bg='#36454f') # colore
 
-        #measure name
         measureName = Name.get()
-        #output and input select
-        output_select = variableRIRout.get() 
-        input_select = variableRIRin.get()
-
-        #### DA SISTEMARE
-        plotRIR = np.load('SineSweepMeasures/' + str(measureName) + '/RIRMatrix.npy')
-        plt.plot(plotRIR[:,input_select-1])
-        figRIR = plt.figure(figsize=(4,4))
+        output_select = int(variableRIRout.get()) 
+        input_select = int(variableRIRin.get())
 
         if variableMeasure.get() == 'SineSweep':
-            img = ImageTk.PhotoImage(Image.open('SineSweepMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
-            plotLabel = tk.Label(RIRplot, image= img)
-            plotLabel.grid(row=1, column=1)
+            plotRIR = np.load('SineSweepMeasures/' + str(measureName) + '/RIRMatrix.npy')
         elif variableMeasure.get() == 'MLS':
-            img = ImageTk.PhotoImage(Image.open('MLSMeasures/' + str(measureName) + '/MeasureLoudspeaker' + str(output_select) + '/RIR_Mic' + str(input_select) + '.wav'))
-            plotLabel = tk.Label(RIRplot, image= img)
-            plotLabel.grid(row=1, column=1)
+            plotRIR = np.load('MLSMeasures/' + str(measureName) + '/RIRMatrix.npy')
+
+        inputIdx = np.where(inputMap == input_select)[0][0]
+        outputIdx = np.where(outputMap == output_select)[0][0]
+
+        figRIR = Figure(figsize=(4,4),dpi=100)
+        plot1 = figRIR.add_subplot(111)
+        plot1.plot(plotRIR[:,inputIdx,outputIdx])
+        canvas = FigureCanvasTkAgg(figRIR, RIRplot)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
+        toolbar = NavigationToolbar2Tk(canvas,RIRplot)
+        toolbar.update()
+        canvas.get_tk_widget().pack()
     
     space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
     showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=8, column=2)
