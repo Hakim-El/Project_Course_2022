@@ -773,6 +773,5 @@ def loadJson():
     elif variableMeasure.get() == 'MLS':
         with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
             json_object = json.load(openfile)
-    knownPos = np.asarray(json_object['Known positions'])
-
+    knownPos = np.asarray(json_object['Estimated positions'])
 # END
