@@ -763,4 +763,16 @@ micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="8) Show cali
 micPositionsLabel.grid(row=18, column=4)
 
 mainWindow.mainloop()
+
+######### Load knownPos from json #########
+def loadJson():
+    measureName = Name.get()
+    if variableMeasure.get() == 'SineSweep':
+        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+            json_object = json.load(openfile)
+    elif variableMeasure.get() == 'MLS':
+        with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+            json_object = json.load(openfile)
+    knownPos = np.asarray(json_object['Known positions'])
+
 # END
