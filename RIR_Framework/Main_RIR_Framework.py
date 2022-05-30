@@ -477,16 +477,17 @@ def loadWindow():
     ######### Load knownPos from json #########
     def loadJson():
         measureName = previousMeasure.get()
+        global knownPos
         if variablePREV.get() == 'SineSweep':
             with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
                 json_object = json.load(openfile)
         elif variablePREV.get() == 'MLS':
             with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
                 json_object = json.load(openfile)
-        global knownPos
-        if variableDATA == 'Positions from a calibration':
+        
+        if variableDATA.get() == 'Positions from a calibration':
             knownPos = np.asarray(json_object['Estimated positions'])
-        elif variableDATA == 'Known positions':
+        elif variableDATA.get() == 'Known positions':
             knownPos = np.asarray(json_object['Known positions'])
 
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=11, column=1)
@@ -623,7 +624,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
     interpFactor = 2
     posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
     estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
-    something = Name.get()
 
     ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure
@@ -643,10 +643,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
         json_object = json.dumps(RIR_Data, indent = 4)
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
             outfile.write(json_object)
-        
-        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-            json_object = json.load(openfile)
-            print(np.asarray(json_object['Estimated positions']))
 
     elif measureMethod ==2:
         RIR_Data ={
