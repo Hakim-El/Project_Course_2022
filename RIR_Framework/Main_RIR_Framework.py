@@ -71,7 +71,7 @@ verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=21, column=5)
 
 credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
-credits.grid(row=20, column=4)
+credits.grid(row=21, column=4)
 
 ################################################################################################################################################
 ########## SECTION 1 ########## 
@@ -378,7 +378,7 @@ roomDimensionButton.grid(row=8, column=4)
 def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
-    LoudSpeakerWindow.title("Loudspeakers/Microphones Known Positions") # titolo
+    LoudSpeakerWindow.title("Insert Loudspeakers/Microphones Known Positions") # titolo
     LoudSpeakerWindow.geometry('%dx%d' %(890, (250+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
@@ -430,7 +430,13 @@ def printLoudspeakerPosition():
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3, column=6)
     Horizontalspace = tk.Label(LoudSpeakerWindow,  text='-----------------------------------------------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=4, column=6)
     
-    ######### Load knownPos from json #########
+################## Load knownPos from external json #########
+def loadWindow():
+    loadJSON = tk.Toplevel(mainWindow)
+    loadJSON.title("Import Loudspeakers/Microphones Known Positions") # titolo
+    #loadJSON.geometry('400' %(890, (250+(var_i*100)/3))) # dimensioni
+    loadJSON.config(bg='#36454f') # colore
+
     def loadJson():
         measureName = Name.get()
         if variableMeasure.get() == 'SineSweep':
@@ -442,32 +448,37 @@ def printLoudspeakerPosition():
         global knownPos
         knownPos = np.asarray(json_object['Estimated positions'])
 
-    space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=5, column=6)
-    measure = tk.Label(LoudSpeakerWindow, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=6, column=6)
-    prevuiousMeasure = tk.Entry(LoudSpeakerWindow, width=21)
-    prevuiousMeasure.grid(row=7, column=6)
-    measureType = tk.Label(LoudSpeakerWindow, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=8, column=6)
+    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=1)
+    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
+    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=2, column=1)
+    measure = tk.Label(loadJSON, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=3, column=1)
+    prevuiousMeasure = tk.Entry(loadJSON, width=21)
+    prevuiousMeasure.grid(row=4, column=1)
+    measureType = tk.Label(loadJSON, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=5, column=1)
     InputDevicesListPREV = ['SineSweep', 'MLS']
-    variablePREV = tk.StringVar(LoudSpeakerWindow)
+    variablePREV = tk.StringVar(loadJSON)
     variablePREV.set('- Select -')
-    optPREV = tk.OptionMenu(LoudSpeakerWindow, variablePREV, *InputDevicesListPREV)
+    optPREV = tk.OptionMenu(loadJSON, variablePREV, *InputDevicesListPREV)
     optPREV.config(width=17)
-    optPREV.grid(row=9, column=6)
+    optPREV.grid(row=6, column=1)
     
-    loadFile = tk.Label(LoudSpeakerWindow, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=10, column=6)
+    loadFile = tk.Label(loadJSON, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=7, column=1)
     InputDevicesListDATA = ['Positions from a calibration', 'Known positions']
-    variableDATA = tk.StringVar(LoudSpeakerWindow)
+    variableDATA = tk.StringVar(loadJSON)
     variableDATA.set('- Select -')
-    optDATA = tk.OptionMenu(LoudSpeakerWindow, variableDATA, *InputDevicesListDATA)
+    optDATA = tk.OptionMenu(loadJSON, variableDATA, *InputDevicesListDATA)
     optDATA.config(width=17)
-    optDATA.grid(row=11, column=6)
+    optDATA.grid(row=8, column=1)
 
-    space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=12, column=6)
-    loadPositions = tk.Button(LoudSpeakerWindow, text='4) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
+    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=9, column=1)
+    loadPositions = tk.Button(loadJSON, text='4) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=10, column=1)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
-loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
-loudspeakerPositionButton.grid(row=10, column=4)      
+loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4a) Insert known positions manually",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton.grid(row=10, column=4) 
+
+loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4b) Import known positions from a json file",font='Helvetica 14', command = loadWindow, fg='#36454f')
+loudspeakerPositionButton.grid(row=11, column=4)     
 
 ###################### 4 - START MEASURE BUTTON ######################
 def multipleStartFunctions(): # to get all the needed varaibles
@@ -624,9 +635,9 @@ def multipleStartFunctions(): # to get all the needed varaibles
         with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
             outfile.write(json_object)
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=11, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="5) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.grid(row=12, column=4)
+buttonStart.grid(row=13, column=4)
 
 ###################### 5 - Print Calibrazione stimata ######################
 def showPlot ():
@@ -649,9 +660,9 @@ def showPlot ():
 
     plotWindow.mainloop()
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=13, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=14, column=4)
 micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show Calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
-micPositionPrintLabel.grid(row=14, column=4)
+micPositionPrintLabel.grid(row=15, column=4)
 
 ###################### 6 - Print RIR ottenute ######################
 def showRIR():
@@ -707,9 +718,9 @@ def showRIR():
     space = tk.Label(RIRplot,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=2)
     showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=8, column=2)
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=15, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=16, column=4)
 RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="7) Show RIRs plot",font='Helvetica 14', command= showRIR, fg='#36454f')
-RIRPrintLabel.grid(row=16, column=4)
+RIRPrintLabel.grid(row=17, column=4)
 
 ############ 1 - show estimated position ############
 def printMicPositions():
@@ -736,9 +747,9 @@ def printMicPositions():
     for i in np.arange(0,posMatrix.shape[0]):
         posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m] ; y = {} [m] ; z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=17, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=4)
 micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="8) Show calibration positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
-micPositionsLabel.grid(row=18, column=4)
+micPositionsLabel.grid(row=19, column=4)
 
 mainWindow.mainloop()
 # END
