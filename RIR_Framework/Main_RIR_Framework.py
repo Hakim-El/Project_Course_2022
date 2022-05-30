@@ -1,5 +1,6 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
+from tkinter import filedialog
 import sounddevice as sd
 import codecs, json
 import numpy as np
@@ -427,7 +428,19 @@ def printLoudspeakerPosition():
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known positions', command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.grid(row=2, column=6)
 
-    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions json file', fg='#36454f').grid(row=3, column=6)
+    ######### Load knownPos from json #########
+    def loadJson():
+        measureName = Name.get()
+        if variableMeasure.get() == 'SineSweep':
+            with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+                json_object = json.load(openfile)
+        elif variableMeasure.get() == 'MLS':
+            with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+                json_object = json.load(openfile)
+        global knownPos
+        knownPos = np.asarray(json_object['Estimated positions'])
+
+    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions json file',command=loadJson, fg='#36454f').grid(row=3, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
@@ -690,14 +703,4 @@ micPositionsLabel.grid(row=18, column=4)
 
 mainWindow.mainloop()
 
-######### Load knownPos from json #########
-def loadJson():
-    measureName = Name.get()
-    if variableMeasure.get() == 'SineSweep':
-        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-            json_object = json.load(openfile)
-    elif variableMeasure.get() == 'MLS':
-        with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-            json_object = json.load(openfile)
-    knownPos = np.asarray(json_object['Estimated positions'])
 # END
