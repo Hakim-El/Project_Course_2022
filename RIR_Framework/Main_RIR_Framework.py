@@ -379,7 +379,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(850, (250+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(840, (250+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -391,7 +391,7 @@ def printLoudspeakerPosition():
         z_pos = 0
         
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Position " + str(i+1) + " (X ; Y)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
+            tk.Label(LoudSpeakerWindow, text= "Known Position " + str(i+1) + " (X ; Y)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             x_pos[i].grid(row=2+i, column=2)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
@@ -402,7 +402,7 @@ def printLoudspeakerPosition():
         y_pos = []
         z_pos = []
         for i in range(var_i):
-            tk.Label(LoudSpeakerWindow, text= "Position " + str(i+1) + " (X ; Y ; Z)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
+            tk.Label(LoudSpeakerWindow, text= "Known Position " + str(i+1) + " (X ; Y ; Z)",  bg='#36454f', fg='#f7f7f7').grid(row=2+i, column=1)
             x_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
             x_pos[i].grid(row=2+i, column=2)
             y_pos.append(tk.Entry(LoudSpeakerWindow, width=5))
