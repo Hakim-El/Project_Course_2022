@@ -644,6 +644,12 @@ def multipleStartFunctions(): # to get all the needed varaibles
         json_object = json.dumps(RIR_Data, indent = 4)
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
             outfile.write(json_object)
+        
+        
+        
+        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+            json_object = json.load(openfile)
+            print(np.asarray(json_object['Estimated positions']))
 
     elif measureMethod ==2:
         RIR_Data ={
