@@ -379,7 +379,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Insert Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(890, (8+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(890, (70+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -446,34 +446,33 @@ def loadWindow():
     loadJSON.config(bg='#36454f') # colore
 
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
-    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=2, column=1)
-    measure = tk.Label(loadJSON, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=3, column=1)
+    measure = tk.Label(loadJSON, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=2, column=1)
     previousMeasure = tk.Entry(loadJSON, width=21)
-    previousMeasure.grid(row=4, column=1)
-    measureType = tk.Label(loadJSON, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=5, column=1)
+    previousMeasure.grid(row=3, column=1)
+    measureType = tk.Label(loadJSON, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=4, column=1)
     InputDevicesListPREV = ['SineSweep', 'MLS']
     variablePREV = tk.StringVar(loadJSON)
     variablePREV.set('- Select -')
     optPREV = tk.OptionMenu(loadJSON, variablePREV, *InputDevicesListPREV)
     optPREV.config(width=17)
-    optPREV.grid(row=6, column=1)
+    optPREV.grid(row=5, column=1)
     
-    loadFile = tk.Label(loadJSON, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=7, column=1)
+    loadFile = tk.Label(loadJSON, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=6, column=1)
     InputDevicesListDATA = ['Positions from a calibration', 'Known positions']
     variableDATA = tk.StringVar(loadJSON)
     variableDATA.set('- Select -')
     optDATA = tk.OptionMenu(loadJSON, variableDATA, *InputDevicesListDATA)
     optDATA.config(width=17)
-    optDATA.grid(row=8, column=1)
+    optDATA.grid(row=7, column=1)
 
-    loadFile = tk.Label(loadJSON, text="4) Enter the type of device that you want to calibrate in this measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=9, column=1)
+    loadFile = tk.Label(loadJSON, text="4) Enter the type of device that you want to calibrate in this measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=8, column=1)
     InputDevicesListCalDevice = ['Microphone', 'Loudspeaker']
     global variableCalDevice
     variableCalDevice = tk.StringVar(loadJSON)
     variableCalDevice.set('- Select -')
     optCalDevice = tk.OptionMenu(loadJSON, variableCalDevice, *InputDevicesListCalDevice)
     optCalDevice.config(width=17)
-    optCalDevice.grid(row=10, column=1)
+    optCalDevice.grid(row=9, column=1)
 
     ######### Load knownPos from json #########
     def loadJson():
@@ -644,8 +643,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
         json_object = json.dumps(RIR_Data, indent = 4)
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
             outfile.write(json_object)
-        
-        
         
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
             json_object = json.load(openfile)
