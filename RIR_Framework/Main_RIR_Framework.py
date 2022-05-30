@@ -568,7 +568,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         counter = 2
 
         for i in outputMapNEW:
-            RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=[i], latency= systemLatency)
+            RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=i, latency= systemLatency)
             data = fillDataMatrix(data,len(inputMap),counter)
             counter =+ 1
 
