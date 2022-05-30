@@ -1,15 +1,13 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
 import sounddevice as sd
-#import matplotlib.pyplot as plt
 import codecs, json
 import numpy as np
-import os
 import shutil
+import os
 from PIL import Image, ImageTk
-import csv
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
@@ -380,7 +378,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(600, (8+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(650, (25+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -428,6 +426,8 @@ def printLoudspeakerPosition():
     verticalSpaces = tk.Label(LoudSpeakerWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=5)
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known positions', command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.grid(row=2, column=6)
+
+    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions json file', fg='#36454f').grid(row=3, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
@@ -520,80 +520,6 @@ def multipleStartFunctions(): # to get all the needed varaibles
     elif dirMLSFlag == True and measureMethod == 2:
         dirname2 = 'MLSMeasures/' + str(measureName)
         os.mkdir(dirname2)
-        
-        #with open('SineSweepMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
-        # writer = csv.writer(f)
-        # writer.writerow(['RIR MEASUREMENT DATA'])
-        # writer.writerow(['Measure Name:', '%s'] %measureName)
-        # writer.writerow(['Type of measure:', 'SineSweep'])
-        # writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
-        # writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
-        # writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
-        # writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
-        # if cal_type == 1 :
-        #     writer.writerow('Calibration Type:', '2D')
-        # elif cal_type == 2 :
-        #     writer.writerow('Calibration Type:', '3D')
-        # writer.writerow([' '])
-        # writer.writerow(['ROOM DIMENSIONS:'])
-        # if cal_type == 1 :
-        #     writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-        #     writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-        # if cal_type == 2 :
-        #     writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-        #     writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-        #     writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
-        # writer.writerow([' '])
-        # writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
-        # if cal_type == 1 :
-        #     for i in range (0,outputChannels) : 
-        #      writer.writerow(['Loudspeaker %d:'] %(i+1))
-        #      writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-        #      writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-        # if cal_type == 2 :
-        #     for i in range (0,outputChannels) : 
-        #      writer.writerow(['Loudspeaker %d:'] %(i+1))
-        #      writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-        #      writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-        #      writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
-
-    # MLS measure
-    #elif measureMethod == 2:
-    #    with open('MLSMeasures/' + str(measureName) + '/measureData.csv', 'w', newline='') as f:
-    #     writer = csv.writer(f)
-    #     writer.writerow(['RIR MEASUREMENT DATA'])
-    #     writer.writerow(['Measure Name:', '%s'] %measureName)
-    #     writer.writerow(['Type of measure:', 'MLS'])
-    #     writer.writerow(['Sound speed:', '%.2f', '[m/s]'] %c)
-    #     writer.writerow(['Sampling Frequency:', '%d', '[Hz]'] %fs)
-    #     writer.writerow(['Number of Microphones:', '%d'] %inputChannels)
-    #     writer.writerow(['Number of Loudspeakers:', '%d'] %outputChannels)
-    #     if cal_type == 1 :
-    #         writer.writerow('Calibration Type:', '2D')
-    #     elif cal_type == 2 :
-    #         writer.writerow('Calibration Type:', '3D')
-    #     writer.writerow([' '])
-    #     writer.writerow(['ROOM DIMENSIONS:'])
-    #     if cal_type == 1 :
-    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-    #     if cal_type == 2 :
-    #         writer.writerow(['Room X axis dimension:', '%.2f', '[m]'] %x_axis)
-    #         writer.writerow(['Room Y axis dimension:', '%.2f', '[m]'] %y_axis)
-    #         writer.writerow(['Room Z axis dimension:', '%.2f', '[m]'] %z_axis)
-    #     writer.writerow([' '])
-    #     writer.writerow(['LOUDSPEAKER KNOWN POSITIONS:'])
-    #     if cal_type == 1 :
-    #         for i in range (0,outputChannels) : 
-    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
-    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-    #     if cal_type == 2 :
-    #         for i in range (0,outputChannels) : 
-    #          writer.writerow(['Loudspeaker %d:'] %(i+1))
-    #          writer.writerow(['X position:', '%.2f', '[m]'] %(knownPos[i,0]))
-    #          writer.writerow(['Y position:', '%.2f', '[m]'] %(knownPos[i,1]))
-    #          writer.writerow(['Z position:', '%.2f', '[m]'] %(knownPos[i,2]))
 
     ## MISURA ##
     if measureMethod == 1 :
