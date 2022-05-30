@@ -273,7 +273,7 @@ def measureCalWindow():
 
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
     instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter pressing "CALIBRATE" button wait approximately 30 seconds\n(three SineSweeps will be reproduced by the loudspeaker).\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
+    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
     def EstimLatency():
         global systemLatency
