@@ -16,7 +16,7 @@ from _modules.MLS_RIRmeasure import MLSmeasure_function
 from _modules.Calibration import calibrate, find_directPath
 
 ###################################################################################################
-# CREA MAIN WINDOW
+# CREAZIONE MAIN WINDOW
 mainWindow = tk.Tk()
 mainWindow.title("Automatic RIR Measurement System") # titolo
 #mainWindow.geometry("925x490") # dimensioni
@@ -718,12 +718,10 @@ def printMicPositions():
     #plotWindow.geometry('530x500') # dimensioni
     micpositionsplot.config(bg='#36454f') # colore
     
-
     space = tk.Label(micpositionsplot, height=1,  text='n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
     src1 = tk.Label(micpositionsplot, height=1,  text='Source estimated position:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=1)
     space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
-
 
     measureName = Name.get()
     if variableMeasure.get() == 'SineSweep':
@@ -736,13 +734,7 @@ def printMicPositions():
     posMatrix = np.asarray(estimPos['Estimated positions'])
     
     for i in np.arange(0,posMatrix.shape[0]):
-        posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m]  ,y = {} [m]  ,z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
-
-    
-
-    
-
-    
+        posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m]; y = {} [m]; z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=17, column=4)
 micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="8) Show calibration positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
