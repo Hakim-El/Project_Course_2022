@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
-from _modules.Calibration3 import calibrate, find_directPath
+from _modules.Calibration import calibrate, find_directPath
 
 ###################################################################################################
 # CREA MAIN WINDOW
