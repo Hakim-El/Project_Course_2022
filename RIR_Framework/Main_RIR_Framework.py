@@ -459,12 +459,13 @@ def loadWindow():
     optDATA.grid(row=8, column=1)
 
     loadFile = tk.Label(loadJSON, text="4) Enter the type of device that you want to calibrate in this measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=9, column=1)
-    InputDevicesListDATA = ['Microphone', 'Loudspeaker']
-    variableDATA = tk.StringVar(loadJSON)
-    variableDATA.set('- Select -')
-    optDATA = tk.OptionMenu(loadJSON, variableDATA, *InputDevicesListDATA)
-    optDATA.config(width=17)
-    optDATA.grid(row=10, column=1)
+    InputDevicesListCalDevice = ['Microphone', 'Loudspeaker']
+    global variableCalDevice
+    variableCalDevice = tk.StringVar(loadJSON)
+    variableCalDevice.set('- Select -')
+    optCalDevice = tk.OptionMenu(loadJSON, variableCalDevice, *InputDevicesListCalDevice)
+    optCalDevice.config(width=17)
+    optCalDevice.grid(row=10, column=1)
 
     ######### Load knownPos from json #########
     def loadJson():
@@ -607,11 +608,16 @@ def multipleStartFunctions(): # to get all the needed varaibles
             data = fillDataMatrix(data,inputChannels,i-1)
 
     ## CALIBRAZIONE ##
-    posType = 's'
+    if variableCalDevice == 'Microphone':
+        posType = 's'
+    elif variableCalDevice == 'Loudspeaker':
+        posType = 'm'
+    
     maxBuffer = 1e-3
     interpFactor = 2
     posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
     estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
+    something = Name.get()
 
     ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure
@@ -624,6 +630,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
             'Number of Microphones': inputChannels,
             'Number of Loudspeakers': outputChannels,
             'Room dimension': [x_axis, y_axis, z_axis],
+            'Known positions device': variableCalDevice.get(),
             'Known positions': knownPos.tolist(),
             'Estimated positions': estimatedPosition.tolist()
         }
@@ -640,6 +647,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
             'Number of Microphones': inputChannels,
             'Number of Loudspeakers': outputChannels,
             'Room dimension': [x_axis, y_axis, z_axis],
+            'Known positions device': variableCalDevice.get(),
             'Known positions': knownPos.tolist(),
             'Estimated positions': estimatedPosition.tolist()
         }
