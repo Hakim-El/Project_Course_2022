@@ -379,7 +379,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(840, (250+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(860, (250+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -463,7 +463,7 @@ def printLoudspeakerPosition():
     optDATA.grid(row=11, column=6)
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=12, column=6)
-    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
+    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions .json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
