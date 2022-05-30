@@ -379,7 +379,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(860, (250+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(890, (250+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -425,10 +425,10 @@ def printLoudspeakerPosition():
                 knownPos[i,2] = float(z_pos[i].get())
     
     verticalSpaces = tk.Label(LoudSpeakerWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=5)
-    getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm known positions', font='Helvetica 14',command=getLoudSpeakersPositions, fg='#36454f')
+    getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm and acquire the manually entered known positions', font='Helvetica 14',command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.grid(row=2, column=6)
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3, column=6)
-    Horizontalspace = tk.Label(LoudSpeakerWindow,  text='------------------------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=4, column=6)
+    Horizontalspace = tk.Label(LoudSpeakerWindow,  text='-----------------------------------------------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=4, column=6)
     
     ######### Load knownPos from json #########
     def loadJson():
@@ -444,26 +444,26 @@ def printLoudspeakerPosition():
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=5, column=6)
     measure = tk.Label(LoudSpeakerWindow, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=6, column=6)
-    prevuiousMeasure = tk.Entry(LoudSpeakerWindow, width=15)
+    prevuiousMeasure = tk.Entry(LoudSpeakerWindow, width=21)
     prevuiousMeasure.grid(row=7, column=6)
     measureType = tk.Label(LoudSpeakerWindow, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=8, column=6)
     InputDevicesListPREV = ['SineSweep', 'MLS']
     variablePREV = tk.StringVar(LoudSpeakerWindow)
     variablePREV.set('- Select -')
     optPREV = tk.OptionMenu(LoudSpeakerWindow, variablePREV, *InputDevicesListPREV)
-    optPREV.config(width=14)
+    optPREV.config(width=17)
     optPREV.grid(row=9, column=6)
     
     loadFile = tk.Label(LoudSpeakerWindow, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=10, column=6)
-    InputDevicesListDATA = ['Calibrated positions', 'Known positions']
+    InputDevicesListDATA = ['Positions from a calibration', 'Known positions']
     variableDATA = tk.StringVar(LoudSpeakerWindow)
     variableDATA.set('- Select -')
     optDATA = tk.OptionMenu(LoudSpeakerWindow, variableDATA, *InputDevicesListDATA)
-    optDATA.config(width=14)
+    optDATA.config(width=17)
     optDATA.grid(row=11, column=6)
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=12, column=6)
-    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load positions from a json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
+    loadPositions = tk.Button(LoudSpeakerWindow, text='4) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
@@ -734,12 +734,11 @@ def printMicPositions():
     posMatrix = np.asarray(estimPos['Estimated positions'])
     
     for i in np.arange(0,posMatrix.shape[0]):
-        posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m]; y = {} [m]; z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
+        posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m] ; y = {} [m] ; z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=17, column=4)
 micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="8) Show calibration positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
 micPositionsLabel.grid(row=18, column=4)
 
 mainWindow.mainloop()
-
 # END
