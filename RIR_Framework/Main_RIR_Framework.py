@@ -444,7 +444,7 @@ def printLoudspeakerPosition():
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=5, column=6)
     measure = tk.Label(LoudSpeakerWindow, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=6, column=6)
-    prevuiousMeasure = tk.Entry(LoudSpeakerWindow, width=20)
+    prevuiousMeasure = tk.Entry(LoudSpeakerWindow, width=15)
     prevuiousMeasure.grid(row=7, column=6)
     measureType = tk.Label(LoudSpeakerWindow, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=8, column=6)
     InputDevicesListPREV = ['SineSweep', 'MLS']
@@ -460,10 +460,10 @@ def printLoudspeakerPosition():
     variableDATA.set('- Select -')
     optDATA = tk.OptionMenu(LoudSpeakerWindow, variableDATA, *InputDevicesListDATA)
     optDATA.config(width=15)
-    optDATA.grid(row=11, column=6)
+    optDATA.grid(row=9, column=6)
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=12, column=6)
-    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load a known positions .json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
+    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load positions from a .json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
