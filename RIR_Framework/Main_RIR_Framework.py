@@ -437,23 +437,12 @@ def loadWindow():
     #loadJSON.geometry('400' %(890, (250+(var_i*100)/3))) # dimensioni
     loadJSON.config(bg='#36454f') # colore
 
-    def loadJson():
-        measureName = Name.get()
-        if variableMeasure.get() == 'SineSweep':
-            with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-                json_object = json.load(openfile)
-        elif variableMeasure.get() == 'MLS':
-            with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-                json_object = json.load(openfile)
-        global knownPos
-        knownPos = np.asarray(json_object['Estimated positions'])
-
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=2, column=1)
     measure = tk.Label(loadJSON, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=3, column=1)
-    prevuiousMeasure = tk.Entry(loadJSON, width=21)
-    prevuiousMeasure.grid(row=4, column=1)
+    previousMeasure = tk.Entry(loadJSON, width=21)
+    previousMeasure.grid(row=4, column=1)
     measureType = tk.Label(loadJSON, text="2) Enter the type of the existing measure from which you want to import data:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=5, column=1)
     InputDevicesListPREV = ['SineSweep', 'MLS']
     variablePREV = tk.StringVar(loadJSON)
@@ -469,6 +458,22 @@ def loadWindow():
     optDATA = tk.OptionMenu(loadJSON, variableDATA, *InputDevicesListDATA)
     optDATA.config(width=17)
     optDATA.grid(row=8, column=1)
+
+    ######### Load knownPos from json #########
+    def loadJson():
+        measureName = previousMeasure.get()
+        if variablePREV.get() == 'SineSweep':
+            with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+                json_object = json.load(openfile)
+        elif variablePREV.get() == 'MLS':
+            with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+                json_object = json.load(openfile)
+        global knownPos
+        if variableDATA == 'Positions from a calibration':
+            knownPos = np.asarray(json_object['Estimated positions'])
+        elif variableDATA == 'Known positions':
+            knownPos = np.asarray(json_object['Known positions'])
+            
 
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=9, column=1)
     loadPositions = tk.Button(loadJSON, text='4) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=10, column=1)
