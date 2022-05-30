@@ -379,7 +379,7 @@ def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
     LoudSpeakerWindow.title("Insert Loudspeakers/Microphones Known Positions") # titolo
-    LoudSpeakerWindow.geometry('%dx%d' %(760, (8+(var_i*100)/3))) # dimensioni
+    LoudSpeakerWindow.geometry('%dx%d' %(890, (8+(var_i*100)/3))) # dimensioni
     LoudSpeakerWindow.config(bg='#36454f') # colore
 
     if variableCal == '2D' :
@@ -428,7 +428,6 @@ def printLoudspeakerPosition():
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm and acquire the manually entered known positions', font='Helvetica 14',command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.grid(row=2, column=6)
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3, column=6)
-    Horizontalspace = tk.Label(LoudSpeakerWindow,  text='-----------------------------------------------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=4, column=6)
     
 ################## Load knownPos from external json #########
 def loadWindow():
@@ -459,6 +458,14 @@ def loadWindow():
     optDATA.config(width=17)
     optDATA.grid(row=8, column=1)
 
+    loadFile = tk.Label(loadJSON, text="4) Enter the type of device that you want to calibrate in this measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=9, column=1)
+    InputDevicesListDATA = ['Microphone', 'Loudspeaker']
+    variableDATA = tk.StringVar(loadJSON)
+    variableDATA.set('- Select -')
+    optDATA = tk.OptionMenu(loadJSON, variableDATA, *InputDevicesListDATA)
+    optDATA.config(width=17)
+    optDATA.grid(row=10, column=1)
+
     ######### Load knownPos from json #########
     def loadJson():
         measureName = previousMeasure.get()
@@ -475,8 +482,8 @@ def loadWindow():
             knownPos = np.asarray(json_object['Known positions'])
             
 
-    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=9, column=1)
-    loadPositions = tk.Button(loadJSON, text='4) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=10, column=1)
+    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=11, column=1)
+    loadPositions = tk.Button(loadJSON, text='5) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=12, column=1)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4a) Insert known positions manually",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
