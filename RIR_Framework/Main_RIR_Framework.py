@@ -428,6 +428,15 @@ def printLoudspeakerPosition():
     getPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to confirm and acquire the manually entered known positions', font='Helvetica 14',command=getLoudSpeakersPositions, fg='#36454f')
     getPositions.grid(row=2, column=6)
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=3, column=6)
+
+    loadFile = tk.Label(LoudSpeakerWindow, text="Enter the type of device that you want to calibrate in this measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=4, column=6)
+    InputDevicesListCalDevice = ['Microphone', 'Loudspeaker']
+    global variableCalDevice
+    variableCalDevice = tk.StringVar(LoudSpeakerWindow)
+    variableCalDevice.set('- Select -')
+    optCalDevice = tk.OptionMenu(LoudSpeakerWindow, variableCalDevice, *InputDevicesListCalDevice)
+    optCalDevice.config(width=17)
+    optCalDevice.grid(row=5, column=6)
     
 ################## Load knownPos from external json #########
 def loadWindow():
@@ -436,7 +445,6 @@ def loadWindow():
     #loadJSON.geometry('400' %(890, (250+(var_i*100)/3))) # dimensioni
     loadJSON.config(bg='#36454f') # colore
 
-    space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=2, column=1)
     measure = tk.Label(loadJSON, text="1) Enter the name of an existing measure from which you want to import data:", font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=3, column=1)
@@ -481,7 +489,6 @@ def loadWindow():
             knownPos = np.asarray(json_object['Estimated positions'])
         elif variableDATA == 'Known positions':
             knownPos = np.asarray(json_object['Known positions'])
-            
 
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=11, column=1)
     loadPositions = tk.Button(loadJSON, text='5) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=12, column=1)
@@ -608,9 +615,9 @@ def multipleStartFunctions(): # to get all the needed varaibles
             data = fillDataMatrix(data,inputChannels,i-1)
 
     ## CALIBRAZIONE ##
-    if variableCalDevice == 'Microphone':
+    if variableCalDevice.get() == 'Microphone':
         posType = 's'
-    elif variableCalDevice == 'Loudspeaker':
+    elif variableCalDevice.get() == 'Loudspeaker':
         posType = 'm'
     
     maxBuffer = 1e-3
