@@ -451,7 +451,7 @@ def printLoudspeakerPosition():
     variablePREV = tk.StringVar(LoudSpeakerWindow)
     variablePREV.set('- Select -')
     optPREV = tk.OptionMenu(LoudSpeakerWindow, variablePREV, *InputDevicesListPREV)
-    optPREV.config(width=10)
+    optPREV.config(width=14)
     optPREV.grid(row=9, column=6)
     
     loadFile = tk.Label(LoudSpeakerWindow, text="3) Enter the type of data of the existing measure:",font='Helvetica 14',bg='#36454f', fg='#f7f7f7').grid(row=10, column=6)
@@ -459,11 +459,11 @@ def printLoudspeakerPosition():
     variableDATA = tk.StringVar(LoudSpeakerWindow)
     variableDATA.set('- Select -')
     optDATA = tk.OptionMenu(LoudSpeakerWindow, variableDATA, *InputDevicesListDATA)
-    optDATA.config(width=15)
-    optDATA.grid(row=9, column=6)
+    optDATA.config(width=14)
+    optDATA.grid(row=11, column=6)
 
     space = tk.Label(LoudSpeakerWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=12, column=6)
-    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load positions from a .json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
+    loadPositions = tk.Button(LoudSpeakerWindow, text='CLICK HERE to load positions from a json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=13, column=6)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
 loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4) Insert known positions",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
