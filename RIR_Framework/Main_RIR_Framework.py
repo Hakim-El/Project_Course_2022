@@ -287,7 +287,7 @@ def measureCalWindow():
         RIRmeasure_function(fs, indev, outdev, name, input_mapping= varcalIN, output_mapping= varcalOUT) 
         latencyRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
         latencyRIR = latencyRIR.reshape((latencyRIR.shape[0],))
-        systemLatency = find_directPath(latencyRIR)
+        systemLatency = int(find_directPath(latencyRIR))
         shutil.rmtree('SineSweepMeasures/RIR_for_latency') # Delete the Latency measure folder
         print('SystemLatency = %d' %systemLatency)
 
@@ -601,7 +601,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         for i in outputMapNEW:
             RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=i, latency= systemLatency)
             data = fillDataMatrix(data,len(inputMap),counter)
-            counter =+ 1
+            counter += 1
 
         # save the Matrix containing ALL RIRS
         dirname = 'SineSweepMeasures/' + str(measureName)
@@ -623,7 +623,8 @@ def multipleStartFunctions(): # to get all the needed varaibles
     maxBuffer = 1e-3
     interpFactor = 2
     posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
-    estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False)
+    #estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False) # Buffer False
+    estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=True) # Buffer True
 
     ## CREAZIONE FILE DI TESTO ##
     # SineSweep measure

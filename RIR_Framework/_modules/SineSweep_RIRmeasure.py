@@ -54,7 +54,8 @@ def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mappi
 
             # Create a test signal object, and generate the excitation
             testStimulus = stim.stimulus('sinesweep',fs)
-            testStimulus.generate(fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange)
+            testStimulus.generate(fs, args.duration, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange) # sinesweep di 10 secondi
+            #testStimulus.generate(fs, 5, args.amplitude,args.reps,args.startsilence, args.endsilence, args.sweeprange) # sinesweep di 5 secondi
 
             recorded = utils.record(testStimulus.signal,fs, inputDevice, outputDevice, inputMap=input_mapping, outputMap=output_mapping)
 
@@ -71,7 +72,7 @@ def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mappi
             # RIR = RIR[startId:endId,:]
 
             RIRtoSave = RIR[RIR.shape[0]//2:,:]
-            #RIRtoSave = RIRtoSave[latency:,:]
+            RIRtoSave = RIRtoSave[latency:,:]
 
             # Save recordings and RIRs
             utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName, output_mapping)
