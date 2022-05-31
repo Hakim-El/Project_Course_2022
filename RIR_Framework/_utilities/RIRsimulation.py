@@ -5,8 +5,9 @@ from scipy.signal import fftconvolve
 import IPython
 import pyroomacoustics as pra
 
-### IMPORTANT: This script is not actually used in the RIR Framework but it is implemented in the 
-### Main file and in the Calibration module and it can be used to make some simulations with pyroomacoustics
+### IMPORTANT: This script is not used in the RIR Framework but it is implemented in the 
+### Calibration_OLD module from Project Course 2021 exam and it can be used to perform some 
+## simulations with pyroomacoustics
 
 # Creates a simulation of a RIR with 4 Loudspeakers and 1 mic at determined positions
 # Used for testing the calibration algorithm

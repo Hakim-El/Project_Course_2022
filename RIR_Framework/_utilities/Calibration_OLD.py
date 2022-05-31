@@ -3,8 +3,10 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.optimize import minimize
 from scipy import interpolate
-from _modules.RIRsimulation import createRir
+from RIRsimulation import createRir
 from mpl_toolkits.mplot3d import Axes3D
+
+# Old calibration algorithm from Project Course 2021 exam. It does not work!
 
 #import RIRmeasure_SineSweep
 RIRlen = 1332   # Size of the RIR's Chosen by the previous year's group

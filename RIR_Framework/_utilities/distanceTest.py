@@ -1,8 +1,10 @@
 import numpy as np
-from Calibration3 import calibrate
-from Calibration3 import find_directPath
+from _modules.Calibration import calibrate
+from _modules.Calibration import find_directPath
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import cdist
+
+# Sript used to calculate and verify the distance between 2 or more items (lodspeakers or microphones) after the calibration
 
 RIR = np.load('RIRMatrix.npy')
 RIR = np.moveaxis(RIR,(0,1,2),(1,2,0))
