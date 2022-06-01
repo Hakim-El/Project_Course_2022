@@ -1,4 +1,17 @@
-%% Anechoic Room Calibration Results
+%%
+clear
+close all
+clc
+%%
+
+trueSpkrPos=[
+    1.44, 3.39, 1.16;
+    2.17, 3.40, 1.15;
+    1.42, 2.67, 1.15;
+    2.19, 2.645, 1.16;
+    1.39, 1.92, 1.16;
+    2.20, 1.835, 1.15;
+];
 
 micPos1 = [ 0.49407,  4.4825, 0.52685;
     1.1858,  4.3940, 0.39627;
@@ -38,14 +51,14 @@ micPos2 = [            0.53808, 3.90080, 0.46408;
     1.0035, 2.7083, 2.0639;
     1.816, 2.690, 2.045;
     2.4279, 2.7032, 2.0546;
-    2.9238, 2.6978, 2.0451;]
+    2.9238, 2.6978, 2.0451;];
 
 spkrPos2 = [           1.40790,            3.40877,            1.22031;
     2.14266            3.446473            1.22501;
     1.43166            2.63082,            1.1792;
     2.11783            2.64400,            1.18087;
     1.36974,            1.93907,            1.22065;
-    2.18015            1.869958,            1.20988;]
+    2.18015            1.869958,            1.20988;];
 
 
 
@@ -66,14 +79,14 @@ micPos3 = [
     1.1164  2.14653,  2.0675;
     1.77227,  2.1284, 2.0706;
     2.33537,   2.14834,  2.057;
-    2.87956,   2.1433,  2.043;]
+    2.87956,   2.1433,  2.043;];
 spkrPos3= [
     1.433714,            3.3786806,            1.1436;
     2.1591,            3.431199,            1.1693;
     1.457708,            2.517026,            1.0808;
     2.12628,            2.874128,            1.315;
     1.38548,            1.9637906,            1.2165;
-    2.188854,            1.8856006,            1.2107;]
+    2.188854,            1.8856006,            1.2107;];
 
 
 
@@ -99,7 +112,7 @@ spkrPos4 = [1.435,           3.391,            1.157;
     1.4626            2.7344,            1.2351;
     2.1200            2.7247,            1.2049;
     1.3782            2.1236,            1.2970;
-    2.2009            1.9026,            1.2064;]
+    2.2009            1.9026,            1.2064;];
 
 micPos5 = [            0.4642,            2.0900,            0.5057;
     1.0366,            2.1018,            0.5145;
@@ -163,25 +176,56 @@ micPos7 = [
             1.680,            3.650,            2.006;
             2.23,            3.65,            2.00;
             2.941,            3.700,            2.007;];
+        
+        
+micPos7_2 = [
+        0.49066,0.57064,0.50297;
+        1.04640,0.68864,0.54425;
+        1.68740,0.76270,0.59091;
+        2.17383,0.83174,0.58020;
+        2.96766,0.89573,0.58474;
+        0.46228,4.46261,1.10371;
+        1.05152,4.44659,1.13106;
+        1.65806,4.44854,1.14832;
+        2.17103,4.47070,1.13855;
+        2.93780,4.45189,1.08794;
+        0.50032,3.72504,2.05421;
+        1.04932,3.71810,2.03247;
+        1.63622,3.77888,2.01767;
+        2.21695,3.78938,2.02097;
+        2.93757,3.83328,2.02541;
+        ];
+    
 spkrPos7 =[
            1.4064,            3.1801,            1.2490;
-            2.139,            3.222,            1.231;,
+            2.139,            3.222,            1.231;
            1.4216,            2.5409,            1.2088;
             2.103,            2.522,            1.218;
            1.3342,            1.8437,            1.2206;
             2.1718,            1.7561,            1.3066;];       
+        
+spkrPos7_2 =[
+            1.3628672081806155,3.2584313236327827,1.2491714376434102;
+            2.0955113405765893,3.3290464853033597,1.2117820765798315;
+            1.382746571965173,2.6205737526934825,1.2045571569825366;
+            2.0581561942867115,2.6116861071923836,1.214853137283191;
+            1.3140704194281796,1.9168616805861323,1.2201176788363295;
+            2.1260914933911645,1.833971273505931,1.3012399196184987;];
+        
 figure
-scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3), 'filled'), hold on;
-scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),  'filled');
-scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3),  'filled');
-scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),  'filled');
-scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),  'filled');
-scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),  'filled');
-scatter3(spkrPos7(:,1), spkrPos7(:,2), spkrPos7(:,3),  'filled');
+scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3),'*'), hold on;
+scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'*');
+scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3),'*');
+scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),'*');
+scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),'*');
+scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),'*');
+scatter3(spkrPos7(:,1), spkrPos7(:,2), spkrPos7(:,3),'*');
+scatter3(trueSpkrPos(:,1), trueSpkrPos(:,2), trueSpkrPos(:,3),  'filled', 'black', 'diamond');
 
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('Source Position')
+%%
 
 figure
 scatter3(micPos1(:,1), micPos1(:,2), micPos1(:,3), 'filled'), hold on;
@@ -190,19 +234,21 @@ scatter3(micPos3(:,1), micPos3(:,2), micPos3(:,3), 'filled');
 scatter3(micPos4(:,1), micPos4(:,2), micPos4(:,3), 'filled');
 scatter3(micPos5(:,1), micPos5(:,2), micPos5(:,3), 'filled');
 scatter3(micPos6(:,1), micPos6(:,2), micPos6(:,3), 'filled');
-scatter3(micPos7(:,1), micPos7(:,2), micPos7(:,3), 'filled');
+scatter3(micPos7_2(:,1), micPos7_2(:,2), micPos7_2(:,3), 'filled');
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('Mic Position')
-
+%%
 figure
-scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3), 'filled', 'diamond'), hold on;
-scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),  'filled', 'diamond');
-scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3), 'filled',  'diamond');
-scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),  'filled', 'diamond');
-scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),  'filled');
-scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),  'filled');
-scatter3(spkrPos7(:,1), spkrPos7(:,2), spkrPos7(:,3),  'filled');
+scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3),'*'), hold on;
+scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'*');
+scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3),'*');
+scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),'*');
+scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),'*');
+scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),'*');
+scatter3(spkrPos7_2(:,1), spkrPos7_2(:,2), spkrPos7_2(:,3),'*');
+scatter3(trueSpkrPos(:,1), trueSpkrPos(:,2), trueSpkrPos(:,3),  'filled', 'black', 'diamond');
+
 
 
 scatter3(micPos1(:,1), micPos1(:,2), micPos1(:,3), 'filled', 'b'), hold on;
@@ -211,7 +257,7 @@ scatter3(micPos3(:,1), micPos3(:,2), micPos3(:,3), 'filled', 'y');
 scatter3(micPos4(:,1), micPos4(:,2), micPos4(:,3), 'filled');
 scatter3(micPos5(:,1), micPos5(:,2), micPos5(:,3), 'filled');
 scatter3(micPos6(:,1), micPos6(:,2), micPos6(:,3), 'filled');
-scatter3(micPos7(:,1), micPos7(:,2), micPos7(:,3), 'filled');
+scatter3(micPos7_2(:,1), micPos7_2(:,2), micPos7_2(:,3), 'filled');
 
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
