@@ -212,6 +212,50 @@ spkrPos7_2 =[
             1.3140704194281796,1.9168616805861323,1.2201176788363295;
             2.1260914933911645,1.833971273505931,1.3012399196184987;];
         
+% mic1Mean = mean([micPos1(1,:) ;micPos2(1,:) ;micPos3(1,:) ;micPos4(1,:) ;
+%     micPos5(1,:) ;micPos6(1,:) ;micPos7(1,:) ;]);
+% mic2Mean = mean([micPos1(2,:) ;micPos2(2,:) ;micPos3(2,:) ;micPos4(2,:) ;
+%     micPos5(2,:) ;micPos6(2,:) ;micPos7(2,:) ;]);
+% mic3Mean = mean([micPos1(3,:) ;micPos2(3,:) ;micPos3(3,:) ;micPos4(3,:) ;
+%     micPos5(3,:) ;micPos6(3,:) ;micPos7(3,:) ;]);
+% mic4Mean = mean([micPos1(4,:) ;micPos2(4,:) ;micPos3(4,:) ;micPos4(4,:) ;
+%     micPos5(4,:) ;micPos6(4,:) ;micPos7(4,:) ;]);
+% mic5Mean = mean([micPos1(5,:) ;micPos2(5,:) ;micPos3(5,:) ;micPos4(5,:) ;
+%     micPos5(5,:) ;micPos6(5,:) ;micPos7(5,:) ;]);
+% mic6Mean = mean([micPos1(6,:) ;micPos2(6,:) ;micPos3(6,:) ;micPos4(6,:) ;
+%     micPos5(6,:) ;micPos6(6,:) ;micPos7(6,:) ;]);
+% mic7Mean = mean([micPos1(7,:) ;micPos2(7,:) ;micPos3(7,:) ;micPos4(7,:) ;
+%     micPos5(7,:) ;micPos6(7,:) ;micPos7(7,:) ;]);
+% mic8Mean = mean([micPos1(8,:) ;micPos2(8,:) ;micPos3(8,:) ;micPos4(8,:) ;
+%     micPos5(8,:) ;micPos6(8,:) ;micPos7(8,:) ;]);
+% mic9Mean = mean([micPos1(9,:) ;micPos2(9,:) ;micPos3(9,:) ;micPos4(9,:) ;
+%     micPos5(9,:) ;micPos6(9,:) ;micPos7(9,:) ;]);
+% mic10Mean = mean([micPos1(10,:) ;micPos2(10,:) ;micPos3(10,:) ;micPos4(10,:) ;
+%     micPos5(10,:) ;micPos6(10,:) ;micPos7(10,:) ;]);
+% mic11Mean = mean([micPos1(11,:) ;micPos2(11,:) ;micPos3(11,:) ;micPos4(11,:) ;
+%     micPos5(11,:) ;micPos6(11,:) ;micPos7(11,:) ;]);
+% mic12Mean = mean([micPos1(12,:) ;micPos2(12,:) ;micPos3(12,:) ;micPos4(12,:) ;
+%     micPos5(12,:) ;micPos6(12,:) ;micPos7(12,:) ;]);
+% mic13Mean = mean([micPos1(13,:) ;micPos2(13,:) ;micPos3(13,:) ;micPos4(13,:) ;
+%     micPos5(13,:) ;micPos6(13,:) ;micPos7(13,:) ;]);
+% mic14Mean = mean([micPos1(14,:) ;micPos2(14,:) ;micPos3(14,:) ;micPos4(14,:) ;
+%     micPos5(14,:) ;micPos6(14,:) ;micPos7(14,:) ;]);
+% mic15Mean = mean([micPos1(15,:) ;micPos2(15,:) ;micPos3(15,:) ;micPos4(15,:) ;
+%     micPos5(15,:) ;micPos6(15,:) ;micPos7(15,:) ;]);
+% 
+% micMean = [mic1Mean;mic2Mean;mic3Mean;mic4Mean;mic5Mean;mic6Mean;mic7Mean;
+%     mic8Mean;mic1Mean;mic1Mean;mic1Mean;mic1Mean;mic1Mean;mic1Mean;mic1Mean;];
+
+
+sourceMean = spkrPos1;
+sourceMean(:,:,2) = spkrPos2;
+sourceMean(:,:,3) = spkrPos3;
+sourceMean(:,:,4) = spkrPos4;
+sourceMean(:,:,5) = spkrPos5;
+sourceMean(:,:,6) = spkrPos6;
+sourceMean(:,:,7) = spkrPos7_2;
+sourceMean = mean(sourceMean,3);
+%% Source positions
 figure
 scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3),'*'), hold on;
 scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'*');
@@ -219,13 +263,20 @@ scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3),'*');
 scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),'*');
 scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),'*');
 scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),'*');
-scatter3(spkrPos7(:,1), spkrPos7(:,2), spkrPos7(:,3),'*');
+scatter3(spkrPos7_2(:,1), spkrPos7_2(:,2), spkrPos7_2(:,3),'*');
 scatter3(trueSpkrPos(:,1), trueSpkrPos(:,2), trueSpkrPos(:,3),  'filled', 'black', 'diamond');
 
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('Source Position')
-%%
+
+figure
+scatter3(sourceMean(:,1), sourceMean(:,2), sourceMean(:,3),'*'), hold on;
+scatter3(trueSpkrPos(:,1), trueSpkrPos(:,2), trueSpkrPos(:,3),  'filled', 'black', 'diamond');
+
+xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
+title('Mean Source Position')
+%% Mic Positions
 
 figure
 scatter3(micPos1(:,1), micPos1(:,2), micPos1(:,3), 'filled'), hold on;
@@ -238,7 +289,7 @@ scatter3(micPos7_2(:,1), micPos7_2(:,2), micPos7_2(:,3), 'filled');
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('Mic Position')
-%%
+%% Source And Mic Positions
 figure
 scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3),'*'), hold on;
 scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'*');
@@ -259,7 +310,7 @@ scatter3(micPos5(:,1), micPos5(:,2), micPos5(:,3), 'filled');
 scatter3(micPos6(:,1), micPos6(:,2), micPos6(:,3), 'filled');
 scatter3(micPos7_2(:,1), micPos7_2(:,2), micPos7_2(:,3), 'filled');
 
-
+%% Statistics
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('all')
 
