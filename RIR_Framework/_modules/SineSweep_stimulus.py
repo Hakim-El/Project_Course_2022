@@ -97,14 +97,14 @@ class stimulus:
 
                 #currentChannel = systemOutput[0:self.repetitions*self.Lp,idx]
                 currentChannel = systemOutput[:,idx]
-                # RIRs[:,idx] = fftconvolve(self.invfilter,currentChannel);
+                RIRs[:,idx] = fftconvolve(self.invfilter,currentChannel);
 
                 # Average over the repetitions - DEPRECATED. Should not be done.
-                sig_reshaped = currentChannel.reshape((self.repetitions,self.Lp))
-                sig_avg = np.mean(sig_reshaped,axis = 0)
+                #sig_reshaped = currentChannel.reshape((self.repetitions,self.Lp))
+                #sig_avg = np.mean(sig_reshaped,axis = 0)
 
                 # Deconvolution
-                RIRs[:,idx] = fftconvolve(self.invfilter,sig_avg);
+                #RIRs[:,idx] = fftconvolve(self.invfilter,sig_avg);
 
             return RIRs
 
