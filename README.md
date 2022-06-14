@@ -27,11 +27,10 @@ In particular, in the first part (point 1,2,3) it asks you to choose the proper 
 
 In the second part instead (point 4,5,6), you can choose between two types of measures for RIRs acqusition, MLS and Exponential Sine Sweep. Other parameters as the sampling frequency and the proper sound speed must be declared for the computation to be accurate. 
 
-The numerical order was put on purpose in order to facilitate the user to follow the step in right manner.
+The numerical order was put on purpose in order to facilitate the user to follow the step in a right manner.
 
 ### CALIBRATION
 
-
-
+System latency may differ from device to device so a simple method for the estimation of the used device's latency was implemented; this is crucial for the RIRs to be correct. As it can be seen in the figure below, after pressing the button (point 1) a secondary window will open in which all the needed passages are specified. 
 
 
