@@ -26,7 +26,12 @@ In particular, in the first part (point 1,2,3) it asks you to choose the proper 
 A routing matrix (fig. below) allows you to choose from the selectable channels the right number of inputs and outputs that you are going to use. 
 
 
-####immagine matrix
+
+<p align="center">
+<img src="./Images/matrix.jpg" >
+</p>
+
+In this specific example the number of the max_num available of input/output was 30. 
 
 
 In the second part instead (point 4,5,6), you can choose between two types of measures for RIRs acqusition, MLS and Exponential Sine Sweep. 
