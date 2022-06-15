@@ -9,6 +9,12 @@ from numpy.fft import fft, ifft
 from scipy.io.wavfile import write as wavwrite
 import os
 
+######################################################################################################################################################################################################
+# NOTA: NEL MAIL VIENE FATTO RIFERIMENTO A QUESTO MODULO MA ESSO NON E' ATTUALEMNETE IMPLEMENTATO.
+# AL MOMENTO E' STATA IMPLEMENTATA SOLAMENTE LA CALIBRAZIONE CON SEGNALE DI TIPO SINESWEEP
+# UN FUTURO SVILUPPO DI QUESTA APPLICAZIONE PUO' INCLUDERE L'IMPLEMETAZIONE ANCHE CON SEGNALE DI TIPO MLS
+######################################################################################################################################################################################################
+
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName, latency=0):
     # Viene fatto tutto dentro questa funzione
     # Generazione del segnale

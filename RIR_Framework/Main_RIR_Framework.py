@@ -1,6 +1,7 @@
 # Moduli da importare per far funzionare il MAIN
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 import sounddevice as sd
 import codecs, json
 import numpy as np
@@ -9,11 +10,19 @@ import os
 from PIL import Image, ImageTk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from sqlalchemy import null
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
 from _modules.Calibration import calibrate, find_directPath
+
+######################################################################################################################################################################################################
+# NOTA: NEL CODICE SONO PRESENTI TRACCE NELLA CALIBRAZIONE CON SEGNALE DI TIPO MLS.
+# ATTUALMENTE E' STATA IMPLEMENTATA SOLAMENTE LA CALIBRAZIONE CON SEGNALE DI TIPO SINESWEEP
+# UN FUTURO SVILUPPO DI QUESTA APPLICAZIONE PUO' INCLUDERE L'IMPLEMETAZIONE ANCHE CON SEGNALE DI TIPO MLS
+# IL MODULO DA IMPLEMENTARE PER LA GENERAZIONE E LA CALIBRAZIONE MLS E' MLS_RIRmeasure.py NELLA CARTELLA _modules
+######################################################################################################################################################################################################
 
 ###################################################################################################
 # CREAZIONE MAIN WINDOW
@@ -46,7 +55,6 @@ verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='
 verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=3)
 verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=19, column=3)
 verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=20, column=3)
-verticalSpaces = tk.Label(mainWindow, text=' | ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=21, column=3)
 
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=1, column=5)
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=2, column=5)
@@ -68,10 +76,9 @@ verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=18, column=5)
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=19, column=5)
 verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=20, column=5)
-verticalSpaces = tk.Label(mainWindow, text='  ',font='Helvetica 16 bold',  bg='#36454f', fg='#f7f7f7').grid(row=21, column=5)
 
 credits = tk.Label(mainWindow, text='Developed by: Hakim El Achak, Lorenzo Lellini, Jacopo Caucig', font=('Helvetica 11 italic'), bg='#36454f', fg='#000000')
-credits.grid(row=21, column=4)
+credits.grid(row=20, column=4)
 
 ################################################################################################################################################
 ########## SECTION 1 ########## 
@@ -83,12 +90,18 @@ global cal_type
 variableCal = '3D'
 cal_type = 2
 
+# misura SineSweep (MLS non implementata!)
+global variableMeasure
+global measureMethod
+variableMeasure = 'SineSweep'
+measureMethod = 1
+
 ###################### 0 - Sistema Operativo ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=2)
 
 InputDevicesListOS = ['macOS', 'Windows']
 variableOS = tk.StringVar(mainWindow)
-variableOS.set('- Select your OS -')
+variableOS.set('- select your OS -')
 opt0 = tk.OptionMenu(mainWindow, variableOS, *InputDevicesListOS)
 opt0.config(width=11)
 opt0.grid(row=3, column=2)
@@ -199,46 +212,41 @@ in_outButton.grid(row=10, column=2)
 
 ###################### 4 - Selezione tipo di misura ######################
 Horizontalspace = tk.Label(mainWindow,  text='-------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=11, column=2)
-measureTypelLabel = tk.Label(mainWindow, text="4) Type of measure",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-measureTypelLabel.grid(row=12, column=2)
-
-InputDevicesListMeasure = ['SineSweep', 'MLS']
-variableMeasure = tk.StringVar(mainWindow)
-variableMeasure.set('- select -')
-opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
-opt5.config(width=8)
-opt5.grid(row=13, column=2)
+#measureTypelLabel = tk.Label(mainWindow, text="4) Type of measure",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+#measureTypelLabel.grid(row=12, column=2)
+#
+#InputDevicesListMeasure = ['SineSweep', 'MLS']
+#variableMeasure = tk.StringVar(mainWindow)
+#variableMeasure.set('- select -')
+#opt5 = tk.OptionMenu(mainWindow, variableMeasure, *InputDevicesListMeasure)
+#opt5.config(width=8)
+#opt5.grid(row=13, column=2)
 
 ###################### 5 - Selezione Sampling Frequency ######################
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=14, column=2)
 frequencyLabel = tk.Label(mainWindow, text="5) Sampling frequency [Hz]",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-frequencyLabel.grid(row=15, column=2)
+frequencyLabel.grid(row=12, column=2)
 
 InputDevicesListFreq = [44100,48000,96000]
 variableFreq = tk.StringVar(mainWindow)
 variableFreq.set('- select -')
 opt6 = tk.OptionMenu(mainWindow, variableFreq, *InputDevicesListFreq)
 opt6.config(width=8)
-opt6.grid(row=16, column=2)
+opt6.grid(row=13, column=2)
 
 ###################### 6 - Sound Speed estimation ######################
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=17, column=2)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=14, column=2)
 soundSpeedLabel = tk.Label(mainWindow, text="6) Sound speed estimation",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-soundSpeedLabel.grid(row=18, column=2)
+soundSpeedLabel.grid(row=15, column=2)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
 variableSoundSpeed = tk.StringVar(mainWindow)
 variableSoundSpeed.set('- select -     ')
 opt9 = tk.OptionMenu(mainWindow, variableSoundSpeed, *InputDevicesListSoundSpeed)
-opt9.grid(row=19, column=2)
+opt9.grid(row=16, column=2)
 t = tk.Entry(mainWindow, width=5)
-t.grid(row=20, column=2)
+t.grid(row=17, column=2)
 
-################################################################################################################################################
-########## SECTION 2 ########## 
-sect2 = tk.Label(mainWindow,text='2) CALIBRATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=4)
-
-###################### 1 - Calibrazione Sistema di Misura ######################
+###################### 7 - Calibrazione Sistema di Misura ######################
 def measureCalWindow():
     measureCalWindow = tk.Toplevel(mainWindow)
     measureCalWindow.title("System Latency Calibration") # titolo
@@ -294,16 +302,20 @@ def measureCalWindow():
     space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
     signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=4)
-testSignalButton = tk.Button(mainWindow, height=1, width=35, text="1) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
-testSignalButton.grid(row=3, column=4)   
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=2)
+testSignalButton = tk.Button(mainWindow, height=1, width=35, text="7) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
+testSignalButton.grid(row=19, column=2)   
+
+################################################################################################################################################
+########## SECTION 2 ########## 
+sect2 = tk.Label(mainWindow,text='2) CALIBRATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=4)
 
 ###################### 1 - Nome della misura ######################
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=4)
-measureNameLabel = tk.Label(mainWindow, text="2) Insert the name of the measure below",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
-measureNameLabel.grid(row=5, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=4)
+measureNameLabel = tk.Label(mainWindow, text="1) Insert the name of the measure below",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+measureNameLabel.grid(row=3, column=4)
 Name = tk.Entry(mainWindow, width=34)
-Name.grid(row=6, column=4)
+Name.grid(row=4, column=4)
 
 ###################### 2 - Dimensioni della stanza ######################
 def printRoomDimension():
@@ -370,9 +382,9 @@ def printRoomDimension():
         space = tk.Label(dimension2DWindow,  text='',font='Helvetica 8', bg='#36454f').grid(row=7)
         getDimensions.grid(row=8, column=2)
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=4)
-roomDimensionButton = tk.Button(mainWindow, height=1, width=35, text="3) Insert room dimensions",font='Helvetica 14', command = printRoomDimension, fg='#36454f')
-roomDimensionButton.grid(row=8, column=4)
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=5, column=4)
+roomDimensionButton = tk.Button(mainWindow, height=1, width=35, text="2) Insert room dimensions",font='Helvetica 14', command = printRoomDimension, fg='#36454f')
+roomDimensionButton.grid(row=6, column=4)
 
 ###################### 3 - Posizione Loudspeakers ######################
 def printLoudspeakerPosition():
@@ -493,180 +505,194 @@ def loadWindow():
     space = tk.Label(loadJSON,  text=' ',font='Helvetica 8', bg='#36454f').grid(row=11, column=1)
     loadPositions = tk.Button(loadJSON, text='5) CLICK HERE to load positions from an existing json file',font='Helvetica 14',command=loadJson, fg='#36454f').grid(row=12, column=1)
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=9, column=4)
-loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4a) Insert known positions manually",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
-loudspeakerPositionButton.grid(row=10, column=4) 
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=7, column=4)
+loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="3a) Insert known positions manually",font='Helvetica 14', command = printLoudspeakerPosition, fg='#36454f')
+loudspeakerPositionButton.grid(row=8, column=4) 
 
-loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="4b) Import known positions from a json file",font='Helvetica 14', command = loadWindow, fg='#36454f')
-loudspeakerPositionButton.grid(row=11, column=4)     
+loudspeakerPositionButton = tk.Button(mainWindow,width= 35, text="3b) Import known positions from a json file",font='Helvetica 14', command = loadWindow, fg='#36454f')
+loudspeakerPositionButton.grid(row=9, column=4)     
 
 ###################### 4 - START MEASURE BUTTON ######################
 def multipleStartFunctions(): # to get all the needed varaibles
-    ### DEFINIZIONE VARIABILI ###
-    #input/output device
-    inputDevice = int(variableInputDev.get()[0])
-    outputDevice = int(variableOutputDev.get()[0])
-    
-    #number of inputs/outputs
-    inputChannels = len(inputMap)
-    outputChannels = len(outputMap)
-    
     #measure name
     measureName = Name.get()
-    
-    #soundspeed
-    if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
-        c = 343
-    elif variableSoundSpeed.get() == 'Insert temperature in °C below':
-        c = (331.3 + 0.606*float(t.get())) # m/s
+
+    ## ERROR MESSAGES ##
+    if  variableOS.get() == '- select your OS -':
+        messagebox.showerror('Python Error', 'ERROR: Select your OS!')
+    elif variableInputDev.get() == '- input AudioDevice -':
+        messagebox.showerror('Python Error', 'ERROR: Missing input AudioDevice!')
+    elif variableOutputDev.get() == '- output AudioDevice -':
+        messagebox.showerror('Python Error', 'ERROR: Missing output AudioDevice!')
+    elif variableFreq.get() == '- select -':
+        messagebox.showerror('Python Error', 'ERROR: Missing Sampling frequency value!')
+    elif variableSoundSpeed.get() == '- select -     ':
+        messagebox.showerror('Python Error', 'ERROR: Missing sound speed value!')
     else:
-        c = 343
+        ### DEFINIZIONE VARIABILI ###
+        #input/output device
+        inputDevice = int(variableInputDev.get()[0])
+        outputDevice = int(variableOutputDev.get()[0])
 
-    #calibration type
-    if variableCal == '2D':
-        cal_type = 1
-    elif variableCal == '3D':
-        cal_type = 2
-    
-    #sampling frequency
-    fs = int(variableFreq.get())
-    
-    #measure type
-    if variableMeasure.get() == 'SineSweep':
-        measureMethod = 1
-    elif variableMeasure.get() == 'MLS':
-        measureMethod = 2
+        #number of inputs/outputs
+        inputChannels = len(inputMap)
+        outputChannels = len(outputMap)
 
-    ## CREAZIONE CARTELLE ##
-    #creazione cartelle misura primcipali (SineSweep & MLS)
-    dirnameSineSweep = 'SineSweepMeasures/'
-    dirnameMLS = 'MLSMeasures/'
-    if os.path.exists(dirnameSineSweep):
-        dirSineSweepFlag = True
-    else :
-        dirSineSweepFlag = False
-    
-    if os.path.exists(dirnameMLS):
-        dirMLSFlag = True
-    else :
-        dirMLSFlag = False
+        #soundspeed
+        if variableSoundSpeed.get() == 'Set default value (343 [m/s])':
+            c = 343
+        elif variableSoundSpeed.get() == 'Insert temperature in °C below':
+            c = (331.3 + 0.606*float(t.get())) # m/s
+        else:
+            c = 343
 
-    if dirSineSweepFlag == False:
-        os.mkdir('SineSweepMeasures/')
-        dirSineSweepFlag = True
+        #calibration type
+        if variableCal == '2D':
+            cal_type = 1
+        elif variableCal == '3D':
+            cal_type = 2
 
-    if dirMLSFlag == False:
-        os.mkdir('MLSMeasures/')
-        dirMLSFlag = True
+        #sampling frequency
+        fs = int(variableFreq.get())
 
-    #creazione cartella _lastMeasureData_
-    dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
-    dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
-    if os.path.exists(dirnameLast1):
-        dirLast1Flag = True
-    else :
-        dirLast1Flag = False
-    
-    if os.path.exists(dirnameLast2):
-        dirLast2Flag = True
-    else :
-        dirLast2Flag = False
+        #measure type
+        #if variableMeasure.get() == 'SineSweep':
+        #    measureMethod = 1
+        #elif variableMeasure.get() == 'MLS':
+        #    measureMethod = 2
 
-    if dirLast1Flag == False:
-        os.mkdir('SineSweepMeasures/_lastMeasureData_')
-        dirLast1Flag = True
+        ## CREAZIONE CARTELLE ##
+        #creazione cartelle misura primcipali (SineSweep & MLS)
+        dirnameSineSweep = 'SineSweepMeasures/'
+        dirnameMLS = 'MLSMeasures/'
+        if os.path.exists(dirnameSineSweep):
+            dirSineSweepFlag = True
+        else :
+            dirSineSweepFlag = False
 
-    if dirLast2Flag == False:
-        os.mkdir('MLSMeasures/_lastMeasureData_')
-        dirLast2Flag = True
+        if os.path.exists(dirnameMLS):
+            dirMLSFlag = True
+        else :
+            dirMLSFlag = False
 
-    #creazione sottocartelle con dati misura
-    if dirSineSweepFlag == True and measureMethod == 1:
-        dirname1 = 'SineSweepMeasures/' + str(measureName)
-        os.mkdir(dirname1)
-    elif dirMLSFlag == True and measureMethod == 2:
-        dirname2 = 'MLSMeasures/' + str(measureName)
-        os.mkdir(dirname2)
+        if dirSineSweepFlag == False:
+            os.mkdir('SineSweepMeasures/')
+            dirSineSweepFlag = True
 
-    ## MISURA ##
-    if measureMethod == 1 :
-        # Misura SineSweep
-        RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=outputMap[0], latency= systemLatency)
-        data = createDataMatrix(len(inputMap),len(outputMap))
-        data = fillDataMatrix(data,len(inputMap), 1)
+        if dirMLSFlag == False:
+            os.mkdir('MLSMeasures/')
+            dirMLSFlag = True
 
-        outputMapNEW = outputMap[1:]
-        counter = 2
+        #creazione cartella _lastMeasureData_
+        dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
+        dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
+        if os.path.exists(dirnameLast1):
+            dirLast1Flag = True
+        else :
+            dirLast1Flag = False
 
-        for i in outputMapNEW:
-            RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=i, latency= systemLatency)
-            data = fillDataMatrix(data,len(inputMap),counter)
-            counter += 1
+        if os.path.exists(dirnameLast2):
+            dirLast2Flag = True
+        else :
+            dirLast2Flag = False
 
-        # save the Matrix containing ALL RIRS
-        dirname = 'SineSweepMeasures/' + str(measureName)
-        np.save(dirname + '/RIRMatrix.npy',data)
+        if dirLast1Flag == False:
+            os.mkdir('SineSweepMeasures/_lastMeasureData_')
+            dirLast1Flag = True
 
-    elif measureMethod == 2 :
-        # Misura MLS
-        data = createDataMatrix(inputChannels,outputChannels)
-        for i in np.arange(1, outputChannels+1) :
-            MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
-            data = fillDataMatrix(data,inputChannels,i-1)
+        if dirLast2Flag == False:
+            os.mkdir('MLSMeasures/_lastMeasureData_')
+            dirLast2Flag = True
 
-    ## CALIBRAZIONE ##
-    if variableCalDevice.get() == 'Microphone':
-        posType = 's'
-    elif variableCalDevice.get() == 'Loudspeaker':
-        posType = 'm'
-    
-    maxBuffer = 1e-3
-    interpFactor = 2
-    posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
-    #estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False) # Buffer False
-    estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=True) # Buffer True
+        #creazione sottocartelle con dati misura
+        if dirSineSweepFlag == True and measureMethod == 1:
+            dirname1 = 'SineSweepMeasures/' + str(measureName)
+            os.mkdir(dirname1)
+        elif dirMLSFlag == True and measureMethod == 2:
+            dirname2 = 'MLSMeasures/' + str(measureName)
+            os.mkdir(dirname2)
 
-    ## CREAZIONE FILE DI TESTO ##
-    # SineSweep measure
-    if measureMethod == 1:
-        RIR_Data ={
-            'Measure Name' : measureName,
-            'Type of measure': 'SineSweep',
-            'Sound speed': c,
-            'Sampling frequency': fs,
-            'Number of Microphones': inputChannels,
-            'Number of Loudspeakers': outputChannels,
-            'Room dimension': [x_axis, y_axis, z_axis],
-            'Known positions device': variableCalDevice.get(),
-            'Known positions': knownPos.tolist(),
-            'Estimated positions': estimatedPosition.tolist()
-        }
-        json_object = json.dumps(RIR_Data, indent = 4)
-        with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
-            outfile.write(json_object)
+        ## MISURA ##
+        if measureMethod == 1 :
+            # Misura SineSweep
+            RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=outputMap[0], latency= systemLatency)
+            data = createDataMatrix(len(inputMap),len(outputMap))
+            data = fillDataMatrix(data,len(inputMap), 1)
 
-    elif measureMethod ==2:
-        RIR_Data ={
-            'Measure Name' : measureName,
-            'Type of measure': 'MLS',
-            'Sound speed': c,
-            'Sampling frequency': fs,
-            'Number of Microphones': inputChannels,
-            'Number of Loudspeakers': outputChannels,
-            'Room dimension': [x_axis, y_axis, z_axis],
-            'Known positions device': variableCalDevice.get(),
-            'Known positions': knownPos.tolist(),
-            'Estimated positions': estimatedPosition.tolist()
-        }
-        json_object = json.dumps(RIR_Data, indent = 4)
-        with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
-            outfile.write(json_object)
+            outputMapNEW = outputMap[1:]
+            counter = 2
 
-space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
-buttonStart = tk.Button(mainWindow, height=1, width=31, text="5) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
-buttonStart.grid(row=13, column=4)
+            for i in outputMapNEW:
+                RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=i, latency= systemLatency)
+                data = fillDataMatrix(data,len(inputMap),counter)
+                counter += 1
+
+            # save the Matrix containing ALL RIRS
+            dirname = 'SineSweepMeasures/' + str(measureName)
+            np.save(dirname + '/RIRMatrix.npy',data)
+
+        #elif measureMethod == 2 :
+        #    # Misura MLS
+        #    data = createDataMatrix(inputChannels,outputChannels)
+        #    for i in np.arange(1, outputChannels+1) :
+        #        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
+        #        data = fillDataMatrix(data,inputChannels,i-1)
+
+        ## CALIBRAZIONE ##
+        if variableCalDevice.get() == 'Microphone':
+            posType = 's'
+        elif variableCalDevice.get() == 'Loudspeaker':
+            posType = 'm'
+
+        maxBuffer = 1e-3
+        interpFactor = 2
+        posbounds = [[0,x_axis],[0,y_axis],[0,z_axis]]
+        #estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=False) # Buffer False
+        estimatedPosition, estimatedBuffer = calibrate(data, fs, measureName, measureMethod, posType, knownPos,maxBuffer,posbounds,interpFactor,sound_speed=c,estimate_buffer=True) # Buffer True
+
+        ## CREAZIONE FILE JSON ##
+        # SineSweep measure
+        if measureMethod == 1:
+            RIR_Data ={
+                'Measure Name' : measureName,
+                'Type of measure': 'SineSweep',
+                'Sound speed': c,
+                'Sampling frequency': fs,
+                'Number of Microphones': inputChannels,
+                'Number of Loudspeakers': outputChannels,
+                'Room dimension': [x_axis, y_axis, z_axis],
+                'Known positions device': variableCalDevice.get(),
+                'Known positions': knownPos.tolist(),
+                'Estimated positions': estimatedPosition.tolist()
+            }
+            json_object = json.dumps(RIR_Data, indent = 4)
+            with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
+                outfile.write(json_object)
+
+        elif measureMethod ==2:
+            RIR_Data ={
+                'Measure Name' : measureName,
+                'Type of measure': 'MLS',
+                'Sound speed': c,
+                'Sampling frequency': fs,
+                'Number of Microphones': inputChannels,
+                'Number of Loudspeakers': outputChannels,
+                'Room dimension': [x_axis, y_axis, z_axis],
+                'Known positions device': variableCalDevice.get(),
+                'Known positions': knownPos.tolist(),
+                'Estimated positions': estimatedPosition.tolist()
+            }
+            json_object = json.dumps(RIR_Data, indent = 4)
+            with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'w') as outfile:
+                outfile.write(json_object)
+
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=10, column=4)
+buttonStart = tk.Button(mainWindow, height=1, width=31, text="4) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
+buttonStart.grid(row=11, column=4)
 
 ###################### 5 - Print Calibrazione stimata ######################
+space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
+Horizontalspace = tk.Label(mainWindow,  text='-------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=13, column=4)
 def showPlot ():
     plotWindow = tk.Toplevel(mainWindow)
     plotWindow.title("Position Estimation") # titolo
@@ -676,19 +702,19 @@ def showPlot ():
     #measure name
     measureName = Name.get()
 
-    if variableMeasure.get() == 'SineSweep':
+    if variableMeasure == 'SineSweep':
         img = ImageTk.PhotoImage(Image.open("SineSweepMeasures/"+ str(measureName) +"/CalibrationGraph.png"))
         plotLabel = tk.Label(plotWindow, image= img)
         plotLabel.grid(row=1, column=1)
-    elif variableMeasure.get() == 'MLS':
-        img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/CalibrationGraph.png"))
-        plotLabel = tk.Label(plotWindow, image= img)
-        plotLabel.grid(row=1, column=1)
+    #elif variableMeasure == 'MLS':
+    #    img = ImageTk.PhotoImage(Image.open("MLSMeasures/"+ str(measureName) +"/CalibrationGraph.png"))
+    #    plotLabel = tk.Label(plotWindow, image= img)
+    #    plotLabel.grid(row=1, column=1)
 
     plotWindow.mainloop()
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=14, column=4)
-micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show Calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
+micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="5) Show Calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=15, column=4)
 
 ###################### 6 - Print RIR ottenute ######################
@@ -724,10 +750,10 @@ def showRIR():
         output_select = int(variableRIRout.get()) 
         input_select = int(variableRIRin.get())
 
-        if variableMeasure.get() == 'SineSweep':
+        if variableMeasure == 'SineSweep':
             plotRIR = np.load('SineSweepMeasures/' + str(measureName) + '/RIRMatrix.npy')
-        elif variableMeasure.get() == 'MLS':
-            plotRIR = np.load('MLSMeasures/' + str(measureName) + '/RIRMatrix.npy')
+        #elif variableMeasure.get() == 'MLS':
+        #    plotRIR = np.load('MLSMeasures/' + str(measureName) + '/RIRMatrix.npy')
 
         inputIdx = np.where(inputMap == input_select)[0][0]
         outputIdx = np.where(outputMap == output_select)[0][0]
@@ -746,7 +772,7 @@ def showRIR():
     showplotbutton = tk.Button(RIRplot, height=1, width=6, text='SHOW RIR', font='Helvetica 16 bold', command=RIRplotshow).grid(row=8, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=16, column=4)
-RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="7) Show RIRs plot",font='Helvetica 14', command= showRIR, fg='#36454f')
+RIRPrintLabel = tk.Button(mainWindow, height=1, width=35, text="6) Show RIRs plot",font='Helvetica 14', command= showRIR, fg='#36454f')
 RIRPrintLabel.grid(row=17, column=4)
 
 ############ 1 - show estimated position ############
@@ -762,12 +788,12 @@ def printMicPositions():
     space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
 
     measureName = Name.get()
-    if variableMeasure.get() == 'SineSweep':
+    if variableMeasure == 'SineSweep':
         with open('SineSweepMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
             estimPos = json.load(openfile)
-    elif variableMeasure.get() == 'MLS':
-        with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
-            estimPos = json.load(openfile)
+    #elif variableMeasure.get() == 'MLS':
+    #    with open('MLSMeasures/' + str(measureName) + '/measureData.json', 'r') as openfile:
+    #        estimPos = json.load(openfile)
 
     posMatrix = np.asarray(estimPos['Estimated positions'])
     
@@ -775,7 +801,7 @@ def printMicPositions():
         posList = tk.Label(micpositionsplot, height=1, text= 'Pos{}: x = {} [m] ; y = {} [m] ; z = {} [m]'.format(i+1,posMatrix[i,0],posMatrix[i,1],posMatrix[i,2]), font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=3+i)  
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=4)
-micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="8) Show calibration positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
+micPositionsLabel = tk.Button(mainWindow, height=1, width=35, text="7) Show calibration positions",font='Helvetica 14', command= printMicPositions, fg='#36454f')
 micPositionsLabel.grid(row=19, column=4)
 
 mainWindow.mainloop()
