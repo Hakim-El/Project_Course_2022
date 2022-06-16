@@ -80,7 +80,7 @@ Point 9 prints the coordinates esatimed positions.
 
 The cod for the measure and the acquisition or the RIR is based on 'pyrirtool' [1], an algorithm that recall the ESS method and its modifications proposed by Angelo Farina [2]. Several python packages are used, one of the main is 'sounddevice' which is responsble for recording and playback.
 
-***Required packages***: a the .txt file is included in the project folder in which it can be found the complete list of all the packages needed by the algorithm to be correctly functional. 
+***Required packages***: a the .txt file is included in the project folder which can be used to install in the environment the complete list of the packages needed by the algorithm to be correctly functional. 
 
 
 
