@@ -247,59 +247,69 @@ t.grid(row=17, column=2)
 
 ###################### 7 - Calibrazione Sistema di Misura ######################
 def measureCalWindow():
-    measureCalWindow = tk.Toplevel(mainWindow)
-    measureCalWindow.title("System Latency Calibration") # titolo
-    #measureCalWindow.geometry('530x500') # dimensioni
-    measureCalWindow.config(bg='#36454f') # colore
+    ## ERROR MESSAGES ##
+    if  variableOS.get() == '- select your OS -':
+        messagebox.showerror('Python Error', 'ERROR: Select your OS!')
+    elif variableInputDev.get() == '- input AudioDevice -':
+        messagebox.showerror('Python Error', 'ERROR: Missing input AudioDevice!')
+    elif variableOutputDev.get() == '- output AudioDevice -':
+        messagebox.showerror('Python Error', 'ERROR: Missing output AudioDevice!')
+    elif variableFreq.get() == '- select -':
+        messagebox.showerror('Python Error', 'ERROR: Missing Sampling frequency value!')
+    else:
+        measureCalWindow = tk.Toplevel(mainWindow)
+        measureCalWindow.title("System Latency Calibration") # titolo
+        #measureCalWindow.geometry('530x500') # dimensioni
+        measureCalWindow.config(bg='#36454f') # colore
 
-    space = tk.Label(measureCalWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
-    space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
-    instr1 = tk.Label(measureCalWindow,text='SYSTEM CALIBRATION INSTRUCTIONS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
-    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
-    instr3 = tk.Label(measureCalWindow,text='1) Select an input and output channel from your selected Audio Device.\n(Suggestion: select input and output channels that are not used in the measure\nIf needed, activate another input and output channel from the input/output matrix.)\n\n2) Make a loop with a cable between the selected input and output.\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
-    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=5, column=2)
+        space = tk.Label(measureCalWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
+        space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
+        instr1 = tk.Label(measureCalWindow,text='SYSTEM CALIBRATION INSTRUCTIONS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=2, column=2)
+        space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=3, column=2)
+        instr3 = tk.Label(measureCalWindow,text='1) Select an input and output channel from your selected Audio Device.\n(Suggestion: select input and output channels that are not used in the measure\nIf needed, activate another input and output channel from the input/output matrix.)\n\n2) Make a loop with a cable between the selected input and output.\n', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=4, column=2)
+        space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=5, column=2)
 
-    idev = int(variableInputDev.get()[0])
-    NInputs = devicesDict[idev]['max_input_channels']
+        idev = int(variableInputDev.get()[0])
+        NInputs = devicesDict[idev]['max_input_channels']
 
-    odev = int(variableOutputDev.get()[0])
-    NOutputs = devicesDict[odev]['max_output_channels']
+        odev = int(variableOutputDev.get()[0])
+        NOutputs = devicesDict[odev]['max_output_channels']
 
-    varcal_in = tk.StringVar(measureCalWindow)
-    varcal_in.set('- input channel -')
-    wi1 = tk.OptionMenu(measureCalWindow, varcal_in, *np.arange(1,NInputs+1))
-    wi1.config(width=15)
-    wi1.grid(row=6, column=2)
-    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
-    varcal_out = tk.StringVar(measureCalWindow)
-    varcal_out.set('- output channel -')
-    wi2 = tk.OptionMenu(measureCalWindow, varcal_out, *np.arange(1,NOutputs+1))
-    wi2.config(width=15)
-    wi2.grid(row=8, column=2)
+        varcal_in = tk.StringVar(measureCalWindow)
+        varcal_in.set('- input channel -')
+        wi1 = tk.OptionMenu(measureCalWindow, varcal_in, *np.arange(1,NInputs+1))
+        wi1.config(width=15)
+        wi1.grid(row=6, column=2)
+        space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=7, column=2)
+        varcal_out = tk.StringVar(measureCalWindow)
+        varcal_out.set('- output channel -')
+        wi2 = tk.OptionMenu(measureCalWindow, varcal_out, *np.arange(1,NOutputs+1))
+        wi2.config(width=15)
+        wi2.grid(row=8, column=2)
 
-    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
-    instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
-    instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
+        space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=9, column=2)
+        instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
+        instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
-    def EstimLatency():
-        global systemLatency
-        indev = int(variableInputDev.get()[0])
-        outdev = int(variableOutputDev.get()[0])
-        fs = int(variableFreq.get())
-        name = 'RIR_for_latency'
-        
-        varcalIN = [int(varcal_in.get())]
-        varcalOUT = [int(varcal_out.get())]
-        
-        RIRmeasure_function(fs, indev, outdev, name, input_mapping= varcalIN, output_mapping= varcalOUT) 
-        latencyRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
-        latencyRIR = latencyRIR.reshape((latencyRIR.shape[0],))
-        systemLatency = int(find_directPath(latencyRIR))
-        shutil.rmtree('SineSweepMeasures/RIR_for_latency') # Delete the Latency measure folder
-        print('SystemLatency = %d' %systemLatency)
+        def EstimLatency():
+            global systemLatency
+            indev = int(variableInputDev.get()[0])
+            outdev = int(variableOutputDev.get()[0])
+            fs = int(variableFreq.get())
+            name = 'RIR_for_latency'
 
-    space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
-    signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
+            varcalIN = [int(varcal_in.get())]
+            varcalOUT = [int(varcal_out.get())]
+
+            RIRmeasure_function(fs, indev, outdev, name, input_mapping= varcalIN, output_mapping= varcalOUT) 
+            latencyRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
+            latencyRIR = latencyRIR.reshape((latencyRIR.shape[0],))
+            systemLatency = int(find_directPath(latencyRIR))
+            shutil.rmtree('SineSweepMeasures/RIR_for_latency') # Delete the Latency measure folder
+            print('SystemLatency = %d' %systemLatency)
+
+        space = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=12, column=2)   
+        signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=2)
 testSignalButton = tk.Button(mainWindow, height=1, width=35, text="7) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
@@ -515,6 +525,8 @@ loudspeakerPositionButton.grid(row=9, column=4)
 def multipleStartFunctions(): # to get all the needed varaibles
     #measure name
     measureName = Name.get()
+    directory = 'SineSweepMeasures/' + str(measureName)
+    print(measureName)
 
     ## ERROR MESSAGES ##
     if  variableOS.get() == '- select your OS -':
@@ -527,6 +539,8 @@ def multipleStartFunctions(): # to get all the needed varaibles
         messagebox.showerror('Python Error', 'ERROR: Missing Sampling frequency value!')
     elif variableSoundSpeed.get() == '- select -     ':
         messagebox.showerror('Python Error', 'ERROR: Missing sound speed value!')
+    elif os.path.exists(directory):
+        messagebox.showerror('Python Error', 'ERROR: This measure name already exists!')
     else:
         ### DEFINIZIONE VARIABILI ###
         #input/output device
