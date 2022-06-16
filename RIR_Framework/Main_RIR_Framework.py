@@ -10,7 +10,6 @@ import os
 from PIL import Image, ImageTk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from sqlalchemy import null
 
 # Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
