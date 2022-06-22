@@ -59,7 +59,8 @@ The numerical order was put on purpose through all the GUI in order to facilitat
 At this point, after naming the measurment folder (1), some parameters such as 'room dimensions'(2) and 'known source positions'(3a,3b) are needed by the calibration algorithm in order to be correctly functional. 
 The known positions of the inital sound sources can be entered manually or by uploading a proper json file (later specified). 
 As this proccess is symmetric, in both cases it is requeired to specify the tipology of source (microphone or loudspeaker) of which the calibration is desired.
-Now, since the apllication has all the preliminary data, by pressing the corresponding button the actual sound source calibration will start. 
+
+Now, since the apllication has all the preliminary data, by pressing the corresponding button (4) the actual acoustic source calibration will start. 
 
 At this point it is necessary to wait for the acquisition by all of the selected microphones together with the RIR creation and sound source localization. Based on the number of inputs/outputs chosen, obviously the computational cost changes.
 
@@ -73,11 +74,6 @@ At the end of the measure, you will obtain a proper Dataset organized in this wa
 
 Point 5 and 6 show respectively the 3D plot of the sources position estiamtion and the RIRs's waveforms acquired. 
 Point 7 prints the coordinates esatimed positions. 
-
-
-
-
-###immagini plots ecc.
 
 
 
