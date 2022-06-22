@@ -222,7 +222,7 @@ Horizontalspace = tk.Label(mainWindow,  text='----------------------------------
 #opt5.grid(row=13, column=2)
 
 ###################### 5 - Selezione Sampling Frequency ######################
-frequencyLabel = tk.Label(mainWindow, text="5) Sampling frequency [Hz]",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+frequencyLabel = tk.Label(mainWindow, text="4) Sampling frequency [Hz]",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 frequencyLabel.grid(row=12, column=2)
 
 InputDevicesListFreq = [44100,48000,96000]
@@ -234,7 +234,7 @@ opt6.grid(row=13, column=2)
 
 ###################### 6 - Sound Speed estimation ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=14, column=2)
-soundSpeedLabel = tk.Label(mainWindow, text="6) Sound speed estimation",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
+soundSpeedLabel = tk.Label(mainWindow, text="5) Sound speed estimation",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 soundSpeedLabel.grid(row=15, column=2)
 
 InputDevicesListSoundSpeed = ['Set default value (343 [m/s])', 'Insert temperature in °C below']
@@ -312,7 +312,7 @@ def measureCalWindow():
         signalTest = tk.Button(measureCalWindow, width= 8, height= 1, text='CALIBRATE', font='Helvetica 16 bold', command=EstimLatency, fg='#36454f').grid(row=13, column=2)
 
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=18, column=2)
-testSignalButton = tk.Button(mainWindow, height=1, width=35, text="7) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
+testSignalButton = tk.Button(mainWindow, height=1, width=35, text="6) System latency calibration", command=measureCalWindow,font='Helvetica 14', fg='#36454f')
 testSignalButton.grid(row=19, column=2)   
 
 ################################################################################################################################################
