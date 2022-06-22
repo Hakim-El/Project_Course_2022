@@ -83,12 +83,21 @@ Point 7 prints the coordinates esatimed positions.
 
 ## IMPLEMENTATION
 
-The code for the measuring and the acquisition or the RIR is based on 'pyrirtool' [1], an algorithm that recall the ESS method and its modifications proposed by Angelo Farina [2]. Several python packages are used, one of the main is 'sounddevice' which is responsble for recording and playback.
+
+The Framework is implemented in Python to allow the use of multiples convenient libraries such as 'Sounddevice' for the device detection, channel selection and sound reproduction and recording, 'PyRoomAcoustics' for the simulations, 'Tkinter' for the creation of the GUI and other common libraries such as 'Numpy' and 'Scipy' for the elaboration of data. 
+
+The code for the measuring and the acquisition or the RIR is based on 'pyrirtool' [1], an algorithm that recall the ESS method and its modifications proposed by Angelo Farina [2].
+
+The whole code is divided in modules that can be ran separately or together through the Main which opens the GUI. The two most important modules of the framework are 'Sine SweepRIRmeasure' which creates and plays the test signal through the desired channels, computes and saves the RIRs, and the 'Calibration' module which uses the known device positions to estimate unknown device positions.
+
 
 ***Required packages***: a the .txt file is included in the project folder which can be used to install in the environment the complete list of the packages needed by the algorithm to be correctly functional. 
 
 
 
-### REFRENCES
-[1] maj4e - "pyrirtool"- https://github.com/maj4e/pyrirtool.
-[2] A. Farina – "Advancements in impulse response measurements by sine sweeps", 122nd AES Convention, May 2007.
+
+
+### REFERENCES
+
+- [1] maj4e - "pyrirtool"- https://github.com/maj4e/pyrirtool.
+- [2] A. Farina – "Advancements in impulse response measurements by sine sweeps", 122nd AES Convention, May 2007.
