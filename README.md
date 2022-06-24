@@ -66,7 +66,7 @@ At this point it is necessary to wait for the acquisition by all of the selected
 
 
 At the end of the measure, you will obtain a proper Dataset organized in this way:
-- a .json file in which are reported the measurement conditions and room properties and the estimated source positions;
+- a .json file in which are reported the measurement conditions and room properties and the estimated device positions;
 - a folder for each known source in which there are:
      - a .wav file of the RIR of each microphone, of the actual recordings and of the input test signal
      - a .npy file containing the storage Matrix of the RIRs
