@@ -211,6 +211,16 @@ spkrPos7_2 =[
             2.0581561942867115,2.6116861071923836,1.214853137283191;
             1.3140704194281796,1.9168616805861323,1.2201176788363295;
             2.1260914933911645,1.833971273505931,1.3012399196184987;];
+
+LSArrayPos = [
+          1.55, 0, 1.67;
+          1.625, 0, 1.445;
+          1.7, 0, 1.67;
+          1.775, 0, 1.445;
+          1.85, 0, 1.67;
+          1.925, 0, 1.445;
+          2, 0, 1.67;
+          2.075, 0, 1.445];
         
 % mic1Mean = mean([micPos1(1,:) ;micPos2(1,:) ;micPos3(1,:) ;micPos4(1,:) ;
 %     micPos5(1,:) ;micPos6(1,:) ;micPos7(1,:) ;]);
@@ -291,24 +301,15 @@ xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 title('Mic Position')
 %% Source And Mic Positions
 figure
-scatter3(spkrPos1(:,1), spkrPos1(:,2), spkrPos1(:,3),'*'), hold on;
-scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'*');
-scatter3(spkrPos3(:,1), spkrPos3(:,2), spkrPos3(:,3),'*');
-scatter3(spkrPos4(:,1), spkrPos4(:,2), spkrPos4(:,3),'*');
-scatter3(spkrPos5(:,1), spkrPos5(:,2), spkrPos5(:,3),'*');
-scatter3(spkrPos6(:,1), spkrPos6(:,2), spkrPos6(:,3),'*');
-scatter3(spkrPos7_2(:,1), spkrPos7_2(:,2), spkrPos7_2(:,3),'*');
-scatter3(trueSpkrPos(:,1), trueSpkrPos(:,2), trueSpkrPos(:,3),  'filled', 'black', 'diamond');
+scatter3(micPos2(:,1), micPos2(:,2), micPos2(:,3),'x','MarkerEdgeColor', '#D95319'), hold on;
+scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'m','o','filled'), hold on;
 
-
-
-scatter3(micPos1(:,1), micPos1(:,2), micPos1(:,3), 'filled', 'b'), hold on;
-scatter3(micPos2(:,1), micPos2(:,2), micPos2(:,3), 'filled', 'r');
-scatter3(micPos3(:,1), micPos3(:,2), micPos3(:,3), 'filled', 'y');
-scatter3(micPos4(:,1), micPos4(:,2), micPos4(:,3), 'filled');
-scatter3(micPos5(:,1), micPos5(:,2), micPos5(:,3), 'filled');
-scatter3(micPos6(:,1), micPos6(:,2), micPos6(:,3), 'filled');
-scatter3(micPos7_2(:,1), micPos7_2(:,2), micPos7_2(:,3), 'filled');
+xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
+xlabel('x [m]','Fontsize',12)
+ylabel('y [m]','Fontsize',12)
+zlabel('z [m]','Fontsize',12)
+legend('Estimated Microphone Position','Estimated Loudspeaker Position')
+title('Experimental results','Fontsize',16)
 
 %% Statistics
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
