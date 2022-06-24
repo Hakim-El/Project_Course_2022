@@ -4,6 +4,9 @@ Jacopo Caucig -
 Lorenzo Lellini - 
 Hakim El Achak
 
+#### GITHUB LINK: https://github.com/Hakim-El/Project_Course_2022
+#### SEMI-ANECHOIC DATASET: https://polimi365-my.sharepoint.com/:f:/g/personal/10813836_polimi_it/EmttL1tCvkFCn9NRgnbTOqkBQXxwJcBlwBCgtg3HlVYDog?e=AuIpBa
+
 # Measurement Framework for Room Impulse Response Dataset and Acoustic Source Calibration
 
 A compact tool, fully developed in Python, for the acquisition of Room Impulse Responses and the creation of high quality Dataset. It also performs Acoustic Source Localization based on RIR acoustical informations.
