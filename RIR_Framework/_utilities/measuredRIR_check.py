@@ -4,6 +4,9 @@ from scipy.spatial.distance import cdist
 from sklearn.metrics import mean_squared_error
 from _modules.Calibration import find_directPath
 
+### Script used to check the distances measured by the calibration and the extracted from the RIR's TOA ###
+
+
 RIRMatrix1 = np.load('SineSweepMeasures\measureMicrophonesPosition1\RIRMatrix.npy')
 RIRMatrix2 = np.load('SineSweepMeasures\measureLoudspeakersPosition1\RIRMatrix.npy')
 fs = 96000

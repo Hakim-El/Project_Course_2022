@@ -1,4 +1,3 @@
-# Moduli da importare per far funzionare il MAIN
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -10,25 +9,22 @@ import os
 from PIL import Image, ImageTk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-
-# Moduli secondari da importare per far funzionare il MAIN
 from _modules.SineSweep_RIRmeasure import RIRmeasure_function, createDataMatrix, fillDataMatrix
 from _modules.MLS_RIRmeasure import MLSmeasure_function
 from _modules.Calibration import calibrate, find_directPath
 
 ######################################################################################################################################################################################################
-# NOTA: NEL CODICE SONO PRESENTI TRACCE NELLA CALIBRAZIONE CON SEGNALE DI TIPO MLS.
-# ATTUALMENTE E' STATA IMPLEMENTATA SOLAMENTE LA CALIBRAZIONE CON SEGNALE DI TIPO SINESWEEP
-# UN FUTURO SVILUPPO DI QUESTA APPLICAZIONE PUO' INCLUDERE L'IMPLEMETAZIONE ANCHE CON SEGNALE DI TIPO MLS
-# IL MODULO DA IMPLEMENTARE PER LA GENERAZIONE E LA CALIBRAZIONE MLS E' MLS_RIRmeasure.py NELLA CARTELLA _modules
+# NB: IN THE CODE ARE PRESENT TRACES OF A CALIBRATION WITH AN MLS SIGNAL
+# AT THE MOMENT, ONLU THE SINE SWEEP CALIBRATION HAS BEEN FULLY IMPLEMENTED
+# A FUTURE DEVELOPMENT OF THIS FRAMEWORK COULD INCLUDE THE COMPLETION OF THE MLS CALIBRATION
+# THE CORRESPONDING MODULE IS MLS_RIRmeasure.py IN THE _modules FOLDER 
 ######################################################################################################################################################################################################
 
 ###################################################################################################
-# CREAZIONE MAIN WINDOW
+# MAIN WINDOW CREATION
 mainWindow = tk.Tk()
-mainWindow.title("Automatic RIR Measurement System") # titolo
-#mainWindow.geometry("925x490") # dimensioni
-mainWindow.config(bg='#36454f') # colore
+mainWindow.title("Automatic RIR Measurement System")
+mainWindow.config(bg='#36454f') # color
 
 # MAIN WINDOW SPACING
 borderSpace1 = tk.Label(mainWindow, text='', bg='#36454f').grid(row=1,rowspan=1)
@@ -83,19 +79,19 @@ credits.grid(row=20, column=4)
 ########## SECTION 1 ########## 
 sect1 = tk.Label(mainWindow,text='1) SYSTEM SETTINGS', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=2)
 
-# misure ambienti in 3D
+# measures in 3D environments
 global variableCal
 global cal_type
 variableCal = '3D'
 cal_type = 2
 
-# misura SineSweep (MLS non implementata!)
+# SineSweep measure (MLS not yet implemented!)
 global variableMeasure
 global measureMethod
 variableMeasure = 'SineSweep'
 measureMethod = 1
 
-###################### 0 - Sistema Operativo ######################
+###################### 0 - Operative System ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=2)
 
 InputDevicesListOS = ['macOS', 'Windows']
@@ -105,7 +101,7 @@ opt0 = tk.OptionMenu(mainWindow, variableOS, *InputDevicesListOS)
 opt0.config(width=11)
 opt0.grid(row=3, column=2)
 
-###################### 1 - Selezione Audio Device di Input ######################
+###################### 1 - Input audio device selection ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=4, column=2)
 inputDeviceLabel = tk.Label(mainWindow, text="1) Select Input Audio Device",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 inputDeviceLabel.grid(row=5, column=2)
@@ -119,29 +115,27 @@ for i in np.arange(0,len(devicesDict)):
 
 variableInputDev = tk.StringVar(mainWindow)
 variableInputDev.set('- input AudioDevice -')
-#variableInputDev.trace('w', inputChanged)
 opt1 = tk.OptionMenu(mainWindow, variableInputDev, *devicesList)
 opt1.config(width=30)
 opt1.grid(row=6, column=2)
 
-###################### 2 - Selezione Audio Device di Output ######################
+###################### 2 - Output audio device selection ######################
 outputDeviceLabel = tk.Label(mainWindow, text="2) Select Output Audio Device",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 outputDeviceLabel.grid(row=7, column=2)
 
 variableOutputDev = tk.StringVar(mainWindow)
 variableOutputDev.set('- output AudioDevice -')
-#variableOutputDev.trace('w', outputChanged)
 opt2 = tk.OptionMenu(mainWindow, variableOutputDev, *devicesList)
 opt2.config(width=30)
 opt2.grid(row=8, column=2)
 
-###################### 3 - Selezione numero canali Input/Output (Matrix) ######################
+###################### 3 - Input/Output (Matrix) ######################
 def inputWindow():
     inputMatrixWindow = tk.Toplevel(mainWindow)
-    inputMatrixWindow.title("Input/Output Matrix") # titolo
-    inputMatrixWindow.config(bg='#36454f') # colore
+    inputMatrixWindow.title("Input/Output Matrix")
+    inputMatrixWindow.config(bg='#36454f')
 
-    ####################### Selezione numero canali Input ######################
+    ####################### Input channels selection ######################
     space = tk.Label(inputMatrixWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(inputMatrixWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
     inputSelection = tk.Label(inputMatrixWindow, text='Select your Input channels:',font='Helvetica 14', bg='#36454f', fg='#f7f7f7').grid(row=2,column=2)
@@ -195,12 +189,12 @@ def inputWindow():
         outputMap = np.nonzero(outButtonState)
         outputMap = outputMap[0]+1
 
-    #creazione input
+    # input creation
     for j in range(0, NInputs):
         inputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: inButtonPressed(j1)))
         inputButton[j].grid(row=2, column=j+3)
 
-    #creazione output
+    # output creation
     for j in range(0, NOutputs):
         outputButton.append(tk.Button(inputMatrixWindow, width=1, height=1, text='%d' %(j+1), command= lambda j1=j: outButtonPressed(j1)))
         outputButton[j].grid(row=4, column=j+3)
@@ -209,7 +203,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 in_outButton = tk.Button(mainWindow, width=35, text='3) Select your input/output channels',font='Helvetica 14', command = inputWindow, fg='#36454f')
 in_outButton.grid(row=10, column=2)
 
-###################### 4 - Selezione tipo di misura ######################
+###################### 4 - Measure Type Selection ###################### Uncomment to be able to select between MLS and Sine sweep
 Horizontalspace = tk.Label(mainWindow,  text='-------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=11, column=2)
 #measureTypelLabel = tk.Label(mainWindow, text="4) Type of measure",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 #measureTypelLabel.grid(row=12, column=2)
@@ -221,7 +215,7 @@ Horizontalspace = tk.Label(mainWindow,  text='----------------------------------
 #opt5.config(width=8)
 #opt5.grid(row=13, column=2)
 
-###################### 5 - Selezione Sampling Frequency ######################
+###################### 5 - Sampling Frequency Selection ######################
 frequencyLabel = tk.Label(mainWindow, text="4) Sampling frequency [Hz]",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 frequencyLabel.grid(row=12, column=2)
 
@@ -245,7 +239,7 @@ opt9.grid(row=16, column=2)
 t = tk.Entry(mainWindow, width=5)
 t.grid(row=17, column=2)
 
-###################### 7 - Calibrazione Sistema di Misura ######################
+###################### 7 - Calibration ######################
 def measureCalWindow():
     ## ERROR MESSAGES ##
     if  variableOS.get() == '- select your OS -':
@@ -258,9 +252,8 @@ def measureCalWindow():
         messagebox.showerror('Python Error', 'ERROR: Missing Sampling frequency value!')
     else:
         measureCalWindow = tk.Toplevel(mainWindow)
-        measureCalWindow.title("System Latency Calibration") # titolo
-        #measureCalWindow.geometry('530x500') # dimensioni
-        measureCalWindow.config(bg='#36454f') # colore
+        measureCalWindow.title("System Latency Calibration")
+        measureCalWindow.config(bg='#36454f')
 
         space = tk.Label(measureCalWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
         space = tk.Label(measureCalWindow,  text=' ',font='Helvetica 8', bg='#36454f').grid(column=1)
@@ -291,6 +284,7 @@ def measureCalWindow():
         instr6 = tk.Label(measureCalWindow,text='\n', font='Helvetica 8',bg='#36454f', fg='#f7f7f7' ).grid(row=10, column=2)
         instr5 = tk.Label(measureCalWindow, text='3) Click on "CALIBRATE" button to start the estimation of the System Latency.\nCalibration is needed again only if the user changes the input/output audio device.\n\n------\n\nAfter this step you can start the RIR measures.', font='Helvetica 14',bg='#36454f', fg='#f7f7f7' ).grid(row=11, column=2)
 
+        # function that returns the latency of the system in samples
         def EstimLatency():
             global systemLatency
             indev = int(variableInputDev.get()[0])
@@ -300,7 +294,7 @@ def measureCalWindow():
 
             varcalIN = [int(varcal_in.get())]
             varcalOUT = [int(varcal_out.get())]
-
+            
             RIRmeasure_function(fs, indev, outdev, name, input_mapping= varcalIN, output_mapping= varcalOUT) 
             latencyRIR = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
             latencyRIR = latencyRIR.reshape((latencyRIR.shape[0],))
@@ -319,21 +313,21 @@ testSignalButton.grid(row=19, column=2)
 ########## SECTION 2 ########## 
 sect2 = tk.Label(mainWindow,text='2) CALIBRATION', font='Helvetica 20 bold',bg='#36454f', fg='#f7f7f7' ).grid(row=1, column=4)
 
-###################### 1 - Nome della misura ######################
+###################### 1 - Measure Name ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=2, column=4)
 measureNameLabel = tk.Label(mainWindow, text="1) Insert the name of the measure below",font='Helvetica 14', bg='#36454f', fg='#f7f7f7')
 measureNameLabel.grid(row=3, column=4)
 Name = tk.Entry(mainWindow, width=34)
 Name.grid(row=4, column=4)
 
-###################### 2 - Dimensioni della stanza ######################
+###################### 2 - Room Dimensions ######################
 def printRoomDimension():
     dimension2DWindow = tk.Toplevel(mainWindow)
-    dimension2DWindow.title("Room Dimensions") # titolo
-    dimension2DWindow.config(bg='#36454f') # colore
+    dimension2DWindow.title("Room Dimensions") 
+    dimension2DWindow.config(bg='#36454f')
 
     if variableCal == '2D' :
-        dimension2DWindow.geometry("265x160") # dimensioni
+        dimension2DWindow.geometry("265x160")
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
 
@@ -352,7 +346,7 @@ def printRoomDimension():
         z_dim.set('0.0')
 
     elif variableCal == '3D':
-        dimension2DWindow.geometry("265x200") # dimensioni
+        dimension2DWindow.geometry("265x200")
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=1)
         space = tk.Label(dimension2DWindow, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)
 
@@ -395,7 +389,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 roomDimensionButton = tk.Button(mainWindow, height=1, width=35, text="2) Insert room dimensions",font='Helvetica 14', command = printRoomDimension, fg='#36454f')
 roomDimensionButton.grid(row=6, column=4)
 
-###################### 3 - Posizione Loudspeakers ######################
+###################### 3 - Known Position ######################
 def printLoudspeakerPosition():
     var_i = len(outputMap)
     LoudSpeakerWindow = tk.Toplevel(mainWindow)
@@ -542,7 +536,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
     elif os.path.exists(directory):
         messagebox.showerror('Python Error', 'ERROR: This measure name already exists!')
     else:
-        ### DEFINIZIONE VARIABILI ###
+        ### Variables Definition ###
         #input/output device
         inputDevice = int(variableInputDev.get()[0])
         outputDevice = int(variableOutputDev.get()[0])
@@ -568,14 +562,14 @@ def multipleStartFunctions(): # to get all the needed varaibles
         #sampling frequency
         fs = int(variableFreq.get())
 
-        #measure type
+        #measure type  # uncomment to be able to select between MLS and ESS
         #if variableMeasure.get() == 'SineSweep':
         #    measureMethod = 1
         #elif variableMeasure.get() == 'MLS':
         #    measureMethod = 2
 
-        ## CREAZIONE CARTELLE ##
-        #creazione cartelle misura primcipali (SineSweep & MLS)
+        ## Folder creation ##
+        # Main folder creation (SineSweep & MLS)
         dirnameSineSweep = 'SineSweepMeasures/'
         dirnameMLS = 'MLSMeasures/'
         if os.path.exists(dirnameSineSweep):
@@ -596,7 +590,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
             os.mkdir('MLSMeasures/')
             dirMLSFlag = True
 
-        #creazione cartella _lastMeasureData_
+        # create folder _lastMeasureData_
         dirnameLast1 = 'SineSweepMeasures/_lastMeasureData_'
         dirnameLast2 = 'MLSMeasures/_lastMeasureData_'
         if os.path.exists(dirnameLast1):
@@ -617,7 +611,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
             os.mkdir('MLSMeasures/_lastMeasureData_')
             dirLast2Flag = True
 
-        #creazione sottocartelle con dati misura
+        # Create subfolders with measure data
         if dirSineSweepFlag == True and measureMethod == 1:
             dirname1 = 'SineSweepMeasures/' + str(measureName)
             os.mkdir(dirname1)
@@ -625,9 +619,9 @@ def multipleStartFunctions(): # to get all the needed varaibles
             dirname2 = 'MLSMeasures/' + str(measureName)
             os.mkdir(dirname2)
 
-        ## MISURA ##
+        ## MEASURE ##
         if measureMethod == 1 :
-            # Misura SineSweep
+            # SineSweep
             RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping=inputMap, output_mapping=outputMap[0], latency= systemLatency)
             data = createDataMatrix(len(inputMap),len(outputMap))
             data = fillDataMatrix(data,len(inputMap), 1)
@@ -651,7 +645,7 @@ def multipleStartFunctions(): # to get all the needed varaibles
         #        MLSmeasure_function (fs,inputChannels, i, inputDevice, outputDevice, measureName, latency= systemLatency)
         #        data = fillDataMatrix(data,inputChannels,i-1)
 
-        ## CALIBRAZIONE ##
+        ## CALIBRATION ##
         if variableCalDevice.get() == 'Microphone':
             posType = 's'
         elif variableCalDevice.get() == 'Loudspeaker':
@@ -703,14 +697,13 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="4) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.grid(row=11, column=4)
 
-###################### 5 - Print Calibrazione stimata ######################
+###################### 5 - Print Estimated Calibration ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
 Horizontalspace = tk.Label(mainWindow,  text='-------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=13, column=4)
 def showPlot ():
     plotWindow = tk.Toplevel(mainWindow)
-    plotWindow.title("Position Estimation") # titolo
-    #plotWindow.geometry('530x500') # dimensioni
-    plotWindow.config(bg='#36454f') # colore
+    plotWindow.title("Position Estimation")
+    plotWindow.config(bg='#36454f')
     
     #measure name
     measureName = Name.get()
@@ -730,7 +723,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 micPositionPrintLabel = tk.Button(mainWindow, height=1, width=35, text="5) Show Calibration plot",font='Helvetica 14', command= showPlot, fg='#36454f')
 micPositionPrintLabel.grid(row=15, column=4)
 
-###################### 6 - Print RIR ottenute ######################
+###################### 6 - Plot RIR ######################
 def showRIR():
     RIRplot = tk.Toplevel(mainWindow)
     RIRplot.title("Room Impulse Response plot") # titolo
@@ -756,7 +749,6 @@ def showRIR():
     def RIRplotshow():
         RIRplot = tk.Toplevel(mainWindow)
         RIRplot.title("PLOT") # titolo
-        #plotWindow.geometry('530x500') # dimensioni
         RIRplot.config(bg='#36454f') # colore
 
         measureName = Name.get()
@@ -791,9 +783,8 @@ RIRPrintLabel.grid(row=17, column=4)
 ############ 1 - show estimated position ############
 def printMicPositions():
     micpositionsplot = tk.Toplevel(mainWindow)
-    micpositionsplot.title("Estimated Positions") # titolo
-    #plotWindow.geometry('530x500') # dimensioni
-    micpositionsplot.config(bg='#36454f') # colore
+    micpositionsplot.title("Estimated Positions")
+    micpositionsplot.config(bg='#36454f')
     
     space = tk.Label(micpositionsplot, height=1,  text='n',font='Helvetica 8', bg='#36454f').grid(row=1)
     space = tk.Label(micpositionsplot, height=1,  text='\n',font='Helvetica 8', bg='#36454f').grid(column=1)

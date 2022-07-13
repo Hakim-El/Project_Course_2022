@@ -3,14 +3,12 @@ import sounddevice as sd
 import numpy as np
 from matplotlib import pyplot as plt
 
-# Modules from this software
+# Modules
 import _modules.SineSweep_stimulus as stim
 import _modules.SineSweep_parseargs as parse
 import _modules.SineSweep_utils as utils
 
-# ATTENZIONE: Il corretto input e output viene impostato nel file utils!
-# é tutto una funzione richiamata nel MAIN qui!
-
+# function to measure and compute a Sine Sweep RIR trhough the desired audio devices and channels 
 def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mapping, output_mapping, latency=0):
     # --- Parse command line arguments and check defaults
     flag_defaultsInitialized = parse._checkdefaults()
@@ -77,12 +75,14 @@ def RIRmeasure_function (fs, inputDevice, outputDevice, measureName, input_mappi
             # Save recordings and RIRs
             utils.saverecording(RIR, RIRtoSave, testStimulus.signal, recorded, fs, measureName, output_mapping)
 
+# create the RIR matrix that will contain all the RIRs of the measurement
 def createDataMatrix(nMics, nLS):
     lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
     RIRlength = lastRecording.shape[0]
     data = np.zeros((RIRlength,nMics,nLS))
     return data
 
+# fill that matrix with the last measured data
 def fillDataMatrix(data, nMics, nLS):
     lastRecording = np.load('SineSweepMeasures/_lastMeasureData_/RIR.npy')
     for i in np.arange(0,nMics):

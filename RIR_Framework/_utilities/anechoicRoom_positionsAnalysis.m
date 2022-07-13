@@ -302,13 +302,13 @@ title('Mic Position')
 %% Source And Mic Positions
 figure
 scatter3(micPos2(:,1), micPos2(:,2), micPos2(:,3),'x','MarkerEdgeColor', '#D95319'), hold on;
-scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'m','o','filled'), hold on;
+scatter3(spkrPos2(:,1), spkrPos2(:,2), spkrPos2(:,3),'r','o','filled'), hold on;
 
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 xlabel('x [m]','Fontsize',12)
 ylabel('y [m]','Fontsize',12)
 zlabel('z [m]','Fontsize',12)
-legend('Estimated Microphone Position','Estimated Loudspeaker Position')
+legend('Estimated Microphone Position','Estimated Loudspeaker Position','FontSize',12)
 title('Experimental results','Fontsize',16)
 
 %% Statistics

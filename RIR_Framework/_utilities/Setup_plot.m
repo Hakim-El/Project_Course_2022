@@ -139,10 +139,10 @@ LSArrayPos = [
 figure
 scatter3(LSArrayPos(:,1), LSArrayPos(:,2), LSArrayPos(:,3),'b','filled','o'),hold on;
 scatter3(micPos(:,1), micPos(:,2), micPos(:,3),'x'),hold on;
-scatter3(LSPos(:,1), LSPos(:,2), LSPos(:,3),'m','filled','o'),hold on;
+scatter3(LSPos(:,1), LSPos(:,2), LSPos(:,3),'r','filled','o'),hold on;
 xlim([0, 3.64]), ylim([0, 5]), zlim([0, 2.5]);
 xlabel('x [m]','Fontsize',12)
 ylabel('y [m]','Fontsize',12)
 zlabel('z [m]','Fontsize',12)
-legend('Loudspeaker Array','Microphones','Loudspeakers')
+legend('Known Position Loudspeaker Array','Microphones','Unknown Position Loudspeakers','FontSize',12)
 title('Room Setup','Fontsize',16)

@@ -8,6 +8,8 @@ from scipy.spatial.distance import cdist
 from scipy.optimize import minimize
 from scipy import interpolate
 
+####################################################
+############## CALIBRATION ALGORITHIM ##############
 
 def obj_function(x, positions, toa, buffer, ndim=3):
     if buffer:
@@ -57,6 +59,8 @@ def find_position(positions, toa, positions_bounds, buffer=True, ndim=3, max_buf
         return xTmp
 
 
+# returns the sample of the direct path
+# increase top_peaks in reverberating environments 
 def find_directPath(this_rir, top_peaks=15):
     this_rir = np.abs(this_rir)
     peaks, _ = find_peaks(this_rir)

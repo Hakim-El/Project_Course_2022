@@ -3,7 +3,7 @@ from scipy.io.wavfile import write as wavwrite
 import numpy as np
 import sounddevice as sd
 
-#--------------------------
+#Module for the recording of a signal and saving the recording locally
 
 def record(testsignal,fs, inputDevice, outputDevice, inputMap, outputMap):
 

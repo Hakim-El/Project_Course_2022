@@ -7,6 +7,8 @@ from numpy import cos as cos
 from scipy import signal
 from scipy.signal import fftconvolve
 
+# Module used to create a sine sweep signal and a function to perform the deconvolution
+
 class stimulus:
 
     # Constructor

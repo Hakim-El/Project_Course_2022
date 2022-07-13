@@ -7,9 +7,11 @@ import os
 import _modules.SineSweep_stimulus as stim
 from _modules.Calibration import calibrate
 
-### IMPORTANT: This script is not used in the RIR Framework but it is implemented in the 
-### Calibration_OLD module from Project Course 2021 exam and it can be used to perform some 
-## simulations with pyroomacoustics
+### IMPORTANT: This script is not used in the MAIN
+# It's a simulation of RIRs acquired in a virtual room with similar properties to the one described in the paper
+# the RIRs acquired in the simulation are used to test the accuracy of the calibration algorithm
+# a SNR can be applied at the signal recorded with the microphones
+
 
 # Room dimensions
 xlim=3.64
@@ -20,9 +22,9 @@ zlim=3
 fs=96000
 
 # SNR in dB
-SNRdb = 5
+SNRdb = 10 # select 0 to not apply any noise
 
-# We invert Sabine's formula to obtain the parameters for the ISM simulator
+# Materials of the room walls
 mat = pra.make_materials(
     ceiling="fibre_absorber_1",
     floor="carpet_tufted_9.5mm",
@@ -34,6 +36,7 @@ mat = pra.make_materials(
 
 max_order = 17
 
+# plot the virtual room
 #fig, ax = room.plot()
 #ax.set_xlim([-1, 6])
 #ax.set_ylim([-1, 4])
@@ -43,6 +46,11 @@ testStimulus = stim.stimulus('sinesweep',fs)
 testStimulus.generate(fs, 10, 0.2,1,1, 1, [0 , 0])
 signal = testStimulus.signal.reshape(testStimulus.signal.shape[0],)
 
+######################################################################
+############################### STEP 1 ###############################
+######################################################################
+
+# approximate position of the microphone positions in the real room
 micLocs = np.c_[
         [0.6, 4.4, 0.7],
         [1.2, 4.4, 0.7],
@@ -157,6 +165,7 @@ micLocs = np.c_[
         [3,   0.8, 2.1],         
         ]
 
+# positions of the central loudspeakers
 knownPos = np.array([[1.55, 0, 1.67],
                            [1.625, 0, 1.445],
                            [1.7, 0, 1.67],
@@ -168,6 +177,7 @@ knownPos = np.array([[1.55, 0, 1.67],
 
 def computeRIR1(SNRdb=0):
 
+    # create the virtual room
     room = pra.ShoeBox([xlim, ylim, zlim], fs=fs, materials=mat, max_order=17, air_absorption=True, ray_tracing=False)
 
     outputChannels = knownPos.shape[0]
@@ -179,9 +189,11 @@ def computeRIR1(SNRdb=0):
     # add mics
     room.add_microphone_array(micLocs)
 
+    # simulate mic signals
     micSigs = room.simulate(return_premix=True)
     micSigs = micSigs[:,:,0:signal.shape[0]]
 
+    # apply signal to noise ratio
     if SNRdb != 0:
         noise = np.random.normal(0,1,micSigs.shape[2])
         for l in range(micSigs.shape[0]):
@@ -196,8 +208,10 @@ def computeRIR1(SNRdb=0):
     nMics = micSigs.shape[1]
     nLS = micSigs.shape[0]
 
+    # create the RIR matrix
     data = np.zeros((RIRlength,nMics,nLS))
 
+    # compute the rir and save it
     for l in np.arange(0,nLS):
         for m in np.arange(0,nMics):
             RIR = fftconvolve(testStimulus.invfilter,micSigs[l,m,:])
@@ -227,8 +241,9 @@ micCalibrationError = mean_squared_error(truePosMic,estimatedPosition)
 print('MSE1 : ' + str(micCalibrationError))
 
 
-####################################################################################
-####################################################################################
+######################################################################
+############################### STEP 2 ###############################
+######################################################################
 
 LsPositions = np.array([
     [1.4, 3.4, 1.2],

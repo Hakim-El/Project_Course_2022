@@ -10,9 +10,10 @@ from scipy.io.wavfile import write as wavwrite
 import os
 
 ######################################################################################################################################################################################################
-# NOTA: NEL MAIL VIENE FATTO RIFERIMENTO A QUESTO MODULO MA ESSO NON E' ATTUALEMNETE IMPLEMENTATO.
-# AL MOMENTO E' STATA IMPLEMENTATA SOLAMENTE LA CALIBRAZIONE CON SEGNALE DI TIPO SINESWEEP
-# UN FUTURO SVILUPPO DI QUESTA APPLICAZIONE PUO' INCLUDERE L'IMPLEMETAZIONE ANCHE CON SEGNALE DI TIPO MLS
+# NB: THIS MODULE IS CALLED IN THE MAIN BUT IT'S STILL NOT COMPLETELY COMPLETE
+# AT THE MOMENT, ONLY THE CALIBRATION WITH A SINE SWEEP IS FULLY IMPLEMENTED
+# A FUTURE DEVELOPMENT OF THIS FRAMEWORK COULD BE THE IMPLEMENTATION OF THIS MODULE
+# THE MAIN CURRENT PROBLEM IS THE QUALITY OF THE RIR COMPUTED WITH MLS
 ######################################################################################################################################################################################################
 
 def MLSmeasure_function (fs,inputChannels, outputChannels, inputDevice, outputDevice, measureName, latency=0):

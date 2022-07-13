@@ -7,6 +7,8 @@ from _modules.Calibration import calibrate
 from sklearn.metrics import mean_squared_error
 import os
 
+### Script used to see the error between a Sine sweep RIR and and ideal RIR of pyroomacoustics ###
+
 # Room dimensions
 xlim=3.64
 ylim=5
@@ -15,6 +17,7 @@ zlim=3
 # Sampling frequency
 fs=96000
 
+# room wall materials
 mat = pra.make_materials(
     ceiling="fibre_absorber_1",
     floor="carpet_tufted_9.5mm",
@@ -31,6 +34,7 @@ testStimulus = stim.stimulus('sinesweep',fs)
 testStimulus.generate(fs, 10, 0.2,1,1, 1, [0 , 0])
 signal = testStimulus.signal.reshape(testStimulus.signal.shape[0],)
 
+#create the virtual room
 room = pra.ShoeBox([xlim, ylim, zlim], fs=fs, materials=mat, max_order=17, air_absorption=True, ray_tracing=False)
 
 room.add_source(np.array([1.55,0,1.67]), signal=signal, delay=0)
@@ -38,8 +42,10 @@ room.add_source(np.array([1.55,0,1.67]), signal=signal, delay=0)
 room.add_microphone(np.array([1.2, 3.8, 1.4]))
 
 room.compute_rir()
-impulseRIR = room.rir[0][0]
+impulseRIR = room.rir[0][0] # ideal RIR
 
+# signal received by the microphones after a sine sweep has been emitted by the sources
+# it's the convolution of a sine sweep signal with the room's Ideal RIR
 micSigs = room.simulate(return_premix=True)
 micSigs = micSigs[:,:,0:signal.shape[0]]
 
@@ -47,6 +53,7 @@ RIRlength = (len(testStimulus.invfilter)+micSigs.shape[2]-1)//2 +1
 nMics = micSigs.shape[1]
 nLS = micSigs.shape[0]
 
+# Sine sweep RIR matrix
 data = np.zeros((RIRlength,nMics,nLS))
 for l in np.arange(0,nLS):
     for m in np.arange(0,nMics):
