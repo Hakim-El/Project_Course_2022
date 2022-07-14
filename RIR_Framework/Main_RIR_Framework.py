@@ -697,7 +697,7 @@ space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(r
 buttonStart = tk.Button(mainWindow, height=1, width=31, text="4) START CALIBRATION MEASURE", font='Helvetica 15 bold', command=multipleStartFunctions, fg='#36454f') # Inserisci command = funzione main tra text e fg per far partire misura
 buttonStart.grid(row=11, column=4)
 
-###################### 5 - Print Estimated Calibration ######################
+###################### 5 - Plot Estimated Calibration ######################
 space = tk.Label(mainWindow,  text='\n',font='Helvetica 8', bg='#36454f').grid(row=12, column=4)
 Horizontalspace = tk.Label(mainWindow,  text='-------------------------------------------------------------------',font='Helvetica 14 bold', bg='#36454f',fg='#f7f7f7').grid(row=13, column=4)
 def showPlot ():
