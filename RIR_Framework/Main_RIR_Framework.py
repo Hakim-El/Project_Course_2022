@@ -15,7 +15,7 @@ from _modules.Calibration import calibrate, find_directPath
 
 ######################################################################################################################################################################################################
 # NB: IN THE CODE ARE PRESENT TRACES OF A CALIBRATION WITH AN MLS SIGNAL
-# AT THE MOMENT, ONLU THE SINE SWEEP CALIBRATION HAS BEEN FULLY IMPLEMENTED
+# AT THE MOMENT, ONLY THE SINE SWEEP CALIBRATION HAS BEEN FULLY IMPLEMENTED
 # A FUTURE DEVELOPMENT OF THIS FRAMEWORK COULD INCLUDE THE COMPLETION OF THE MLS CALIBRATION
 # THE CORRESPONDING MODULE IS MLS_RIRmeasure.py IN THE _modules FOLDER 
 ######################################################################################################################################################################################################

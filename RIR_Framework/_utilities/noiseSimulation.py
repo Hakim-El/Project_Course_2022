@@ -12,7 +12,6 @@ from _modules.Calibration import calibrate
 # the RIRs acquired in the simulation are used to test the accuracy of the calibration algorithm
 # a SNR can be applied at the signal recorded with the microphones
 
-
 # Room dimensions
 xlim=3.64
 ylim=5
